@@ -1,6 +1,7 @@
 <?php
+
 /**
- * @psalm-import-type Product from types
+ * @psalm-import-type Config from types
  */
 
 function getComponentsPath(): string
@@ -8,42 +9,34 @@ function getComponentsPath(): string
     return 'components' . DIRECTORY_SEPARATOR;
 }
 
-function includeHeader(string $title): void
-{
-    require_once getComponentsPath() . 'header.php';
-}
-
-function includeFooter(): void
-{
-    require_once getComponentsPath() . 'footer.php';
-}
-
-function makeSearch(string $baseUrl, string $productName): string
-{
-    return $baseUrl . '?' . http_build_query([
-        'q' => $productName
-    ]);
-}
-
 /**
- * @param Product[] $products
- * @param string $baseUrl
+ * @param string $file
+ * @param Config $data
  * @return void
  */
-function includeTable(array $products, string $baseUrl): void
+function getRequire(string $file, array $data = []): void
 {
-    require_once getComponentsPath() . 'table.php';
+    extract($data);
+
+    require_once COMPONENTS . "$file.php";
 }
 
 /**
- * @param array{title: string, baseUrl: string, products: Product[]} $data
+ * @param Config $data
  * @return void
  */
 function makePage(array $data): void
 {
-    includeHeader($data['title']);
+    getRequire('header', $data);
 
-    includeTable($data['products'], $data['baseUrl']);
+    getRequire('table', $data);
 
-    includeFooter();
+    getRequire('footer', $data);
+}
+
+function makeSearchParameter(string $searchUrl, string $productName): string
+{
+    return $searchUrl . '?' . http_build_query([
+        'q' => $productName
+    ]);
 }

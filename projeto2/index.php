@@ -2,7 +2,7 @@
 
 require_once 'functions.php';
 
-$baseUrl = 'https://google.com/search';
+define('COMPONENTS', getComponentsPath());
 
 $products = [
     [
@@ -23,12 +23,9 @@ $products = [
 ];
 
 $data = [
-    'title' => 'Curso de PHP moderno',
+    'title' => 'Lista de produtos',
     'products' => $products,
-    'baseUrl' => $baseUrl
+    'searchUrl' => 'https://google.com/search'
 ];
 
-var_dump($_GET);
-var_dump($_POST);
-var_dump($_SERVER);
 makePage($data);

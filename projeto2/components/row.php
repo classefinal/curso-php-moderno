@@ -5,7 +5,7 @@
  */
 
 /** @var Product $product */
-/** @var string $baseUrl */
+/** @var string $searchUrl */
 ?>
 
 <tr>
@@ -14,11 +14,11 @@
     <td><?= $product['quantity'] ?></td>
     <td>
         <a
-            href="<?= makeSearch($baseUrl, $product['name']) ?>"
-            title="Buscar no google"
+            href="<?= makeSearchParameter($searchUrl, $product['name']) ?>"
             target="_blank"
-            rel="noopener noreferrer">
-            Buscar no Google
+            rel="noopener noreferrer"
+            title="Clique para comprar <?= $product['name'] ?>">
+            Clique para comprar
         </a>
     </td>
 </tr>

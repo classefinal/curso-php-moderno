@@ -1,1 +1,1 @@
-<p>Sem registros para exibir</p>
+<p>Sem dados para mostrar</p>
