@@ -19,3 +19,8 @@ function getPagesPath(): string
 {
     return getPath('pages');
 }
+
+function getControllersPath(): string
+{
+    return getPath('controllers');
+}

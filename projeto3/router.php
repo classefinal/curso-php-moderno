@@ -3,17 +3,18 @@
 $uri = $_SERVER['PATH_INFO'] ?? null;
 
 // Initial config
-require_once 'routes.php';
-require_once 'route_resolver.php';
 require_once 'path.php';
 
 // Constants of paths
+define('CONTROLLERS', getControllersPath());
 define('COMPONENTS', getComponentsPath());
 define('FUNCTIONS', getFunctionsPath());
 define('PAGES', getPagesPath());
 
 // Requires
-require_once FUNCTIONS . 'make_functions.php';
+require_once 'routes.php';
+require_once 'route_resolver.php';
+require_once FUNCTIONS . 'functions.php';
 
 if (empty($uri) || $uri === '/') {
     makeHome();
