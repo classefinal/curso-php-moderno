@@ -1,1 +1,1 @@
-<p>Página produtos</p>
+<p>Página de produtos</p>

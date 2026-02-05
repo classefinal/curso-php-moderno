@@ -16,7 +16,7 @@ function resolveRoute(string $uri, array $routes): ?array
             continue;
         }
 
-        if (!$route['isRegex'] && $uri === $route['value']) {
+        if (empty($route['isRegex']) && $uri === $route['value']) {
             return $route;
         }
 

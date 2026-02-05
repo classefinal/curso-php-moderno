@@ -2,9 +2,7 @@
 
 function makeHome(): void
 {
-    $title = 'Home';
-
     makePage('home', [
-        'title' => $title
+        'title' => 'Página inicial'
     ]);
 }

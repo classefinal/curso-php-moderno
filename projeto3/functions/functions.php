@@ -1,12 +1,11 @@
 <?php
 
-function makePage(string $include, array $args): void
-{
+function makePage(string $page, array $args): void{
     extract($args);
 
-    require COMPONENTS . 'header.php';
+    require_once COMPONENTS . 'header.php';
 
-    require PAGES . $include . '.php';
+    require_once PAGES . $page . '.php';
 
-    require COMPONENTS . 'footer.php';
+    require_once COMPONENTS . 'footer.php';
 }

@@ -4,15 +4,10 @@
  * @psalm-import-type Route from types
  */
 
-/**
- * @return void
- */
 function makeProducts(): void
 {
-    $title = 'Produtos';
-
     makePage('products', [
-        'title' => $title
+        'title' => 'Página de produtos'
     ]);
 }
 
@@ -27,11 +22,10 @@ function makeProduct(array $route, string $uri): void
 
     $productId = array_last($routeItems);
 
-    $title = 'Produto - ' . $productId;
-
     makePage('product', [
-        'title' => $title,
+        'title' => "Página do produto com id - $productId",
         'productId' => $productId,
-        'originalRegex' => $route['value'],
+        'regex' => $route['value'],
+        'controller' => $route['controller'],
     ]);
 }

@@ -1,5 +1,8 @@
 <?php
-/** @var string $title */
+
+/**
+ * @var string $title
+ */
 ?>
 <!DOCTYPE html>
 <html lang="en">

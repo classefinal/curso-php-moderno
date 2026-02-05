@@ -4,10 +4,10 @@
  * @psalm-import-type Route from types
  */
 
-require_once CONTROLLERS . '404.php';
-require_once CONTROLLERS . 'About.php';
-require_once CONTROLLERS . 'Home.php';
-require_once CONTROLLERS . 'Products.php';
+require_once CONTROLLLERS . 'NotFound.php';
+require_once CONTROLLLERS . 'About.php';
+require_once CONTROLLLERS . 'Home.php';
+require_once CONTROLLLERS . 'Products.php';
 
 /**
  * @var Route[] $routes
@@ -16,32 +16,29 @@ $routes = [
     [
         'id' => 'home',
         'value' => '/',
-        'isRegex' => false,
-        'title' => 'Home',
         'controller' => 'Home',
         'call' => 'makeHome',
+        'isRegex' => false
     ],
     [
         'id' => 'about',
         'value' => '/sobre',
-        'isRegex' => false,
-        'title' => 'Sobre',
         'controller' => 'About',
         'call' => 'makeAbout',
+        'isRegex' => false
     ],
     [
         'id' => 'products',
         'value' => '/produtos',
-        'isRegex' => false,
-        'title' => 'Produtos',
         'controller' => 'Products',
         'call' => 'makeProducts',
+        'isRegex' => false
     ],
     [
         'id' => 'product',
-        'value' => '/^\/produtos\/[a-z0-9]+$/',
-        'isRegex' => true,
+        'value' => '/^\/produtos\/[a-zA-Z0-9]+$/',
         'controller' => 'Products',
         'call' => 'makeProduct',
+        'isRegex' => true
     ],
 ];

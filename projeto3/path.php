@@ -1,13 +1,18 @@
 <?php
 
-function getPath(string $item): string
+function getPath(string $folder): string
 {
-    return realpath(__DIR__) . DIRECTORY_SEPARATOR . $item . DIRECTORY_SEPARATOR;
+    return realpath(__DIR__) . DIRECTORY_SEPARATOR . $folder . DIRECTORY_SEPARATOR;
 }
 
 function getComponentsPath(): string
 {
     return getPath('components');
+}
+
+function getControllersPath(): string
+{
+    return getPath('controllers');
 }
 
 function getFunctionsPath(): string
@@ -18,9 +23,4 @@ function getFunctionsPath(): string
 function getPagesPath(): string
 {
     return getPath('pages');
-}
-
-function getControllersPath(): string
-{
-    return getPath('controllers');
 }

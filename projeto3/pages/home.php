@@ -1,1 +1,1 @@
-<p>Página principal</p>
+<p>Página inicial</p>
