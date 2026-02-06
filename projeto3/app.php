@@ -7,7 +7,7 @@ define('BASE_PATH', realpath(__DIR__));
 require_once 'path.php';
 
 // Constants of path
-define('CONTROLLLERS', getControllersPath());
+define('CONTROLLERS', getControllersPath());
 define('COMPONENTS', getComponentsPath());
 define('FUNCTIONS', getFunctionsPath());
 define('PAGES', getPagesPath());

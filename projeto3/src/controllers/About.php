@@ -1,8 +1,19 @@
 <?php
 
-function makeAbout(): void
+/**
+ * @psalm-import-type Route from types
+ */
+
+/**
+ * @param Route $route
+ * @param string $uri
+ * @return void
+ */
+function makeAbout(array $route, string $uri): void
 {
     makePage('about', [
-        'title' => 'Página sobre'
+        'title' => 'Página sobre',
+        'routes' => getMenuItens($uri),
+        'uri' => $uri
     ]);
 }
