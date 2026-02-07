@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * @psalm-import-type Route from types
  */
@@ -32,11 +34,13 @@ function isMenuActive(array $route, ?string $uri): bool
     );
 }
 
-function getMenuItens(?string $uri): array
+/**
+ * @param Route[] $routes
+ * @param string|null $uri
+ * @return array
+ */
+function getMenuItens(array $routes, ?string $uri): array
 {
-    /** @var Route[] $routes */
-    $routes = $GLOBALS['routes'];
-
     $filteredRoutes = array_filter(
         $routes,
         fn(array $route) => !empty($route['inMenu']) && !empty($route['label'])

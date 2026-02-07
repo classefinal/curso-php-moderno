@@ -1,36 +1,49 @@
 <?php
 
-$uri = $_SERVER['PATH_INFO'] ?? null;
+declare(strict_types=1);
 
 // Requires
 require_once 'route_resolver.php';
 
-$defaultRoute = [
-    'id' => 'default',
-    'controller' => 'Home',
-    'call' => 'makeHome',
-    'isRegex' => false,
-];
+/**
+ * @psalm-import-type Configs from types
+ */
 
-$notFoundRoute = [
-    'id' => 'notFound',
-    'controller' => 'NotFound',
-    'call' => 'makeNotFound',
-    'isRegex' => false,
-];
+/**
+ * @param Configs $configs
+ * @return void
+ */
+function processRoutes(array $configs): void
+{
+    $uri = $_SERVER['REQUEST_URI'] ?? null;
 
-if (empty($uri)) {
-    $defaultRoute['call']($defaultRoute, $uri);
+    $defaultRoute = [
+        'id' => 'default',
+        'controller' => 'Home',
+        'call' => 'makeHome',
+        'isRegex' => false,
+    ];
 
-    return;
+    $notFoundRoute = [
+        'id' => 'notFound',
+        'controller' => 'NotFound',
+        'call' => 'makeNotFound',
+        'isRegex' => false,
+    ];
+
+    if (empty($uri)) {
+        $defaultRoute['call']($configs, $defaultRoute, $uri);
+
+        return;
+    }
+
+    $route = resolveRoute($uri, $configs['routes']);
+
+    if (!$route || empty($route['call']) || !function_exists($route['call'])) {
+        makeNotFound($configs, $notFoundRoute, $uri);
+
+        return;
+    }
+
+    $route['call']($configs, $route, $uri);
 }
-
-$route = resolveRoute($uri, $routes);
-
-if (!$route || empty($route['call']) || !function_exists($route['call'])) {
-    makeNotFound($notFoundRoute, $uri);
-
-    return;
-}
-
-$route['call']($route, $uri);

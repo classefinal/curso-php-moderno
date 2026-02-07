@@ -12,4 +12,9 @@
  *  order: ?int,
  *  active: ?bool
  * }
+ * 
+ * @psalm-type Configs = array{
+ *  routes: Route[],
+ *  connection: mysqli
+ * }
  */

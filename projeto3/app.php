@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 define('SOURCES', 'src');
 define('BASE_PATH', realpath(__DIR__));
 
@@ -12,7 +14,24 @@ define('COMPONENTS', getComponentsPath());
 define('FUNCTIONS', getFunctionsPath());
 define('PAGES', getPagesPath());
 define('CONFIGS', getConfigsPath());
+define('SERVICES', getServicesPath());
 
 // Requires
 require_once FUNCTIONS . 'functions.php';
-require_once CONFIGS . 'router.php';
+require_once CONFIGS . 'routes.php';
+require_once SERVICES . 'router.php';
+require_once SERVICES . 'environment.php';
+require_once SERVICES . 'db.php';
+
+loadEnv(BASE_PATH . DIRECTORY_SEPARATOR . '.env');
+
+$connection = dbConnect();
+
+$configs = [
+    'routes' => getRoutes(),
+    'connection' => $connection,
+];
+
+processRoutes($configs);
+
+dbClose($connection);
