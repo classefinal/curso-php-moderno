@@ -31,6 +31,7 @@ function getConfigsPath(): string
 {
     return getPath('Configs');
 }
+
 function getServicesPath(): string
 {
     return getPath('Services');

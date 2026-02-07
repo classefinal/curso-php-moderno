@@ -1,0 +1,33 @@
+# Ativa o mecanismo de reescrita de URLs do Apache
+# Sem isso, nenhuma regra abaixo funciona
+RewriteEngine On
+
+
+# ===============================
+# REGRA DE PROTEÇÃO
+# ===============================
+# Verifica se o caminho requisitado
+# corresponde a um ARQUIVO real no disco
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+
+# OU se corresponde a um DIRETÓRIO real
+RewriteCond %{REQUEST_FILENAME} -d
+
+# Se for arquivo ou diretório:
+# - não reescreve a URL
+# - deixa o Apache servir normalmente
+# O "-" significa "não redirecionar"
+# [L] indica que esta é a última regra a ser processada
+RewriteRule ^ - [L]
+
+
+# ===============================
+# FRONT CONTROLLER
+# ===============================
+# Se não for arquivo nem diretório real,
+# qualquer URL será redirecionada para o index.php
+# Isso permite URLs amigáveis como:
+# /login
+# /produtos/10
+# /qualquer/coisa
+RewriteRule ^ index.php [L]

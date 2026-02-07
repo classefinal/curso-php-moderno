@@ -1,7 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * @psalm-import-type Route from types
+ */
+
+/**
+ * @var string $title
  */
 
 /**
