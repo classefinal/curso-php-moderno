@@ -6,6 +6,10 @@
  *  value: string,
  *  controller: string,
  *  call: string,
- *  isRegex: bool
+ *  isRegex: bool,
+ *  inMenu: ?bool,
+ *  label: ?string,
+ *  order: ?int,
+ *  active: ?bool
  * }
  */

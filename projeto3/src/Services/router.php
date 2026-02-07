@@ -1,11 +1,8 @@
 <?php
 
-declare(strict_types=1);
-
-$uri = $_SERVER['REQUEST_URI'] ?? null;
+$uri = $_SERVER['PATH_INFO'] ?? null;
 
 // Requires
-require_once 'routes.php';
 require_once 'route_resolver.php';
 
 $defaultRoute = [

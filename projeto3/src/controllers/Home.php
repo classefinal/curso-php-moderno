@@ -2,9 +2,20 @@
 
 declare(strict_types=1);
 
-function makeHome(): void
+/**
+ * @psalm-import-type Route from types
+ */
+
+/**
+ * @param Route $route
+ * @param ?string $uri
+ * @return void
+ */
+function makeHome(array $route, ?string $uri): void
 {
     makePage('home', [
-        'title' => 'Página inicial'
+        'title' => 'Página inicial',
+        'routes' => getMenuItens($uri),
+        'uri' => $uri
     ]);
 }
