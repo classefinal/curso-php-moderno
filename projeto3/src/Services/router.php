@@ -1,6 +1,6 @@
 <?php
 
-$uri = $_SERVER['PATH_INFO'] ?? null;
+$uri = $_SERVER['REQUEST_URI'] ?? null;
 
 // Requires
 require_once 'route_resolver.php';
