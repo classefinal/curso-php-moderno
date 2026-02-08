@@ -6,11 +6,6 @@ declare(strict_types=1);
  * @psalm-import-type Route from types
  */
 
-require_once CONTROLLERS . 'NotFound.php';
-require_once CONTROLLERS . 'About.php';
-require_once CONTROLLERS . 'Home.php';
-require_once CONTROLLERS . 'Products.php';
-
 /**
  * @return Route[]
  */

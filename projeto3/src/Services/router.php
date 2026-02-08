@@ -10,6 +10,15 @@ require_once 'route_resolver.php';
  */
 
 /**
+ * @param string $controller
+ * @return void
+ */
+function requireController(string $controller): void
+{
+    require_once CONTROLLERS . $controller . '.php';
+}
+
+/**
  * @param Configs $configs
  * @return void
  */
@@ -32,6 +41,8 @@ function processRoutes(array $configs): void
     ];
 
     if (empty($uri)) {
+        requireController($defaultRoute['controller']);
+
         $defaultRoute['call']($configs, $defaultRoute, $uri);
 
         return;
@@ -40,10 +51,14 @@ function processRoutes(array $configs): void
     $route = resolveRoute($uri, $configs['routes']);
 
     if (!$route || empty($route['call']) || !function_exists($route['call'])) {
-        makeNotFound($configs, $notFoundRoute, $uri);
+        requireController($notFoundRoute['controller']);
+
+        $notFoundRoute['call']($configs, $notFoundRoute, $uri);
 
         return;
     }
+
+    requireController($route['controller']);
 
     $route['call']($configs, $route, $uri);
 }
