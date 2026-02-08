@@ -17,6 +17,5 @@ function makeHome(array $configs, array $route, ?string $uri): void
     makePage('home', [
         'title' => 'Página inicial',
         'routes' => getMenuItens($configs['routes'], $uri),
-        'uri' => $uri
     ]);
 }

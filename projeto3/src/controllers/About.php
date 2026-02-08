@@ -18,6 +18,5 @@ function makeAbout(array $configs, array $route, string $uri): void
     makePage('about', [
         'title' => 'Página sobre',
         'routes' => getMenuItens($configs['routes'], $uri),
-        'uri' => $uri
     ]);
 }

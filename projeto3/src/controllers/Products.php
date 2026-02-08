@@ -18,7 +18,6 @@ function makeProducts(array $configs, array $route, string $uri): void
     makePage('products', [
         'title' => 'Página de produtos',
         'routes' => getMenuItens($configs['routes'], $uri),
-        'uri' => $uri
     ]);
 }
 
@@ -40,6 +39,5 @@ function makeProduct(array $configs, array $route, string $uri): void
         'regex' => $route['value'],
         'controller' => $route['controller'],
         'routes' => getMenuItens($configs['routes'], $uri),
-        'uri' => $uri
     ]);
 }
