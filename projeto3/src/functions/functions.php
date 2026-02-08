@@ -29,7 +29,6 @@ function isMenuActive(array $route, ?string $uri): bool
         !empty($route['id']) &&
         $route['id'] === 'home'
     ) || (
-        !empty($route['value']) &&
         !empty($uri) && $route['value'] === $uri
     );
 }
@@ -43,7 +42,7 @@ function getMenuItens(array $routes, ?string $uri): array
 {
     $filteredRoutes = array_filter(
         $routes,
-        fn(array $route) => !empty($route['inMenu']) && !empty($route['label'])
+        fn(array $route) => !empty($route['inMenu']) && !empty($route['label'] && !empty($route['value']))
     );
 
     foreach ($filteredRoutes as &$route) {

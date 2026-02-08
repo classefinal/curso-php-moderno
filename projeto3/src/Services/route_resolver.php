@@ -14,7 +14,7 @@ declare(strict_types=1);
 function resolveRoute(string $uri, array $routes): ?array
 {
     foreach ($routes as $route) {
-        if (empty($route['value'])) {
+        if (empty($route['value']) || empty($route['controller'])) {
             continue;
         }
 
