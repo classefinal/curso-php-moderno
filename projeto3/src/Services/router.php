@@ -2,9 +2,6 @@
 
 declare(strict_types=1);
 
-// Requires
-require_once 'route_resolver.php';
-
 /**
  * @psalm-import-type Configs from types
  */
@@ -15,7 +12,7 @@ require_once 'route_resolver.php';
  */
 function requireController(string $controller): void
 {
-    require_once CONTROLLERS . $controller . '.php';
+    require_once CONTROLLERS . "$controller.php";
 }
 
 /**
@@ -27,7 +24,8 @@ function processRoutes(array $configs): void
     $uri = $_SERVER['REQUEST_URI'] ?? null;
 
     $defaultRoute = [
-        'id' => 'default',
+        'id' => 'home',
+        'value' => '/',
         'controller' => 'Home',
         'call' => 'makeHome',
         'isRegex' => false,
@@ -35,9 +33,9 @@ function processRoutes(array $configs): void
 
     $notFoundRoute = [
         'id' => 'notFound',
+        'value' => '/NotFound',
         'controller' => 'NotFound',
         'call' => 'makeNotFound',
-        'isRegex' => false,
     ];
 
     if (empty($uri)) {
@@ -48,6 +46,7 @@ function processRoutes(array $configs): void
         return;
     }
 
+    $uri = rtrim(parse_url($uri, PHP_URL_PATH), "/");
     $route = resolveRoute($uri, $configs['routes']);
 
     if (!$route || empty($route['call']) || !function_exists($route['call'])) {
