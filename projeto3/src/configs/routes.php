@@ -18,7 +18,7 @@ $routes = [
         'isRegex' => false,
         'inMenu' => true,
         'label' => 'Home',
-        'order' => 0
+        'order' => 0,
     ],
     [
         'id' => 'about',
@@ -49,4 +49,4 @@ $routes = [
     ],
 ];
 
-$_GLOBALS['routes'] = $routes;
+$GLOBALS['routes'] = $routes;

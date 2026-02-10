@@ -1,22 +1,17 @@
 <?php
 
-$uri = $_SERVER['REQUEST_URI'] ?? null;
+declare(strict_types=1);
 
-// Requires
-require_once 'route_resolver.php';
-
-/**
- * @param string $controller
- * @return void
- */
 function requireController(string $controller): void
 {
-    require_once CONTROLLERS . $controller . '.php';
+    require_once CONTROLLERS . "$controller.php";
 }
 
+$uri = $_SERVER['REQUEST_URI'] ?? null;
 
 $defaultRoute = [
-    'id' => 'default',
+    'id' => 'home',
+    'value' => '/',
     'controller' => 'Home',
     'call' => 'makeHome',
     'isRegex' => false,
@@ -24,9 +19,9 @@ $defaultRoute = [
 
 $notFoundRoute = [
     'id' => 'notFound',
+    'value' => '/NotFound',
     'controller' => 'NotFound',
     'call' => 'makeNotFound',
-    'isRegex' => false,
 ];
 
 if (empty($uri)) {
@@ -36,6 +31,8 @@ if (empty($uri)) {
 
     return;
 }
+
+$uri = rtrim(parse_url($uri, PHP_URL_PATH), "/");
 
 $route = resolveRoute($uri, $routes);
 

@@ -4,16 +4,14 @@ declare(strict_types=1);
 
 /**
  * @psalm-import-type Route from types
- */
-
-/**
+ * 
  * @var string $title
  * @var Route[] $routes
- * @var string $uri
  */
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -23,4 +21,4 @@ declare(strict_types=1);
     <script src="/assets/bootstrap/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
-    <?php require_once 'navbar.php' ?>
+    <?php require_once 'navbar.php'; ?>

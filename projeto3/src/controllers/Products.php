@@ -6,7 +6,7 @@ declare(strict_types=1);
  * @psalm-import-type Route from types
  */
 
-/**
+ /**
  * @param Route $route
  * @param string $uri
  * @return void
@@ -15,7 +15,7 @@ function makeProducts(array $route, string $uri): void
 {
     makePage('products', [
         'title' => 'Página de produtos',
-        'routes' => getMenuItens($uri),
+        'routes' => getMenuItens($uri)
     ]);
 }
 
@@ -35,6 +35,6 @@ function makeProduct(array $route, string $uri): void
         'productId' => $productId,
         'regex' => $route['value'],
         'controller' => $route['controller'],
-        'routes' => getMenuItens($uri),
+        'routes' => getMenuItens($uri)
     ]);
 }

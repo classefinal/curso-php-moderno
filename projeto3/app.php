@@ -19,5 +19,5 @@ define('SERVICES', getServicesPath());
 // Requires
 require_once FUNCTIONS . 'functions.php';
 require_once CONFIGS . 'routes.php';
-require_once SERVICES . 'router.php';
 require_once SERVICES . 'route_resolver.php';
+require_once SERVICES . 'router.php';
