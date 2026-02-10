@@ -20,7 +20,7 @@ function getRoutes(): array
             'isRegex' => false,
             'inMenu' => true,
             'label' => 'Home',
-            'order' => 0
+            'order' => 0,
         ],
         [
             'id' => 'about',

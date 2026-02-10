@@ -1,10 +1,10 @@
 <?php
 
-declare(strict_types=1);
-
 /**
  * @psalm-import-type Route from types
  */
+
+declare(strict_types=1);
 
 function makePage(string $page, array $args): void
 {
@@ -19,41 +19,47 @@ function makePage(string $page, array $args): void
 
 /**
  * @param Route $route
+ * @return boolean
+ */
+function isMenuAllowed(array $route): bool
+{
+    return !empty($route['inMenu']) && !empty($route['label']) && !empty($route['value']);
+}
+
+/**
+ * @param Route $route
  * @param string|null $uri
  * @return boolean
  */
-function isMenuActive(array $route, ?string $uri): bool
-{
-    return (
-        empty($uri) &&
-        !empty($route['id']) &&
-        $route['id'] === 'home'
-    ) || (
-        !empty($uri) && $route['value'] === $uri
-    );
+function isMenuActive(array $route, ?string $uri): bool {
+    return $route['value'] === $uri || (empty($uri) && !empty($route['id']) && $route['id'] === 'home');
 }
 
 /**
  * @param Route[] $routes
  * @param string|null $uri
- * @return array
+ * @return Route[]
  */
 function getMenuItens(array $routes, ?string $uri): array
 {
-    $filteredRoutes = array_filter(
-        $routes,
-        fn(array $route) => !empty($route['inMenu']) && !empty($route['label'] && !empty($route['value']))
-    );
+    $filteredRoutes = [];
 
-    foreach ($filteredRoutes as &$route) {
+    foreach ($routes as $route) {
+        if(!isMenuAllowed($route)) {
+            continue;
+        }
+
         if (isMenuActive($route, $uri)) {
             $route['active'] = true;
-
-            break;
         }
+
+        $filteredRoutes[] = $route;
     }
 
-    usort($filteredRoutes, fn(array $a, array $b) => $a['order'] <=> $b['order']);
+    usort(
+        $filteredRoutes,
+        fn(array $routeA, array $routeB) => $routeA['order'] <=> $routeB['order']
+    );
 
     return $filteredRoutes;
 }

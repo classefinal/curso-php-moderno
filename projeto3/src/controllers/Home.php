@@ -9,7 +9,7 @@ declare(strict_types=1);
 /**
  * @param Configs $configs
  * @param Route $route
- * @param ?string $uri
+ * @param string $uri
  * @return void
  */
 function makeHome(array $configs, array $route, ?string $uri): void
