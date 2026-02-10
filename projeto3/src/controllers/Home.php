@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 /**
  * @psalm-import-type Route from types
+ * @psalm-import-type Configs from types
  */
 
 /**
