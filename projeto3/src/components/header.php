@@ -6,10 +6,6 @@ declare(strict_types=1);
  * @psalm-import-type Route from types
  * 
  * @var string $title
- */
-
-/**
- * @var string $title
  * @var Route[] $routes
  */
 ?>
