@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * @psalm-import-type Configs from types
+ */
+
 declare(strict_types=1);
 
 define('SOURCES', 'src');
