@@ -17,4 +17,13 @@
  *  routes: Route[],
  *  connection: mysqli
  * }
+ * 
+ * @psalm-type StmArg = array{
+ *  type: string,
+ *  value: mixed
+ * }
+ * 
+ * @psalm-type Migration = array{
+ *  up: Closure(mysqli $connection): mixed
+ * }
  */
