@@ -49,7 +49,7 @@ function processRoutes(array $configs): void
     $uri = rtrim(parse_url($uri, PHP_URL_PATH), "/");
     $route = resolveRoute($uri, $configs['routes']);
 
-    if (!$route || empty($route['call']) || !function_exists($route['call'])) {
+    if (!$route || empty($route['call'])) {
         requireController($notFoundRoute['controller']);
 
         $notFoundRoute['call']($configs, $notFoundRoute, $uri);
