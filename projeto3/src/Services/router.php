@@ -46,7 +46,8 @@ function processRoutes(array $configs): void
         return;
     }
 
-    $uri = rtrim(parse_url($uri, PHP_URL_PATH), "/");
+    $parsedUri = parse_url($uri, PHP_URL_PATH);
+    $uri = $parsedUri === '/' ? $parsedUri : rtrim(parse_url($parsedUri, PHP_URL_PATH), "/");
     $route = resolveRoute($uri, $configs['routes']);
 
     if (!$route || empty($route['call'])) {
