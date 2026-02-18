@@ -4,9 +4,7 @@
  * @psalm-import-type Migration from types
  */
 
-/**
- * @var Migration $migration
- */
+/** @var Migration $migration */
 $migration = [
     'up' => function (mysqli $connection): void {
         dbExecuteStm($connection, "

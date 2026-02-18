@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @psalm-import-type Configs from types
+ * @psalm-import-type Migration from types
  */
 
 declare(strict_types=1);
@@ -47,12 +47,27 @@ function migrationCanBeExecuted(array $migration, bool $hasMigrationsTable, stri
 function migrationAlreadyExecuted(mysqli $connection, string $migrationName): bool
 {
     $params = [
-        ['type' => 's', 'value' => mysqli_real_escape_string($connection, $migrationName)]
+        [
+            'type' => 's',
+            'value' => $migrationName
+        ],
     ];
 
-    $result = dbPrepareAndExecuteStm($connection, "SELECT * FROM migrations WHERE name=?", $params);
+    $result = dbPrepareAndExecute($connection, "SELECT * FROM migrations WHERE name = ? AND executed = true", $params);
 
     return $result === false ? false : mysqli_num_rows($result) > 0;
+}
+
+function markMigrationExecuted(mysqli $connection, string $migrationName): void
+{
+    dbPrepareAndExecute($connection, "
+        INSERT INTO migrations(id, name, executed, created_at) VALUES (null, ?, 1, CURRENT_TIMESTAMP)
+    ", [
+        [
+            'type' => 's',
+            'value' => $migrationName
+        ]
+    ]);
 }
 
 $hasMigrationsTable = migrationsTableExists($connection);
@@ -64,14 +79,16 @@ foreach ($migrations as $migrationName) {
         continue;
     }
 
-    $migration = require_once $filePath;
+    /** @var Migration $migration */
+    $migration = require $filePath;
 
     if (!migrationCanBeExecuted($migration, $hasMigrationsTable, $migrationName)) {
         continue;
     }
 
+    echo "Rodando a migration: $migrationName" . PHP_EOL;
+
     if (!$hasMigrationsTable && $migrationName === BASE_MIGRATION) {
-  
         $migration['up']($connection);
 
         $hasMigrationsTable = true;
@@ -85,9 +102,7 @@ foreach ($migrations as $migrationName) {
 
     $migration['up']($connection);
 
-    dbExecuteStm($connection, "
-        INSERT INTO migrations (id, name, executed) VALUES (NULL, '" . $migrationName . "', 1);
-    ");
+    markMigrationExecuted($connection, $migrationName);
 }
 
 dbClose($connection);
