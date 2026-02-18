@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * @psalm-import-type StmArg from types
+ */
+
 declare(strict_types=1);
 
 function dbConnect(): mysqli
@@ -24,4 +28,33 @@ function dbConnect(): mysqli
 function dbClose(mysqli $connection): void
 {
     mysqli_close($connection);
+}
+
+function dbExecuteStm(mysqli $connection, string $stm): mysqli_result|bool
+{
+    return mysqli_query($connection, $stm);
+}
+
+/**
+ * @param mysqli $connection
+ * @param string $stm
+ * @param StmArg[] $args
+ * @return mysqli_result|boolean
+ */
+function dbPrepareAndExecute(mysqli $connection, string $stm, array $args): mysqli_result|bool
+{
+    $preparedStm = mysqli_prepare($connection, $stm);
+    $values = [];
+    $types = '';
+
+    foreach ($args as $arg) {
+        $values[] = $arg['value'];
+        $types .= $arg['type'];
+    }
+
+    mysqli_stmt_bind_param($preparedStm, $types, ...$values);
+
+    mysqli_stmt_execute($preparedStm);
+
+    return mysqli_stmt_get_result($preparedStm);
 }

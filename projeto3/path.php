@@ -36,3 +36,8 @@ function getServicesPath(): string
 {
     return getPath('Services');
 }
+
+function getMigrationsPath(): string
+{
+    return getPath('Migrations');
+}
