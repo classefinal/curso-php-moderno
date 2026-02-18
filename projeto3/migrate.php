@@ -26,6 +26,8 @@ loadEnv(BASE_PATH . DIRECTORY_SEPARATOR . '.env');
 $connection = dbConnect();
 $migrations = scandir(MIGRATIONS_PATH);
 
+sort($migrations);
+
 function migrationsTableExists(mysqli $connection): bool
 {
     $hasMigrationsTableResult = dbExecuteStm($connection, "SHOW TABLES LIKE 'migrations'");
