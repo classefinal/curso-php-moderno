@@ -1,6 +1,10 @@
 <?php
 
 /**
+ * @psalm-type Defer = Closure(Closure $action):void
+ * @psalm-type Dispatcher = Closure(): void
+ * @psalm-type Response = Closure(int $httpStatusCode = 200, ?string $content = null): void
+ * 
  * @psalm-type Route = array{
  *  id: string,
  *  value: string,
@@ -15,7 +19,9 @@
  * 
  * @psalm-type Configs = array{
  *  routes: Route[],
- *  connection: mysqli
+ *  connection: mysqli,
+ *  defer: Defer,
+ *  response: Response
  * }
  * 
  * @psalm-type StmArg = array{
@@ -25,5 +31,10 @@
  * 
  * @psalm-type Migration = array{
  *  up: Closure(mysqli $connection): mixed
+ * }
+ * 
+ * @psalm-type DeferConfig = array{
+ *  defer: Defer,
+ *  dispatcher: Dispatcher
  * }
  */
