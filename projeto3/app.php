@@ -17,29 +17,36 @@ define('FUNCTIONS', getFunctionsPath());
 define('PAGES', getPagesPath());
 define('CONFIGS', getConfigsPath());
 define('SERVICES', getServicesPath());
+define('LISTENERS', getListenersPath());
 
 // Requires
-require_once FUNCTIONS . 'functions.php';
-require_once CONFIGS . 'routes.php';
-require_once SERVICES . 'route_resolver.php';
-require_once SERVICES . 'router.php';
-require_once SERVICES . 'environment.php';
-require_once SERVICES . 'db.php';
-require_once SERVICES . 'defer.php';
-require_once SERVICES . 'response.php';
+require_once FUNCTIONS . 'Functions.php';
+require_once SERVICES . 'RouteResolver.php';
+require_once SERVICES . 'Router.php';
+require_once SERVICES . 'Environment.php';
+require_once SERVICES . 'DB.php';
+require_once SERVICES . 'Defer.php';
+require_once SERVICES . 'Response.php';
+require_once SERVICES . 'EventDispatcher.php';
+
+$routes = require_once CONFIGS . 'routes.php';
+$events = require_once CONFIGS . 'events.php';
 
 loadEnv(BASE_PATH . DIRECTORY_SEPARATOR . '.env');
 
-['dispatcher' => $dispatcher, 'defer' => $defer] = createDefer();
+['defer' => $defer, 'dispatcher' => $dispatcher] = createDefer();
+
 
 $connection = dbConnect();
 
 $configs = [
-    'routes' => getRoutes(),
+    'routes' => $routes,
     'connection' => $connection,
     'defer' => $defer,
     'response' => createResponse($dispatcher),
 ];
+
+$eventDispatcher = createEventDispatcher($configs, $events);
 
 processRoutes($configs);
 

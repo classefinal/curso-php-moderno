@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 /**
  * @psalm-import-type DeferConfig from types
  */
@@ -13,16 +11,17 @@ function createDefer(): array
 {
     $deferrableActions = [];
 
-    $dispatcher = function () use (&$deferrableActions) {
-        array_walk($deferrableActions, fn(Closure $action) => $action());
+    $dispatcher = function () use (&$deferrableActions): void {
+        array_walk($deferrableActions, fn(Closure $deferrableAction) => $deferrableAction());
     };
 
-    $defer = function (Closure $action) use (&$deferrableActions) {
+    $defer = function (Closure $action) use (&$deferrableActions): void {
         $deferrableActions[] = $action;
     };
 
+
     return [
-        'dispatcher' => $dispatcher,
         'defer' => $defer,
+        'dispatcher' => $dispatcher
     ];
 }

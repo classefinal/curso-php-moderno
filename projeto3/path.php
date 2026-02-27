@@ -41,3 +41,8 @@ function getMigrationsPath(): string
 {
     return getPath('Migrations');
 }
+
+function getListenersPath(): string
+{
+    return getPath('Listeners');
+}

@@ -20,5 +20,7 @@ function makeHome(array $configs, array $route, ?string $uri): void
         'routes' => getMenuItens($configs['routes'], $uri),
     ]);
 
-    $configs['response'](200, '123');
+    $configs['eventDispatcher']('UserCreated', ['name' => 'Gleison', 'email' => 'email@site.com', 'phone' => '+5511987755665']);
+    
+    $configs['response']();
 }

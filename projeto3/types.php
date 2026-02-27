@@ -1,9 +1,11 @@
 <?php
 
 /**
- * @psalm-type Defer = Closure(Closure $action):void
+ * @psalm-type Defer = Closure(Closure $action): void
  * @psalm-type Dispatcher = Closure(): void
  * @psalm-type Response = Closure(int $httpStatusCode = 200, ?string $content = null): void
+ * @psalm-type Event = array<string, array<string, string|Closure>
+ * @psalm-type EventDispatcher = Closure(string $eventName, array $args): void
  * 
  * @psalm-type Route = array{
  *  id: string,
@@ -21,7 +23,8 @@
  *  routes: Route[],
  *  connection: mysqli,
  *  defer: Defer,
- *  response: Response
+ *  response: Response,
+ *  eventDispatcher: EventDispatcher
  * }
  * 
  * @psalm-type StmArg = array{
@@ -37,4 +40,5 @@
  *  defer: Defer,
  *  dispatcher: Dispatcher
  * }
+ * 
  */
