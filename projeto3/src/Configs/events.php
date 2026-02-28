@@ -11,9 +11,9 @@ declare(strict_types=1);
  */
 $events = [
     'UserCreated' => [
-        'UserCreatedEmailListener' => 'handleUserCreatedEmailEvent',
-        'UserCreatedWhatsappListener' => 'handleUserCreatedWhatsappEmailEvent',
-        //'UserCreatedFacebookListener' => fn() => print('Nao implementado')
+        'UserCreated/UserCreatedEmailListener' => 'handleUserCreatedEmailEvent',
+        'UserCreated/UserCreatedWhatsappListener' => 'handleUserCreatedWhatsappEmailEvent',
+        'UserCreatedFacebookListener' => fn() => print('Nao implementado')
     ]
 ];
 
