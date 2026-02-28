@@ -28,7 +28,7 @@ function createEventDispatcher(array &$configs, array $events): void
                 return;
             }
 
-            $listenerPath = LISTENERS . $listenerName . '.php';
+            $listenerPath = LISTENERS . getRequirePath($listenerName . '.php');
 
             if (file_exists($listenerPath)) {
                 require_once $listenerPath;

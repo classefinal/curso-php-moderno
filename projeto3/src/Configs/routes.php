@@ -33,7 +33,7 @@ return [
     [
         'id' => 'products',
         'value' => '/produtos',
-        'controller' => 'Products',
+        'controller' => 'Products/Products',
         'call' => 'makeProducts',
         'isRegex' => false,
         'inMenu' => true,
@@ -43,7 +43,7 @@ return [
     [
         'id' => 'product',
         'value' => '/^\/produtos\/[a-zA-Z0-9]+$/',
-        'controller' => 'Products',
+        'controller' => 'Products/Products',
         'call' => 'makeProduct',
         'isRegex' => true
     ],
