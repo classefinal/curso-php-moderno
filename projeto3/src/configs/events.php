@@ -3,16 +3,18 @@
 declare(strict_types=1);
 
 /**
- * @psalm-import-type Event from types
+ * @psalm-import-type Events from types
  */
 
 /**
- * @return Event[]
+ * @var Events $events
  */
-return [
+$events = [
     'UserCreated' => [
-        'UserCreatedEmailListener' => 'handleUserCreatedEmailEvent', 
-        'UserCreatedWhatsappListener' => 'handleUserCreatedWhatsappEmailEvent', 
-        'UserCreatedFacebookListener' => fn() => print('Nao implementado'), 
+        'UserCreatedEmailListener' => 'handleUserCreatedEmailEvent',
+        'UserCreatedWhatsappListener' => 'handleUserCreatedWhatsappEmailEvent',
+        // 'UserCreatedFacebookListener' => fn() => print('Nao implementado')
     ]
 ];
+
+return $events;

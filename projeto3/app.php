@@ -34,8 +34,7 @@ $events = require_once CONFIGS . 'events.php';
 
 loadEnv(BASE_PATH . DIRECTORY_SEPARATOR . '.env');
 
-['defer' => $defer, 'dispatcher' => $dispatcher] = createDefer();
-
+['dispatcher' => $dispatcher, 'defer' => $defer] = createDefer();
 
 $connection = dbConnect();
 
@@ -46,7 +45,7 @@ $configs = [
     'response' => createResponse($dispatcher),
 ];
 
-$eventDispatcher = createEventDispatcher($configs, $events);
+createEventDispatcher($configs, $events);
 
 processRoutes($configs);
 

@@ -2,35 +2,36 @@
 
 /**
  * @psalm-import-type Configs from types
- * @psalm-import-type Event from types
- * @psalm-import-type EventDispatcher from types
+ * @psalm-import-type Events from types
+ * @psalm-import-type EventDispather from types
  */
 
- /**
-  * @param Configs &$configs
-  * @param Event[] $events
-  * @return EventDispatcher
-  */
-function createEventDispatcher(array &$configs, array $events): Closure
+/**
+ * @param Configs &$configs
+ * @param Events $events
+ * @return void
+ */
+function createEventDispatcher(array &$configs, array $events): void
 {
-    $eventDispatcher = function (string $eventName, array $args) use ($events, $configs): void {
+    /** @var EventDispather $eventDispatcher */
+    $eventDispatcher = function (string $eventName, array $args) use ($events, &$configs): void {
         if (!isset($events[$eventName])) {
             return;
         }
 
-        $selectedEvents = $events[$eventName];
+        $listeners = $events[$eventName];
 
-        array_walk($selectedEvents, function (string|Closure $event, string $listenerName) use ($configs, $args): void {
+        array_walk($listeners, function (Closure|string $event, string $listenerName) use (&$configs, $args): void {
             if ($event instanceof Closure) {
                 $event($configs, $args);
 
                 return;
             }
 
-            $lisneterPath = LISTENERS . $listenerName . '.php';
+            $listenerPath = LISTENERS . $listenerName . '.php';
 
-            if (file_exists($lisneterPath)) {
-                require_once $lisneterPath;
+            if (file_exists($listenerPath)) {
+                require_once $listenerPath;
 
                 if (function_exists($event)) {
                     $event($configs, $args);
@@ -40,6 +41,4 @@ function createEventDispatcher(array &$configs, array $events): Closure
     };
 
     $configs['eventDispatcher'] = $eventDispatcher;
-
-    return $eventDispatcher;
 }
