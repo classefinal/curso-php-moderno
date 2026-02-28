@@ -15,7 +15,7 @@ declare(strict_types=1);
  */
 function makeHome(array $configs, array $route, ?string $uri): void
 {
-    makePage('home', [
+    $content = $configs['view']('home', [
         'title' => 'Página inicial',
         'routes' => getMenuItens($configs['routes'], $uri),
     ]);
@@ -26,5 +26,5 @@ function makeHome(array $configs, array $route, ?string $uri): void
         'phone' => '+55119568798799'
     ]);
     
-    $configs['response']();
+    $configs['response'](content: $content);
 }

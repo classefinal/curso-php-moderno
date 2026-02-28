@@ -15,12 +15,12 @@ declare(strict_types=1);
  */
 function makeProducts(array $configs, array $route, string $uri): void
 {
-    makePage('Products/products', [
+    $content = $configs['view']('Products/products', [
         'title' => 'Página de produtos',
         'routes' => getMenuItens($configs['routes'], $uri),
     ]);
 
-    $configs['response']();
+    $configs['response'](content: $content);
 }
 
 /**
@@ -35,7 +35,7 @@ function makeProduct(array $configs, array $route, string $uri): void
 
     $productId = array_last($routeItems);
 
-    makePage('Products/product', [
+    $content = $configs['view']('Products/product', [
         'title' => "Página do produto com id - $productId",
         'productId' => $productId,
         'regex' => $route['value'],
@@ -43,5 +43,5 @@ function makeProduct(array $configs, array $route, string $uri): void
         'routes' => getMenuItens($configs['routes'], $uri),
     ]);
 
-    $configs['response']();
+    $configs['response'](content: $content);
 }

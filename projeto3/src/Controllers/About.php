@@ -15,10 +15,10 @@ declare(strict_types=1);
  */
 function makeAbout(array $configs, array $route, string $uri): void
 {
-    makePage('about', [
+    $content = $configs['view']('about', [
         'title' => 'Página sobre',
         'routes' => getMenuItens($configs['routes'], $uri),
     ]);
 
-    $configs['response']();
+    $configs['response'](content: $content);
 }

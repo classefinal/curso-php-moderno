@@ -7,6 +7,7 @@
  * @psalm-type EventHandler = Closure(Configs $configs, array $args): void
  * @psalm-type Events = array<string, array<string, EventHandler|string>>
  * @psalm-type EventDispatcher = Closure(string $eventName, array $args): void
+ * @psalm-type View = Closure(string $viewPath, array $args): string
  * 
  * @psalm-type Route = array{
  *  id: string,
@@ -25,7 +26,8 @@
  *  connection: mysqli,
  *  defer: Defer,
  *  response: Response,
- *  eventDispatcher: EventDispatcher
+ *  eventDispatcher: EventDispatcher,
+ *  view: View
  * }
  * 
  * @psalm-type StmArg = array{
