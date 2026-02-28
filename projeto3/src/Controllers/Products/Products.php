@@ -15,7 +15,7 @@ declare(strict_types=1);
  */
 function makeProducts(array $configs, array $route, string $uri): void
 {
-    makePage('products', [
+    makePage('Products/products', [
         'title' => 'Página de produtos',
         'routes' => getMenuItens($configs['routes'], $uri),
     ]);
@@ -35,7 +35,7 @@ function makeProduct(array $configs, array $route, string $uri): void
 
     $productId = array_last($routeItems);
 
-    makePage('product', [
+    makePage('Products/product', [
         'title' => "Página do produto com id - $productId",
         'productId' => $productId,
         'regex' => $route['value'],

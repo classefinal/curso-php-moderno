@@ -12,7 +12,7 @@ declare(strict_types=1);
  */
 function requireController(string $controller): void
 {
-    require_once CONTROLLERS . "$controller.php";
+    require_once CONTROLLERS . getRequirePath("$controller.php");
 }
 
 /**

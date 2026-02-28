@@ -46,3 +46,8 @@ function getListenersPath(): string
 {
     return getPath('Listeners');
 }
+
+function getRequirePath(string $requirePath): string
+{
+    return str_replace('/', DIRECTORY_SEPARATOR, $requirePath);
+}
