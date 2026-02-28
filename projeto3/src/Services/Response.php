@@ -12,7 +12,7 @@
  */
 function createResponse(Closure $dispatcher): Closure
 {
-    return function (int $httpStatusCode = 200, ?string $content = null) use($dispatcher): void {
+    return function (int $httpStatusCode = 200, ?string $content = null) use ($dispatcher): void {
         $response = ob_get_contents();
 
         ob_end_clean();
