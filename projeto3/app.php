@@ -28,6 +28,7 @@ require_once SERVICES . 'DB.php';
 require_once SERVICES . 'Defer.php';
 require_once SERVICES . 'Response.php';
 require_once SERVICES . 'EventDispatcher.php';
+require_once SERVICES . 'View.php';
 
 $routes = require_once CONFIGS . 'routes.php';
 $events = require_once CONFIGS . 'events.php';
@@ -43,6 +44,7 @@ $configs = [
     'connection' => $connection,
     'defer' => $defer,
     'response' => createResponse($dispatcher),
+    'view' => createView(),
 ];
 
 createEventDispatcher($configs, $events);

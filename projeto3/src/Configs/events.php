@@ -13,7 +13,7 @@ $events = [
     'UserCreated' => [
         'UserCreated/UserCreatedEmailListener' => 'handleUserCreatedEmailEvent',
         'UserCreated/UserCreatedWhatsappListener' => 'handleUserCreatedWhatsappEmailEvent',
-        'UserCreatedFacebookListener' => fn() => print('Nao implementado')
+        // 'UserCreatedFacebookListener' => fn() => print('Nao implementado')
     ]
 ];
 

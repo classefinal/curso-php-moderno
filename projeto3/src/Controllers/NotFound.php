@@ -15,10 +15,10 @@ declare(strict_types=1);
  */
 function makeNotFound(array $configs, array $route, string $uri): void
 {
-    makePage('not_found', [
+    $content = $configs['view']('not_found', [
         'title' => 'Página não encontrada',
         'routes' => getMenuItens($configs['routes'], $uri),
     ]);
 
-    $configs['response']();
+    $configs['response'](content: $content);
 }
