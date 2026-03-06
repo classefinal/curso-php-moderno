@@ -6,17 +6,6 @@
 
 declare(strict_types=1);
 
-function makePage(string $page, array $args): void
-{
-    extract($args);
-
-    require_once COMPONENTS . 'header.php';
-
-    require_once PAGES . getRequirePath($page . '.php');
-
-    require_once COMPONENTS . 'footer.php';
-}
-
 /**
  * @param Route $route
  * @return boolean

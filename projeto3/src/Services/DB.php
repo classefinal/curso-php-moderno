@@ -41,7 +41,7 @@ function dbExecuteStm(mysqli $connection, string $stm): mysqli_result|bool
  * @param StmArg[] $args
  * @return mysqli_result|boolean
  */
-function dbPrepareAndExecute(mysqli $connection, string $stm, array $args): mysqli_result|bool
+function dbPrepareAndExecute(mysqli $connection, string $stm, array $args = []): mysqli_result|bool
 {
     $preparedStm = mysqli_prepare($connection, $stm);
     $values = [];
@@ -52,7 +52,9 @@ function dbPrepareAndExecute(mysqli $connection, string $stm, array $args): mysq
         $types .= $arg['type'];
     }
 
-    mysqli_stmt_bind_param($preparedStm, $types, ...$values);
+    if (!empty($args)) {
+        mysqli_stmt_bind_param($preparedStm, $types, ...$values);
+    }
 
     mysqli_stmt_execute($preparedStm);
 

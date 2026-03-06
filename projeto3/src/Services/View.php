@@ -12,9 +12,11 @@ function createView(): Closure
     return function (string $viewPath, array $args = []): string {
         ob_start();
 
-        extract($args);
+        if (!empty($args)) {
+            extract($args);
+        }
 
-        require_once PAGES . getRequirePath($viewPath . '.php');
+        require_once PAGES . getRequirePath("$viewPath.php");
 
         return ob_get_clean();
     };

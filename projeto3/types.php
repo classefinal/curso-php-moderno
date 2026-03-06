@@ -43,4 +43,16 @@
  *  defer: Defer,
  *  dispatcher: Dispatcher
  * }
+ * 
+ * @psalm-type Product = array{
+ *  id: int,
+ *  name: string,
+ *  description: string,
+ *  active: int,
+ *  price: int,
+ *  stock: int,
+ *  image: string,
+ *  created_at: string,
+ *  updated_at: string
+ * }
  */

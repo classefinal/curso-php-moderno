@@ -15,9 +15,19 @@ declare(strict_types=1);
  */
 function makeProducts(array $configs, array $route, string $uri): void
 {
+    require_once SERVICES . getRequirePath('Products/ProductsService.php');
+
+    $limit = filter_var($_GET['limit'], FILTER_VALIDATE_INT, [
+        'options' => [
+            'default' => 10
+        ]
+    ]);
+
     $content = $configs['view']('Products/products', [
         'title' => 'Página de produtos',
         'routes' => getMenuItens($configs['routes'], $uri),
+        'products' => getActiveProducts($configs['connection']),
+        'limit' => $limit
     ]);
 
     $configs['response'](content: $content);
