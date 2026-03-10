@@ -10,7 +10,7 @@
 <div class="col-12 col-sm-6 col-md-6 col-lg-4 mb-4">
     <div class="card">
         <a href="/products/<?= $product['id'] ?>" title="Ir para <?= $product['name'] ?>">
-            <img src="/<?= $product['image'] ?>" class="card-img-top" alt="<?= $product['name'] ?>">
+            <img src="<?= $product['image'] ?>" class="card-img-top" alt="<?= $product['name'] ?>">
         </a>
         <div class="card-body">
             <a href="/products/<?= $product['id'] ?>" title="Ir para <?= $product['name'] ?>" class="text-decoration-none">
