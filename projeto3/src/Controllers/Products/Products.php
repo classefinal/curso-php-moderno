@@ -8,6 +8,7 @@ declare(strict_types=1);
  */
 
 require_once SERVICES . getRequirePath('Products/ProductsService.php');
+require_once SERVICES . getRequirePath('Categories/CategoriesService.php');
 
 /**
  * @param Configs $configs
@@ -18,12 +19,14 @@ require_once SERVICES . getRequirePath('Products/ProductsService.php');
 function makeProducts(array $configs, array $route, string $uri): void
 {
     ['limit' => $limit, 'products' => $products] = getActiveProducts($configs['connection']);
+    $categories = getActiveCategories($configs['connection']);
 
     $content = $configs['view']('Products/products', [
         'title' => 'Página de produtos',
         'routes' => getMenuItens($configs['routes'], $uri),
         'limit' => $limit,
-        'products' => $products
+        'products' => $products,
+        'categories' => $categories
     ]);
 
     $configs['response'](content: $content);

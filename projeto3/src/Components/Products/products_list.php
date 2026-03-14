@@ -2,6 +2,7 @@
 
 /**
  * @psalm-import-type Product from types
+ * @psalm-import-type EmptyLinkConfig from types
  * 
  * @var Product[] $products
  */
@@ -9,9 +10,26 @@
 ?>
 
 <div class="col-12 col-sm-12 col-md-8 col-lg-9 mt-4">
-    <div class="row">
-        <?php foreach ($products as $product): ?>
-            <?php require 'product_card.php'; ?>
-        <?php endforeach; ?>
-    </div>
+    <?php if (empty($products)): ?>
+        <?php
+            $emptyTitle = 'Nenhum item encontrado para a página especificada';
+            $emptySubtitle = 'Tente acessar a nossa página de produtos.';
+
+            /** @var EmptyLinkConfig $emptyLinkAction */
+            $emptyLinkAction = [
+                'link' => '/produtos',
+                'text' => 'Ir para produtos',
+                'title' => 'Ir para página de produtos',
+                'icon' => 'fa-solid fa-shopping-cart'
+            ];
+            
+            require_once COMPONENTS . getRequirePath('Empty/empty.php');
+        ?>
+    <?php else: ?>
+        <div class="row">
+            <?php foreach ($products as $product): ?>
+                <?php require 'product_card.php'; ?>
+            <?php endforeach; ?>
+        </div>
+    <?php endif ?>
 </div>

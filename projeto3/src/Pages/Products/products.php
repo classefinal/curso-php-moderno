@@ -3,8 +3,10 @@
 /**
  * @psalm-import-type Product from types
  * @psalm-import-type Route from types
+ * @psalm-import-type Category from types
  * 
  * @var Product[] $products
+ * @var Category[] $categories
  * @var Route[] $routes
  * @var string $title
  * @var int $limit
