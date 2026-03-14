@@ -7,6 +7,8 @@ declare(strict_types=1);
  * @psalm-import-type Configs from types
  */
 
+require_once SERVICES . getRequirePath('Products/ProductsService.php');
+
 /**
  * @param Configs $configs
  * @param Route $route
@@ -15,9 +17,13 @@ declare(strict_types=1);
  */
 function makeProducts(array $configs, array $route, string $uri): void
 {
+    ['limit' => $limit, 'products' => $products] = getActiveProducts($configs['connection']);
+
     $content = $configs['view']('Products/products', [
         'title' => 'Página de produtos',
         'routes' => getMenuItens($configs['routes'], $uri),
+        'limit' => $limit,
+        'products' => $products
     ]);
 
     $configs['response'](content: $content);

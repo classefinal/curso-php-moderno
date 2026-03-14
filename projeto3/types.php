@@ -43,4 +43,32 @@
  *  defer: Defer,
  *  dispatcher: Dispatcher
  * }
+ * 
+ * @psalm-type Product = array{
+ *  id: int,
+ *  name: string,
+ *  description: string,
+ *  active: int,
+ *  price: int,
+ *  stock: int,
+ *  image: string,
+ *  category_id: string,
+ *  category_name: string,
+ *  created_at: string,
+ *  updated_at: string
+ * }
+ * 
+ * @psalm-type Category = array{
+ *  id: int,
+ *  name: string,
+ *  active: int,
+ *  created_at: string,
+ *  updated_at: string
+ * }
+ * 
+ * @psalm-type ActiveProductsList = array{
+ *  page: int,
+ *  limit: int,
+ *  products: Product[]
+ * }
  */
