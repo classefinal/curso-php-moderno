@@ -3,31 +3,35 @@
 /**
  * @psalm-import-type Product from types
  * 
- * @var Product $products
+ * @var Product $product
  */
-
 ?>
+
 <div class="col-12 col-sm-6 col-md-6 col-lg-4 mb-4">
     <div class="card">
-        <a href="/products/<?= $product['id'] ?>" title="Ir para <?= $product['name'] ?>">
+        <a href="/produtos/<?= $product['id'] ?>" title="Ir para produto <?= $product['name'] ?>" class="text-decoration-none">
             <img src="<?= $product['image'] ?>" class="card-img-top" alt="<?= $product['name'] ?>">
         </a>
         <div class="card-body">
-            <a href="/products/<?= $product['id'] ?>" title="Ir para <?= $product['name'] ?>" class="text-decoration-none">
-                <h5 class="card-title"><?= $product['name'] ?></h5>
-            </a>
-            <a href="/products/<?= $product['id'] ?>" title="Ir para <?= $product['name'] ?>" class="text-decoration-none">
-                <p class="card-text"><?= strlen($product['description']) > 100 ? substr($product['description'], 0, 100) . '...' : $product['description'] ?></p>
-            </a>
-            <div class="row mt-3">
-                <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-6 mb-3">
-                    <a href="/products/<?= $product['id'] ?>" title="Ir para <?= $product['name'] ?>" class="btn btn-primary w-100">
+            <h5 class="card-title">
+                <a href="/produtos/<?= $product['id'] ?>" title="Ir para produto <?= $product['name'] ?>" class="text-decoration-none">
+                    <?= $product['name'] ?>
+                </a>
+            </h5>
+            <p class="card-text">
+                <a href="/produtos/<?= $product['id'] ?>" title="Ir para produto <?= $product['name'] ?>" class="text-decoration-none">
+                    <?= strlen($product['description']) > 100 ? substr($product['description'], 0, 100) . '...' : $product['description'] ?>
+                </a>
+            </p>
+            <div class="row">
+                <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-6 mt-2">
+                    <a href="/produtos/<?= $product['id'] ?>" class="btn btn-primary w-100" title="Ir para produto <?= $product['name'] ?>">
                         <i class="fa-solid fa-cart-shopping"></i>
                         Comprar
                     </a>
                 </div>
-                <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-6 mb-3">
-                    <a href="/products/<?= $product['id'] ?>" title="Ir para <?= $product['name'] ?>" class="btn btn-outline-secondary w-100">
+                <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-6 mt-2">
+                    <a href="/produtos/<?= $product['id'] ?>" class="btn btn-outline-secondary w-100" title="Ir para produto <?= $product['name'] ?>">
                         <i class="fa-solid fa-circle-info"></i>
                         Detalhes
                     </a>
