@@ -59,7 +59,7 @@
             </h2>
             <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#filterOptions">
                 <div class="accordion-body">
-                    <?php require_once COMPONENTS . getRequirePath('Products/categories_accordion_list.php'); ?>
+                    <?php require_once 'categories_accordion_list.php'; ?>
                 </div>
             </div>
         </div>

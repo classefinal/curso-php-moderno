@@ -6,7 +6,6 @@
  * @var Category[] $categories
  */
 ?>
-
 <menu class="list-unstyled">
     <?php foreach ($categories as $category): ?>
         <li>
@@ -15,7 +14,7 @@
                     <strong><?= $category['name'] ?></strong>
                 <?php else: ?>
                     <?= $category['name'] ?>
-                <?php endif; ?>
+                <?php endif ?>
             </a>
         </li>
     <?php endforeach ?>

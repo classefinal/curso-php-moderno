@@ -5,37 +5,42 @@
  * 
  * @var ?string $emptyTitle
  * @var ?string $emptySubtitle
- * @var ?EmptyLinkConfig $emptyLinkAction
+ * @var ?EmptyLinkConfig $emptyLinkConfig
  */
-
 ?>
+
 <div class="row justify-content-center">
     <div class="col-8">
-        <img src="images/empty.png" alt="Sem itens no carrinho" class="d-block w-100">
+        <img src="images/empty.png" alt="Sem itens para exibir" class="d-block w-100">
     </div>
-</div>
-<div class="row">
-    <div class="col-12 text-center">
-        <h1><?= !empty($emptyTitle) ? $emptyTitle : 'Nenhum item encontrado' ?></h1>
+    <div class="row">
+        <div class="col-12 text-center">
+            <h1>
+                <?= !empty($emptyTitle) ? $emptyTitle : 'Nenhum item encontrado' ?>
+            </h1>
+            <?php if (!empty($emptySubtitle)): ?>
+                <p>
+                    <?= $emptySubtitle ?>
+                </p>
+            <?php endif ?>
 
-        <?php if (!empty($emptySubtitle)): ?>
-            <p><?= $emptySubtitle ?></p>
-        <?php endif ?>
+            <?php if (!empty($emptyLinkConfig['link']) && !empty($emptyLinkConfig['text'])): ?>
+                <p>
+                    <a
+                        class="btn btn-primary"
+                        href="<?= $emptyLinkConfig['link'] ?>"
 
-        <?php if (!empty($emptyLinkAction['link']) && !empty($emptyLinkAction['text'])): ?>
-            <p>
-                <a
-                    class="btn btn-primary"
-                    href="<?= $emptyLinkAction['link'] ?>"
-                    title="<?= !empty($emptyLinkAction['title']) ? $emptyLinkAction['title'] : $emptyLinkAction['text'] ?>">
+                        <?php if (!empty($emptyLinkConfig['title'])): ?>
+                        title="<?= $emptyLinkConfig['title'] ?>"
+                        <?php endif ?>>
 
-                    <?php if (!empty($emptyLinkAction['icon'])): ?>
-                        <i class="<?= $emptyLinkAction['icon'] ?>"></i>
-                    <?php endif ?>
-
-                    <?= $emptyLinkAction['text'] ?>
-                </a>
-            </p>
-        <?php endif ?>
+                        <?php if (!empty($emptyLinkConfig['icon'])): ?>
+                            <i class="<?= $emptyLinkConfig['icon'] ?>"></i>
+                        <?php endif ?>
+                        <?= $emptyLinkConfig['text'] ?>
+                    </a>
+                </p>
+            <?php endif ?>
+        </div>
     </div>
 </div>

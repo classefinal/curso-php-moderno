@@ -71,4 +71,11 @@
  *  limit: int,
  *  products: Product[]
  * }
+ * 
+ * @psalm-type EmptyLinkConfig = array{
+ *  link: string,
+ *  text: string,
+ *  title: ?string,
+ *  icon: ?string,
+ * }
  */

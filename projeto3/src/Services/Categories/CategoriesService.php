@@ -12,7 +12,7 @@ function getActiveCategories(mysqli $connection): array
 {
     $results = dbPrepareAndExecute(
         $connection,
-        'SELECT * FROM categories WHERE active = true'
+        'SELECT * FROM categories WHERE active = true ORDER BY name'
     );
 
     if (mysqli_num_rows($results) === 0) {

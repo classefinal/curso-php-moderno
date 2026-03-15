@@ -12,18 +12,18 @@
 <div class="col-12 col-sm-12 col-md-8 col-lg-9 mt-4">
     <?php if (empty($products)): ?>
         <?php
-            $emptyTitle = 'Nenhum item encontrado para a página especificada';
-            $emptySubtitle = 'Tente acessar a nossa página de produtos.';
+        $emptyTitle = 'Nenhum item encontrado para a página especificada.';
+        $emptySubtitle = 'Tente acessar a nossa página de produtos.';
 
-            /** @var EmptyLinkConfig $emptyLinkAction */
-            $emptyLinkAction = [
-                'link' => '/produtos',
-                'text' => 'Ir para produtos',
-                'title' => 'Ir para página de produtos',
-                'icon' => 'fa-solid fa-shopping-cart'
-            ];
-            
-            require_once COMPONENTS . getRequirePath('Empty/empty.php');
+        /** @var EmptyLinkConfig $emptyLinkConfig */
+        $emptyLinkConfig = [
+            'link' => '/produtos',
+            'text' => 'Ir para produtos',
+            'title' => 'Ir para a página de produtos',
+            'icon' => 'fa-solid fa-shopping-cart'
+        ];
+
+        require_once COMPONENTS . getRequirePath('Empty/empty.php');
         ?>
     <?php else: ?>
         <div class="row">
