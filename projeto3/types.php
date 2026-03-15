@@ -62,6 +62,7 @@
  *  id: int,
  *  name: string,
  *  active: int,
+ *  description: string,
  *  created_at: string,
  *  updated_at: string
  * }
@@ -69,6 +70,7 @@
  * @psalm-type ActiveProductsList = array{
  *  page: int,
  *  limit: int,
+ *  categoryId: ?int,
  *  products: Product[]
  * }
  * 

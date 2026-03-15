@@ -21,3 +21,28 @@ function getActiveCategories(mysqli $connection): array
 
     return mysqli_fetch_all($results, MYSQLI_ASSOC);
 }
+
+/**
+ * @param mysqli $connection
+ * @param int $categoryId
+ * @return ?Category
+ */
+function getActiveCategoryById(mysqli $connection, int $categoryId): ?array
+{
+    $results = dbPrepareAndExecute(
+        $connection,
+        'SELECT * FROM categories WHERE active = true AND id = ? LIMIT 1',
+        [
+            [
+                'type' => 'i',
+                'value' => $categoryId
+            ]
+        ]
+    );
+
+    if (mysqli_num_rows($results) === 0) {
+        return null;
+    }
+
+    return mysqli_fetch_assoc($results);
+}

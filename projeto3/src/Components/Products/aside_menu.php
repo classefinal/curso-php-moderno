@@ -5,6 +5,7 @@
  * 
  * @var Category[] $categories
  * @var int $limit
+ * @var ?int $categoryId
  */
 ?>
 

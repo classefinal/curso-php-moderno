@@ -18,15 +18,24 @@ require_once SERVICES . getRequirePath('Categories/CategoriesService.php');
  */
 function makeProducts(array $configs, array $route, string $uri): void
 {
-    ['limit' => $limit, 'products' => $products] = getActiveProducts($configs['connection']);
+    ['limit' => $limit, 'products' => $products, 'categoryId' => $categoryId] = getActiveProducts($configs['connection']);
     $categories = getActiveCategories($configs['connection']);
 
+    /** @var ?Category $activeCategory */
+    $activeCategory = null;
+
+    if ($categoryId) {
+        $activeCategory = getActiveCategoryById($configs['connection'], $categoryId);
+    }
+
     $content = $configs['view']('Products/products', [
-        'title' => 'Página de produtos',
+        'title' => $activeCategory ? "Produtos - {$activeCategory['name']}": 'Produtos',
         'routes' => getMenuItens($configs['routes'], $uri),
         'limit' => $limit,
         'products' => $products,
-        'categories' => $categories
+        'categories' => $categories,
+        'categoryId' => $categoryId,
+        'activeCategory' => $activeCategory,
     ]);
 
     $configs['response'](content: $content);
