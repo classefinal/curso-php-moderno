@@ -7,10 +7,14 @@
 
 function getActiveProductsQuery(?int $categoryId): string
 {
-    $query = 'SELECT p.*, c.name as category_name FROM products p INNER JOIN categories c ON p.category_id = c.id WHERE p.active = true AND c.active = true';
+    $query = '
+        SELECT p.*, c.name as category_name FROM products p 
+        INNER JOIN categories c ON p.category_id = c.id 
+        WHERE p.active = true AND c.active = true
+    ';
 
     if ($categoryId) {
-        return $query . ' AND c.id = ?';
+        return $query . ' AND c.id = ? ';
     }
 
     return $query;
@@ -64,11 +68,11 @@ function getActiveProductsParams(): array
     }
 
     return [
-        'page' => $page,
         'limit' => $limit,
-        'categoryId' => $categoryId,
+        'page' => $page,
         'query' => $query,
         'params' => $params,
+        'categoryId' => $categoryId
     ];
 }
 
@@ -79,9 +83,9 @@ function getActiveProductsParams(): array
 function getActiveProducts(mysqli $connection): array
 {
     [
-        'limit' => $limit,
-        'page' => $page,
         'categoryId' => $categoryId,
+        'page' => $page,
+        'limit' => $limit,
         'query' => $query,
         'params' => $params
     ] = getActiveProductsParams();

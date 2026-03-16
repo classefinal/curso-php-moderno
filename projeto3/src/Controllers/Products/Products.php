@@ -29,13 +29,13 @@ function makeProducts(array $configs, array $route, string $uri): void
     }
 
     $content = $configs['view']('Products/products', [
-        'title' => $activeCategory ? "Produtos - {$activeCategory['name']}": 'Produtos',
+        'title' => $activeCategory ? "Produtos - {$activeCategory['name']}" : 'Produtos',
         'routes' => getMenuItens($configs['routes'], $uri),
         'limit' => $limit,
         'products' => $products,
         'categories' => $categories,
         'categoryId' => $categoryId,
-        'activeCategory' => $activeCategory,
+        'activeCategory' => $activeCategory
     ]);
 
     $configs['response'](content: $content);

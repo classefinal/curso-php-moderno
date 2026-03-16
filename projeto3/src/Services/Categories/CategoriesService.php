@@ -27,11 +27,11 @@ function getActiveCategories(mysqli $connection): array
  * @param int $categoryId
  * @return ?Category
  */
-function getActiveCategoryById(mysqli $connection, int $categoryId): ?array
+function getActiveCategoryById(mysqli $connection, int $categoryId): array
 {
     $results = dbPrepareAndExecute(
         $connection,
-        'SELECT * FROM categories WHERE active = true AND id = ? LIMIT 1',
+        'SELECT * FROM categories WHERE id = ? LIMIT 1',
         [
             [
                 'type' => 'i',
@@ -41,7 +41,7 @@ function getActiveCategoryById(mysqli $connection, int $categoryId): ?array
     );
 
     if (mysqli_num_rows($results) === 0) {
-        return null;
+        return [];
     }
 
     return mysqli_fetch_assoc($results);

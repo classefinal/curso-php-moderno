@@ -22,7 +22,7 @@
                 <div class="accordion-body">
                     <menu class="list-unstyled">
                         <li>
-                            <a href="/produtos?limit=10" class="text-decoration-none">
+                            <a href="/produtos?limit=10<?= $categoryId ? '&categoryId=' . $categoryId : '' ?>" class="text-decoration-none">
                                 <?php if (!isset($limit) || $limit === 10): ?>
                                     <strong>10 itens por página</strong>
                                 <?php else: ?>
@@ -31,7 +31,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="/produtos?limit=20" class="text-decoration-none">
+                            <a href="/produtos?limit=20<?= $categoryId ? '&categoryId=' . $categoryId : '' ?>" class="text-decoration-none">
                                 <?php if (isset($limit) && $limit === 20): ?>
                                     <strong>20 itens por página</strong>
                                 <?php else: ?>
@@ -40,7 +40,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="/produtos?limit=30" class="text-decoration-none">
+                            <a href="/produtos?limit=30<?= $categoryId ? '&categoryId=' . $categoryId : '' ?>" class="text-decoration-none">
                                 <?php if (isset($limit) && $limit === 30): ?>
                                     <strong>30 itens por página</strong>
                                 <?php else: ?>

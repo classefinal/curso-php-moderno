@@ -4,7 +4,7 @@
  * @psalm-import-type Category from types
  * 
  * @var Category[] $categories
- * @var ?int categoryId
+ * @var ?int $categoryId
  */
 ?>
 <menu class="list-unstyled">
