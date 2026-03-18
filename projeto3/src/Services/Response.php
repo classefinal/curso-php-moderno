@@ -2,17 +2,18 @@
 
 /**
  * @psalm-import-type Response from types
+ * @psalm-import-type Redirect from types
  * @psalm-import-type Dispatcher from types
  */
 
 /**
  * @param Dispatcher $dispatcher
  * 
- * @return Response
+ * @return array{response: Response, redirect: Redirect}
  */
-function createResponse(Closure $dispatcher): Closure
+function createResponse(Closure $dispatcher): array
 {
-    return function (int $httpStatusCode = 200, ?string $content = null) use ($dispatcher): void {
+    $response = function (int $httpStatusCode = 200, ?string $content = null) use ($dispatcher): void {
         $response = ob_get_contents();
 
         ob_end_clean();
@@ -32,4 +33,16 @@ function createResponse(Closure $dispatcher): Closure
 
         $dispatcher();
     };
+
+    $redirect = function (string $to, int $httpStatusCode = 301) use ($dispatcher): void {
+        ob_clean();
+
+        header('Location: ' . $to, true, $httpStatusCode);
+
+        flush();
+
+        $dispatcher();
+    };
+
+    return ['response' => $response, 'redirect' => $redirect];
 }
