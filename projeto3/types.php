@@ -4,7 +4,7 @@
  * @psalm-type Defer = Closure(Closure $action):void
  * @psalm-type Dispatcher = Closure(): void
  * @psalm-type Response = Closure(int $httpStatusCode = 200, ?string $content = null): void
- * @psalm-type Redirect = Closure(string $to, int $httpStatusCode = 301): void
+ * @psalm-type Redirect = Closure(string $to, int $httpStatusCode = 302): void
  * @psalm-type EventHandler = Closure(Configs $configs, array $args): void
  * @psalm-type Events = array<string, array<string, EventHandler|string>>
  * @psalm-type EventDispatcher = Closure(string $eventName, array $args): void

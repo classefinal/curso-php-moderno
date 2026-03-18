@@ -43,8 +43,8 @@ $configs = [
     'routes' => $routes,
     'connection' => $connection,
     'defer' => $defer,
-    ...createResponse($dispatcher),
     'view' => createView(),
+    ...createResponse($dispatcher),
 ];
 
 createEventDispatcher($configs, $events);
