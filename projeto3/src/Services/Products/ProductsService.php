@@ -2,6 +2,8 @@
 
 /**
  * @psalm-import-type ActiveProductsList from types
+ * @psalm-import-type Product from types
+ * @psalm-import-type Category from types
  * @psalm-import-type StmArg from types
  */
 
@@ -110,4 +112,42 @@ function getActiveProducts(mysqli $connection): array
     $returnData['products'] = mysqli_fetch_all($results, MYSQLI_ASSOC);
 
     return $returnData;
+}
+
+/**
+ * @param mysqli $connection
+ * @param string $uri
+ * @return Product&Category&array{category_name: string}|null
+ */
+function getProductById(mysqli $connection, string $uri): ?array
+{
+    $routeItems = explode('/', $uri);
+
+    $productId = filter_var(array_last($routeItems), FILTER_VALIDATE_INT, [
+        'options' => [
+            'min_range' => 1,
+            'default' => null
+        ]
+    ]);
+
+    if (is_null($productId)) {
+        return null;
+    }
+
+    $result = dbPrepareAndExecute(
+        $connection,
+        'SELECT p.*, c.name as category_name FROM products p INNER JOIN categories c ON p.category_id = c.id WHERE p.id = ? AND p.active = true AND c.active = true LIMIT 1',
+        [
+            [
+                'type' => 'i',
+                'value' => $productId
+            ]
+        ]
+    );
+
+    if (mysqli_num_rows($result) === 0) {
+        return null;
+    }
+
+    return mysqli_fetch_assoc($result);
 }
