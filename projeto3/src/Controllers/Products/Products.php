@@ -52,7 +52,7 @@ function makeProduct(array $configs, array $route, string $uri): void
     $product = getProductById($configs['connection'], $uri);
 
     if (is_null($product)) {
-        $configs['redirect']('/not-found', 302);
+        $configs['response']('not-found', 404);
 
         return;
     }
