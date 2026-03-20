@@ -4,11 +4,16 @@ declare(strict_types=1);
 
 /**
  * @psalm-import-type Product from types
- * @psalm-import-type Category from types
  * 
- * @var Product&Category&array{category_name: string} $product
+ * @var Product $product
  */
 ?>
 <div class="col-12">
-    Você está em <a href="/produtos?categoryId=<?= $product['category_id'] ?>"><?= $product['category_name'] ?></a>
+    Você está em:
+    <a
+        href="/produtos?categoryId=<?= $product['category_id'] ?>"
+        title="Ir para categoria <?= $product['category_name'] ?>"
+    >
+        <strong><?= $product['category_name'] ?></strong>
+    </a>
 </div>

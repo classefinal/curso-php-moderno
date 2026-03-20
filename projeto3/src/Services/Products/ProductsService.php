@@ -2,9 +2,8 @@
 
 /**
  * @psalm-import-type ActiveProductsList from types
- * @psalm-import-type Product from types
- * @psalm-import-type Category from types
  * @psalm-import-type StmArg from types
+ * @psalm-import-type Product from types
  */
 
 function getActiveProductsQuery(?int $categoryId): string
@@ -117,7 +116,7 @@ function getActiveProducts(mysqli $connection): array
 /**
  * @param mysqli $connection
  * @param string $uri
- * @return Product&Category&array{category_name: string}|null
+ * @return Product|null
  */
 function getProductById(mysqli $connection, string $uri): ?array
 {
@@ -130,13 +129,34 @@ function getProductById(mysqli $connection, string $uri): ?array
         ]
     ]);
 
+    $productId = explode('/', $uri)
+    |> array_last(...)
+    |> (fn($productUrlId) => filter_var($productUrlId, FILTER_VALIDATE_INT, [
+        'options' => [
+            'min_range' => 1,
+            'default' => null
+        ]
+    ]));
+
     if (is_null($productId)) {
         return null;
     }
 
     $result = dbPrepareAndExecute(
         $connection,
-        'SELECT p.*, c.name as category_name FROM products p INNER JOIN categories c ON p.category_id = c.id WHERE p.id = ? AND p.active = true AND c.active = true LIMIT 1',
+        '
+        SELECT 
+            p.*, 
+            c.name as category_name 
+        FROM 
+            products p 
+            INNER JOIN categories c ON p.category_id = c.id 
+        WHERE 
+            p.id = ? 
+            AND p.active = true 
+            AND c.active = true
+        LIMIT 1
+        ',
         [
             [
                 'type' => 'i',
