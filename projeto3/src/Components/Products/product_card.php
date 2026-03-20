@@ -20,7 +20,7 @@
             </h5>
             <p class="card-text">
                 <a href="/produtos/<?= $product['id'] ?>" title="Ir para produto <?= $product['name'] ?>" class="text-decoration-none">
-                    <?= strlen($product['description']) > 100 ? substr($product['description'], 0, 100) . '...' : $product['description'] ?>
+                    <?= $product['description_line'] ?>
                 </a>
             </p>
             <div class="row">

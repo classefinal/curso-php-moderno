@@ -49,15 +49,17 @@ function makeProducts(array $configs, array $route, string $uri): void
  */
 function makeProduct(array $configs, array $route, string $uri): void
 {
-    $routeItems = explode('/', $uri);
+    $product = getProductById($configs['connection'], $uri);
 
-    $productId = array_last($routeItems);
+    if (is_null($product)) {
+        $configs['response'](404, 'not found');
+
+        return;
+    }
 
     $content = $configs['view']('Products/product', [
-        'title' => "Página do produto com id - $productId",
-        'productId' => $productId,
-        'regex' => $route['value'],
-        'controller' => $route['controller'],
+        'title' => $product['name'],
+        'product' => $product,
         'routes' => getMenuItens($configs['routes'], $uri),
     ]);
 

@@ -50,6 +50,8 @@
  *  id: int,
  *  name: string,
  *  description: string,
+ *  short_description: string,
+ *  description_line: string,
  *  active: int,
  *  price: int,
  *  stock: int,
