@@ -12,6 +12,10 @@ declare(strict_types=1);
  */
 function isMenuAllowed(array $route): bool
 {
+    if ((isset($_SESSION['admin']) || isset($_SESSION['user'])) && ($route['id'] === 'login' || $route['id'] === 'login_page')) {
+        return false;
+    }
+
     return !empty($route['inMenu']) && !empty($route['label']) && !empty($route['value']);
 }
 
@@ -20,10 +24,11 @@ function isMenuAllowed(array $route): bool
  * @param string|null $uri
  * @return boolean
  */
-function isHomeRoute(array $route, ?string $uri): bool {
+function isHomeRoute(array $route, ?string $uri): bool
+{
     return (
-        empty($uri) && 
-        !empty($route['id']) && 
+        empty($uri) &&
+        !empty($route['id']) &&
         $route['id'] === 'home'
     );
 }
@@ -33,11 +38,12 @@ function isHomeRoute(array $route, ?string $uri): bool {
  * @param Route $currentRoute
  * @return boolean
  */
-function isRouteInAllowedRoutes(array $route, array $currentRoute): bool {
+function isRouteInAllowedRoutes(array $route, array $currentRoute): bool
+{
     return (
-        !empty($route['allowedRoutes']) && 
-        !empty($route['id']) && 
-        !empty($currentRoute['id']) && 
+        !empty($route['allowedRoutes']) &&
+        !empty($route['id']) &&
+        !empty($currentRoute['id']) &&
         in_array($currentRoute['id'], $route['allowedRoutes'])
     );
 }
