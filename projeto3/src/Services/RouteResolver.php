@@ -14,7 +14,11 @@ declare(strict_types=1);
 function resolveRoute(string $uri, array $routes): ?array
 {
     foreach ($routes as $route) {
-        if (empty($route['value']) || empty($route['controller'])) {
+        if (empty($route['value']) || empty($route['controller']) || empty($route['methods'])) {
+            continue;
+        }
+
+        if (!in_array($_SERVER['REQUEST_METHOD'], $route['methods'])) {
             continue;
         }
 

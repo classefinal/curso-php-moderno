@@ -19,6 +19,7 @@ return [
         'inMenu' => true,
         'label' => 'Home',
         'order' => 0,
+        'methods' => ['GET'],
     ],
     [
         'id' => 'about',
@@ -28,7 +29,8 @@ return [
         'isRegex' => false,
         'inMenu' => true,
         'label' => 'Sobre',
-        'order' => 2
+        'order' => 2,
+        'methods' => ['GET'],
     ],
     [
         'id' => 'products',
@@ -39,13 +41,15 @@ return [
         'inMenu' => true,
         'label' => 'Produtos',
         'order' => 1,
-        'allowedRoutes' => ['product']
+        'allowedRoutes' => ['product'],
+        'methods' => ['GET'],
     ],
     [
         'id' => 'product',
         'value' => '/^\/produtos\/[a-zA-Z0-9]+$/',
         'controller' => 'Products/Products',
         'call' => 'makeProduct',
-        'isRegex' => true
+        'isRegex' => true,
+        'methods' => ['GET'],
     ],
 ];
