@@ -18,13 +18,13 @@ require_once SERVICES . getRequirePath('Login/LoginService.php');
 function makeLogin(array $configs, array $route, ?string $uri): void
 {
     if (isset($_SESSION['admin'])) {
-        $configs['redirect']('/admin/dashboard');
+        $configs['redirect']('/admin/dashboard', 303);
 
         return;
     }
 
     if (isset($_SESSION['user'])) {
-        $configs['redirect']('/usuario/perfil');
+        $configs['redirect']('/usuario/perfil', 303);
 
         return;
     }
@@ -48,7 +48,8 @@ function validateLogin(array $configs, array $route, ?string $uri): void
     ['success' => $success, 'error' => $error] = loginAuthenticate($configs['connection']);
 
     if ($success) {
-        $configs['redirect']('/usuario/perfil');
+        $configs['redirect']('/usuario/perfil', 302);
+        
         return;
     }
 
@@ -70,12 +71,12 @@ function validateLogin(array $configs, array $route, ?string $uri): void
 function logoutLogin(array $configs, array $route, ?string $uri): void
 {
     if (isset($_SESSION['admin'])) {
-        $configs['redirect']('/admin/logout');
+        $configs['redirect']('/admin/logout', 303);
 
         return;
     }
 
     unset($_SESSION['user']);
 
-    $configs['redirect']('/');
+    $configs['redirect']('/', 303);
 }

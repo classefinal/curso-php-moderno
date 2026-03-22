@@ -98,4 +98,10 @@
  *  success: bool,
  *  error: ?string
  * }
+ * 
+ * @psalm-type UserUpdateInfo = array{
+ *  success: bool,
+ *  user: ?User,
+ *  error: ?string
+ * }
  */
