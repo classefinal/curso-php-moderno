@@ -24,7 +24,7 @@ function makeLogin(array $configs, array $route, ?string $uri): void
     }
 
     if (isset($_SESSION['user'])) {
-        $configs['redirect']('/');
+        $configs['redirect']('/usuario/perfil');
 
         return;
     }
@@ -48,7 +48,7 @@ function validateLogin(array $configs, array $route, ?string $uri): void
     ['success' => $success, 'error' => $error] = loginAuthenticate($configs['connection']);
 
     if ($success) {
-        $configs['redirect']('/');
+        $configs['redirect']('/usuario/perfil');
         return;
     }
 

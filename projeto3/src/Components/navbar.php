@@ -43,7 +43,7 @@
             </a>
             <ul class="dropdown-menu">
               <li><a class="dropdown-item" href="/usuario/perfil" title="Ir para Perfil">Perfil</a></li>
-              <li><a class="dropdown-item" href="/usuario/logout" title="Sair">Sair</a></li>
+              <li><a class="dropdown-item" href="/logout" title="Sair">Sair</a></li>
             </ul>
           </li>
         <?php endif; ?>
