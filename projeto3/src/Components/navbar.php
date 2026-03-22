@@ -25,6 +25,17 @@
             </a>
           </li>
         <?php endforeach ?>
+        <?php if (isset($_SESSION['admin'])): ?>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Gerenciar
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="/admin/dashboard" title="Ir para Administração">Administração</a></li>
+              <li><a class="dropdown-item" href="/admin/logout" title="Sair">Sair</a></li>
+            </ul>
+          </li>
+        <?php endif; ?>
       </ul>
     </div>
   </div>

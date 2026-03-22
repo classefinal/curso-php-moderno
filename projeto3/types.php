@@ -20,7 +20,8 @@
  *  label: ?string,
  *  order: ?int,
  *  active: ?bool,
- *  allowedRoutes: string[]|null
+ *  allowedRoutes: string[]|null,
+ *  methods: string[]
  * }
  * 
  * @psalm-type Configs = array{
@@ -84,5 +85,10 @@
  *  text: string,
  *  title: ?string,
  *  icon: ?string,
+ * }
+ * 
+ * @psalm-type LoginInfo = array{
+ *  success: bool,
+ *  error: ?string
  * }
  */
