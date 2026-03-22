@@ -55,7 +55,7 @@ return [
     [
         'id' => 'admin_login_page',
         'value' => '/admin/login',
-        'controller' => 'Admin/Login/Login',
+        'controller' => 'Admin/Login/AdminLogin',
         'call' => 'makeAdminLogin',
         'isRegex' => false,
         'inMenu' => false,
@@ -66,7 +66,7 @@ return [
     [
         'id' => 'admin_login',
         'value' => '/admin/login',
-        'controller' => 'Admin/Login/Login',
+        'controller' => 'Admin/Login/AdminLogin',
         'call' => 'validateAdminLogin',
         'isRegex' => false,
         'inMenu' => false,
@@ -77,7 +77,7 @@ return [
     [
         'id' => 'logout',
         'value' => '/admin/logout',
-        'controller' => 'Admin/Login/Login',
+        'controller' => 'Admin/Login/AdminLogin',
         'call' => 'logoutAdminLogin',
         'isRegex' => false,
         'inMenu' => false,

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-require_once SERVICES . getRequirePath('Admin/Login/LoginService.php');
+require_once SERVICES . getRequirePath('Login/LoginService.php');
 
 /**
  * @psalm-import-type Route from types
@@ -58,9 +58,11 @@ function validateAdminLogin(array $configs, array $route, ?string $uri): void
 
 /**
  * @param Configs $configs
+ * @param Route $route
+ * @param ?string $uri
  * @return void
  */
-function logoutAdminLogin(array $configs): void
+function logoutAdminLogin(array $configs, array $route, ?string $uri): void
 {
     unset($_SESSION['admin']);
 
