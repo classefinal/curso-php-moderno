@@ -38,7 +38,8 @@ return [
         'isRegex' => false,
         'inMenu' => true,
         'label' => 'Produtos',
-        'order' => 1
+        'order' => 1,
+        'allowedRoutes' => ['product']
     ],
     [
         'id' => 'product',

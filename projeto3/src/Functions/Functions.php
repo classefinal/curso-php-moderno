@@ -20,25 +20,58 @@ function isMenuAllowed(array $route): bool
  * @param string|null $uri
  * @return boolean
  */
-function isMenuActive(array $route, ?string $uri): bool {
-    return $route['value'] === $uri || (empty($uri) && !empty($route['id']) && $route['id'] === 'home');
+function isHomeRoute(array $route, ?string $uri): bool {
+    return (
+        empty($uri) && 
+        !empty($route['id']) && 
+        $route['id'] === 'home'
+    );
+}
+
+/**
+ * @param Route $route
+ * @param Route $currentRoute
+ * @return boolean
+ */
+function isRouteInAllowedRoutes(array $route, array $currentRoute): bool {
+    return (
+        !empty($route['allowedRoutes']) && 
+        !empty($route['id']) && 
+        !empty($currentRoute['id']) && 
+        in_array($currentRoute['id'], $route['allowedRoutes'])
+    );
+}
+
+/**
+ * @param Route $route
+ * @param string|null $uri
+ * @param Route $currentRoute
+ * @return boolean
+ */
+function isMenuActive(array $route, ?string $uri, array $currentRoute): bool
+{
+    return
+        $route['value'] === $uri ||
+        isHomeRoute($route, $uri) ||
+        (!empty($route['allowedRoutes']) && !empty($route['id']) && !empty($currentRoute['id']) && in_array($currentRoute['id'], $route['allowedRoutes']));
 }
 
 /**
  * @param Route[] $routes
  * @param string|null $uri
+ * @param Route $currentRoute
  * @return Route[]
  */
-function getMenuItens(array $routes, ?string $uri): array
+function getMenuItens(array $routes, ?string $uri, array $currentRoute): array
 {
     $filteredRoutes = [];
 
     foreach ($routes as $route) {
-        if(!isMenuAllowed($route)) {
+        if (!isMenuAllowed($route)) {
             continue;
         }
 
-        if (isMenuActive($route, $uri)) {
+        if (isMenuActive($route, $uri, $currentRoute)) {
             $route['active'] = true;
         }
 

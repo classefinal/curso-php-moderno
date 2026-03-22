@@ -17,7 +17,7 @@ function makeHome(array $configs, array $route, ?string $uri): void
 {
     $content = $configs['view']('home', [
         'title' => 'Página inicial',
-        'routes' => getMenuItens($configs['routes'], $uri),
+        'routes' => getMenuItens($configs['routes'], $uri, $route),
     ]);
 
     $configs['eventDispatcher']('UserCreated', [

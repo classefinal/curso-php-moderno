@@ -17,7 +17,7 @@ function makeNotFound(array $configs, array $route, string $uri): void
 {
     $content = $configs['view']('not_found', [
         'title' => 'Página não encontrada',
-        'routes' => getMenuItens($configs['routes'], $uri),
+        'routes' => getMenuItens($configs['routes'], $uri, $route),
     ]);
 
     $configs['response'](content: $content);

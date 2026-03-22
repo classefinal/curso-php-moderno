@@ -30,7 +30,7 @@ function makeProducts(array $configs, array $route, string $uri): void
 
     $content = $configs['view']('Products/products', [
         'title' => $activeCategory ? "Produtos - {$activeCategory['name']}" : 'Produtos',
-        'routes' => getMenuItens($configs['routes'], $uri),
+        'routes' => getMenuItens($configs['routes'], $uri, $route),
         'limit' => $limit,
         'products' => $products,
         'categories' => $categories,
@@ -60,7 +60,7 @@ function makeProduct(array $configs, array $route, string $uri): void
     $content = $configs['view']('Products/product', [
         'title' => $product['name'],
         'product' => $product,
-        'routes' => getMenuItens($configs['routes'], $uri),
+        'routes' => getMenuItens($configs['routes'], $uri, $route),
     ]);
 
     $configs['response'](content: $content);
