@@ -87,6 +87,13 @@
  *  icon: ?string,
  * }
  * 
+ * @psalm-type User = array{
+ *  id: int,
+ *  name: string,
+ *  active: bool,
+ *  admin: bool,
+ * }
+ * 
  * @psalm-type LoginInfo = array{
  *  success: bool,
  *  error: ?string
