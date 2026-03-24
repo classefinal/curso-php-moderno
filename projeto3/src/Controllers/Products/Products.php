@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 require_once SERVICES . getRequirePath('Products/ProductsService.php');
 require_once SERVICES . getRequirePath('Categories/CategoriesService.php');
+require_once SERVICES . getRequirePath('Products/RandomProductsService.php');
 
 /**
  * @param Configs $configs
@@ -35,7 +36,8 @@ function makeProducts(array $configs, array $route, string $uri): void
         'products' => $products,
         'categories' => $categories,
         'categoryId' => $categoryId,
-        'activeCategory' => $activeCategory
+        'activeCategory' => $activeCategory,
+        'randomProducts' => getRandomActiveProducts($configs['connection']),
     ]);
 
     $configs['response'](content: $content);
@@ -61,6 +63,7 @@ function makeProduct(array $configs, array $route, string $uri): void
         'title' => $product['name'],
         'product' => $product,
         'routes' => getMenuItens($configs['routes'], $uri, $route),
+        'randomProducts' => getRandomActiveProducts($configs['connection']),
     ]);
 
     $configs['response'](content: $content);
