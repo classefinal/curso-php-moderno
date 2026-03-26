@@ -1,44 +1,45 @@
 <?php
 
 /**
- * Migration para criar a tabela users e inserir um usuário padrão
+ * @psalm-import-type Migration from types
  */
 
 /** @var Migration $migration */
 $migration = [
-    'up' => function (mysqli $connection): void {
-        $createTable = "
-            CREATE TABLE users (
-                id INT AUTO_INCREMENT PRIMARY KEY,
-                name VARCHAR(255) NOT NULL,
-                email VARCHAR(255) NOT NULL UNIQUE,
-                password VARCHAR(255) NOT NULL,
-                active TINYINT(1) NOT NULL DEFAULT 1,
-                admin TINYINT(1) NOT NULL DEFAULT 1,
-                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci;
-        ";
+  'up' => function (mysqli $connection): void {
+    dbExecuteStm($connection, "
+        CREATE TABLE users (
+          id INT UNSIGNED NOT NULL AUTO_INCREMENT, 
+          name VARCHAR(255) NOT NULL, 
+          active BOOLEAN NOT NULL, 
+          admin BOOLEAN NOT NULL, 
+          created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP, 
+          updated_at DATETIME on update CURRENT_TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, 
+          PRIMARY KEY (id)
+        ) ENGINE = InnoDB CHARSET = utf8mb4 COLLATE utf8mb4_unicode_ci;
 
-        dbExecuteStm($connection, $createTable);
+      ");
 
-        $name = 'Administrador';
-        $email = 'admin@admin.com';
-        $password = password_hash('admin123', PASSWORD_BCRYPT);
-        $active = 1;
-        $admin = 1;
+    $name = 'Administrador';
+    $email = 'admin@admin.com';
+    $password = password_hash('admin123', PASSWORD_BCRYPT, ['cost' => 16]);
+    $active = 1;
+    $admin = 1;
 
-        dbPrepareAndExecute(
-            $connection,
-            'INSERT INTO users (name, email, password, active, admin) VALUES (?, ?, ?, ?, ?)',
-            [
-                ['type' => 's', 'value' => $name],
-                ['type' => 's', 'value' => $email],
-                ['type' => 's', 'value' => $password],
-                ['type' => 'i', 'value' => $active],
-                ['type' => 'i', 'value' => $admin]
-            ]
-        );
-    }
+    dbPrepareAndExecute(
+      $connection,
+      '
+        INSERT INTO users (name, email, password, active, admin) VALUES (?, ?, ?, ?, ?)
+      ',
+      [
+        ['type' => 's', 'value' => $name],
+        ['type' => 's', 'value' => $email],
+        ['type' => 's', 'value' => $password],
+        ['type' => 'i', 'value' => $active],
+        ['type' => 'i', 'value' => $admin],
+      ]
+    );
+  }
 ];
 
 return $migration;
