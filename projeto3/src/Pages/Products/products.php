@@ -31,15 +31,16 @@ require_once COMPONENTS . 'header.php';
             </div>
         </div>
     </section>
-    <section>
+    <section class="mb-5">
         <div class="row">
             <?php require_once COMPONENTS . getRequirePath('Products/aside_menu.php') ?>
             <?php require_once COMPONENTS . getRequirePath('Products/products_list.php') ?>
         </div>
     </section>
-    <section class="mt-4">
+    <hr />
+    <section class="mt-5">
         <h2>Produtos em destaque</h2>
-        <?php require_once COMPONENTS . getRequirePath('RandomProducts/random_products_cards.php') ?>
+        <?php require_once COMPONENTS . getRequirePath('RandomProducts/random_products_cards.php'); ?>
     </section>
 </main>
 
