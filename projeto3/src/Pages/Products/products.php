@@ -6,6 +6,7 @@
  * @psalm-import-type Category from types
  * 
  * @var Product[] $products
+ * @var Product[] $randomProducts
  * @var Category[] $categories
  * @var ?Category $activeCategory
  * @var Route[] $routes
@@ -35,6 +36,10 @@ require_once COMPONENTS . 'header.php';
             <?php require_once COMPONENTS . getRequirePath('Products/aside_menu.php') ?>
             <?php require_once COMPONENTS . getRequirePath('Products/products_list.php') ?>
         </div>
+    </section>
+    <section class="mt-4">
+        <h2>Produtos em destaque</h2>
+        <?php require_once COMPONENTS . getRequirePath('RandomProducts/random_products_cards.php') ?>
     </section>
 </main>
 
