@@ -5,8 +5,8 @@
  * @psalm-type Dispatcher = Closure(): void
  * @psalm-type Response = Closure(int $httpStatusCode = 200, ?string $content = null): void
  * @psalm-type Redirect = Closure(string $to, int $httpStatusCode = 307): void
- * @psalm-type EventHandler = Closure(Configs $configs, array $args): void
  * @psalm-type Events = array<string, array<string, EventHandler|string>>
+ * @psalm-type EventDispatcher = Closure(string $eventName, array $args): void
  * @psalm-type View = Closure(string $viewPath, array $args): string
  * 
  * @psalm-type Route = array{
@@ -33,7 +33,7 @@
  *  view: View
  * }
  * 
- * @psalm-type EventDispatcher = Closure(string $eventName, array $args): void
+ * @psalm-type EventHandler = Closure(Configs $configs, array $args): void
  * 
  * @psalm-type StmArg = array{
  *  type: string,
