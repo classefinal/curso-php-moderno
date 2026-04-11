@@ -82,3 +82,47 @@ function adminLoginAuthenticate(mysqli $connection): array
         'error' => null
     ];
 }
+
+/**
+ * @return LoginInfo
+ */
+function loginAuthenticate(mysqli $connection): array
+{
+    $email = trim($_POST['email'] ?? '');
+    $password = trim($_POST['password'] ?? '');
+
+    $loginInfoIsValid = validateLoginInfo($email, $password);
+
+    if (!$loginInfoIsValid['success']) {
+        return $loginInfoIsValid;
+    }
+
+    $result = dbPrepareAndExecute(
+        $connection,
+        'SELECT * FROM users WHERE email = ? AND active = true AND admin = false LIMIT 1',
+        [
+            ['type' => 's', 'value' => $email]
+        ]
+    );
+
+    if (mysqli_num_rows($result) === 0) {
+        password_verify($password, DUMMY_PASSWORD_HASH);
+
+        return DEFAULT_LOGIN_ERROR;
+    }
+
+    $user = mysqli_fetch_assoc($result);
+
+    $isPasswordCorrect = password_verify($password, $user['password']);
+
+    if (!$isPasswordCorrect) {
+        return DEFAULT_LOGIN_ERROR;
+    }
+
+    $_SESSION['user'] = $user;
+
+    return [
+        'success' => true,
+        'error' => null
+    ];
+}
