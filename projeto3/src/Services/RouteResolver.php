@@ -18,7 +18,7 @@ function resolveRoute(string $uri, array $routes): ?array
             continue;
         }
 
-        if (!in_array($_SERVER['REQUEST_METHOD'], $route['methods'])) {
+        if(!in_array($_SERVER['REQUEST_METHOD'], $route['methods'])) {
             continue;
         }
 

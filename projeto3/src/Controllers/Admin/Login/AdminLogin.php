@@ -16,7 +16,7 @@ require_once SERVICES . getRequirePath('Login/LoginService.php');
  * @return void
  */
 function makeAdminLogin(array $configs, array $route, ?string $uri): void
-{    
+{
     if (isset($_SESSION['admin'])) {
         $configs['redirect']('/admin/dashboard', 303);
 
@@ -40,12 +40,12 @@ function makeAdminLogin(array $configs, array $route, ?string $uri): void
 function validateAdminLogin(array $configs, array $route, ?string $uri): void
 {
     ['success' => $success, 'error' => $error] = adminLoginAuthenticate($configs['connection']);
-    
+
     if ($success) {
         $configs['redirect']('/admin/dashboard', 302);
 
         return;
-    }  
+    }
 
     $content = $configs['view']('Admin/Login/login', [
         'title' => 'Login Administrativo',
@@ -53,7 +53,7 @@ function validateAdminLogin(array $configs, array $route, ?string $uri): void
         'routes' => getMenuItens($configs['routes'], $uri, $route),
     ]);
 
-    $configs['response'](content: $content);
+    $configs['response'](401, $content);
 }
 
 /**

@@ -2,6 +2,10 @@
 
 declare(strict_types=1);
 
+session_start([
+    'cookie_httponly' => 1
+]);
+
 ob_start();
 
 define('SOURCES', 'src');

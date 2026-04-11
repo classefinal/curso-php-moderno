@@ -14,7 +14,7 @@ require_once COMPONENTS . 'header.php';
 <main class="container mt-5" style="max-width: 500px;">
     <h1><?= $title ?></h1>
     <?php if (!empty($error)): ?>
-        <div class="alert alert-danger"></div>
+        <div class="alert alert-danger"><?= $error ?></div>
     <?php endif; ?>
     <?php
         $action = '/admin/login';

@@ -8,8 +8,8 @@ declare(strict_types=1);
  */
 
 require_once SERVICES . getRequirePath('Products/ProductsService.php');
-require_once SERVICES . getRequirePath('Categories/CategoriesService.php');
 require_once SERVICES . getRequirePath('Products/RandomProductsService.php');
+require_once SERVICES . getRequirePath('Categories/CategoriesService.php');
 
 /**
  * @param Configs $configs
