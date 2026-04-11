@@ -1,15 +1,26 @@
-<?php require_once COMPONENTS . 'header.php'; ?>
+<?php
 
-<main class="container mt-5" style="max-width: 400px;">
-    <h2 class="mb-4">Login Administrativo</h2>
+/**
+ * @psalm-import-type Route from types
+ * 
+ * @var string $title
+ * @var Route[] $routes
+ * @var ?string $error
+ */
+
+require_once COMPONENTS . 'header.php';
+?>
+
+<main class="container mt-5" style="max-width: 500px;">
+    <h1><?= $title ?></h1>
     <?php if (!empty($error)): ?>
         <div class="alert alert-danger"><?= $error ?></div>
     <?php endif; ?>
-    <?php 
+    <?php
         $action = '/admin/login';
-        
-        require COMPONENTS . 'Login/login_form.php'; 
+
+        require_once  COMPONENTS . getRequirePath('Login/login_form.php');
     ?>
 </main>
 
-<?php require_once COMPONENTS . 'footer.php'; ?>
+<?php require_once COMPONENTS . 'footer.php' ?>

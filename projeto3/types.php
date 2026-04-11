@@ -92,6 +92,8 @@
  *  name: string,
  *  active: bool,
  *  admin: bool,
+ *  created_at: string,
+ *  updated_at: string
  * }
  * 
  * @psalm-type LoginInfo = array{

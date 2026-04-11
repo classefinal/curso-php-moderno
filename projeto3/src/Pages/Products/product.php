@@ -9,13 +9,14 @@ declare(strict_types=1);
  * @var string $title
  * @var Route[] $routes
  * @var Product $product
+ * @var Product[] $randomProducts
  */
 
- require_once COMPONENTS . 'header.php'
+require_once COMPONENTS . 'header.php'
 ?>
 
 <main class="container">
-    <section>
+    <section class="mb-5">
         <div class="row mt-3">
             <?php require_once COMPONENTS . getRequirePath('Product/product_breadcrumb.php'); ?>
         </div>
@@ -25,6 +26,11 @@ declare(strict_types=1);
         <div class="row mt-3">
             <?php require_once COMPONENTS . getRequirePath('Product/product_description.php'); ?>
         </div>
+    </section>
+    <hr />
+    <section class="mt-5">
+        <h2>Produtos em destaque</h2>
+        <?php require_once COMPONENTS . getRequirePath('RandomProducts/random_products_cards.php'); ?>
     </section>
 </main>
 
