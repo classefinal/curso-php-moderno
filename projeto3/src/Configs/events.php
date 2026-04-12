@@ -10,10 +10,8 @@ declare(strict_types=1);
  * @var Events $events
  */
 $events = [
-    'UserCreated' => [
-        'UserCreated/UserCreatedEmailListener' => 'handleUserCreatedEmailEvent',
-        'UserCreated/UserCreatedWhatsappListener' => 'handleUserCreatedWhatsappEmailEvent',
-        // 'UserCreatedFacebookListener' => fn() => print('Nao implementado')
+    'AdminLoginRecused' => [
+        'AdminLogin/AdminLoginErrorListener' => 'handleAdminLoginErrorEvent',
     ]
 ];
 
