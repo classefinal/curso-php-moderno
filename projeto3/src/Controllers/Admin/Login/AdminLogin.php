@@ -12,19 +12,19 @@ require_once SERVICES . getRequirePath('Login/LoginService.php');
 /**
  * @param Configs $configs
  * @param Route $route
- * @param ?string $uri
+ * @param string $uri
  * @return void
  */
-function makeAdminLogin(array $configs, array $route, ?string $uri): void
+function makeAdminLogin(array $configs, array $route, string $uri): void
 {
     if (isset($_SESSION['admin'])) {
-        $configs['redirect']('/admin/dashboard', 303);
+        $configs['redirect']('/admin/dashboard', 302);
 
         return;
-    }  
+    }
 
     $content = $configs['view']('Admin/Login/login', [
-        'title' => 'Login Administrativo',
+        'title' => 'Login administrativo',
         'routes' => getMenuItens($configs['routes'], $uri, $route),
     ]);
 
@@ -34,12 +34,12 @@ function makeAdminLogin(array $configs, array $route, ?string $uri): void
 /**
  * @param Configs $configs
  * @param Route $route
- * @param ?string $uri
+ * @param string $uri
  * @return void
  */
-function validateAdminLogin(array $configs, array $route, ?string $uri): void
+function validateAdminLogin(array $configs, array $route, string $uri): void
 {
-    ['success' => $success, 'error' => $error] = adminLoginAuthenticate($configs['connection']);
+    ['success' => $success, 'error' => $error] = adminLoginAuthenticate($configs['connection'], $configs['eventDispatcher']);
 
     if ($success) {
         $configs['redirect']('/admin/dashboard', 302);
@@ -48,9 +48,9 @@ function validateAdminLogin(array $configs, array $route, ?string $uri): void
     }
 
     $content = $configs['view']('Admin/Login/login', [
-        'title' => 'Login Administrativo',
-        'error' => $error,
+        'title' => 'Login administrativo',
         'routes' => getMenuItens($configs['routes'], $uri, $route),
+        'error' => $error
     ]);
 
     $configs['response'](401, $content);
@@ -58,11 +58,9 @@ function validateAdminLogin(array $configs, array $route, ?string $uri): void
 
 /**
  * @param Configs $configs
- * @param Route $route
- * @param ?string $uri
  * @return void
  */
-function logoutAdminLogin(array $configs, array $route, ?string $uri): void
+function logoutAdminLogin(array $configs): void
 {
     unset($_SESSION['admin']);
 

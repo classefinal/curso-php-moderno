@@ -2,6 +2,7 @@
 
 /**
  * @psalm-import-type LoginInfo from types
+ * @psalm-import-type EventDispatcher from types
  */
 const DUMMY_PASSWORD_HASH = '$2y$16$QJ/fCuE4x29bPKzW0Rgm5ukGB8xwnMajGBPefvamFYFsYbpz7kSOe';
 const DEFAULT_LOGIN_ERROR = [
@@ -37,16 +38,24 @@ function validateLoginInfo(string $email, string $password): array
 
 /**
  * @param mysqli $connection
+ * @param EventDispatcher $eventDispatcher
  * @return LoginInfo
  */
-function adminLoginAuthenticate(mysqli $connection): array
+function adminLoginAuthenticate(mysqli $connection, closure $eventDispatcher): array
 {
     $email = strtolower(trim($_POST['email'] ?? ''));
     $password = $_POST['password'] ?? '';
 
     $loginInfoIsValid = validateLoginInfo($email, $password);
 
+    $dispatchAdminLoginErrorEvent = fn() => $eventDispatcher('AdminLoginRecused', [
+        'email' => $email,
+        'date' => date('Y-m-d H:i:s'),
+    ]);
+
     if (!$loginInfoIsValid['success']) {
+        $dispatchAdminLoginErrorEvent();
+
         return $loginInfoIsValid;
     }
 
@@ -62,6 +71,8 @@ function adminLoginAuthenticate(mysqli $connection): array
     );
 
     if (mysqli_num_rows($result) === 0) {
+        $dispatchAdminLoginErrorEvent();
+
         password_verify($password, DUMMY_PASSWORD_HASH);
 
         return DEFAULT_LOGIN_ERROR;
@@ -72,6 +83,8 @@ function adminLoginAuthenticate(mysqli $connection): array
     $isPasswordCorrect = password_verify($password, $user['password']);
 
     if (!$isPasswordCorrect) {
+        $dispatchAdminLoginErrorEvent();
+
         return DEFAULT_LOGIN_ERROR;
     }
 
@@ -79,6 +92,6 @@ function adminLoginAuthenticate(mysqli $connection): array
 
     return [
         'success' => true,
-        'error' => null
+        'error' => 'Um erro foi detectado'
     ];
 }
