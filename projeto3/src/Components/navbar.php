@@ -31,7 +31,7 @@
               Gerenciar
             </a>
             <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="/admin/dashboard" title="Ir para Administração">Administração</a></li>
+              <li><a class="dropdown-item" href="/admin/dashboard" title="Ir para administração">Administração</a></li>
               <li><a class="dropdown-item" href="/admin/logout" title="Sair">Sair</a></li>
             </ul>
           </li>
@@ -42,7 +42,7 @@
               Gerenciar
             </a>
             <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="/usuario/perfil" title="Ir para Perfil">Perfil</a></li>
+              <li><a class="dropdown-item" href="/usuario/perfil" title="Ir para perfil">Perfil</a></li>
               <li><a class="dropdown-item" href="/logout" title="Sair">Sair</a></li>
             </ul>
           </li>

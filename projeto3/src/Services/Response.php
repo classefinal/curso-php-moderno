@@ -34,7 +34,7 @@ function createResponse(Closure $dispatcher): array
         $dispatcher();
     };
 
-     $redirect = function (string $to, int $httpStatusCode = 302) use ($dispatcher): void {
+    $redirect = function (string $to, int $httpStatusCode = 302) use ($dispatcher): void {
         ob_clean();
 
         header('Connection: close');

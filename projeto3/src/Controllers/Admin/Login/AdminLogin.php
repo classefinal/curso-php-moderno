@@ -23,9 +23,16 @@ function makeAdminLogin(array $configs, array $route, string $uri): void
         return;
     }
 
-    $content = $configs['view']('Admin/Login/login', [
+    if (isset($_SESSION['user'])) {
+        $configs['redirect']('/usuario/perfil', 302);
+
+        return;
+    }
+
+    $content = $configs['view']('Login/login', [
         'title' => 'Login administrativo',
         'routes' => getMenuItens($configs['routes'], $uri, $route),
+        'action' => '/admin/login'
     ]);
 
     $configs['response'](content: $content);
@@ -39,6 +46,18 @@ function makeAdminLogin(array $configs, array $route, string $uri): void
  */
 function validateAdminLogin(array $configs, array $route, string $uri): void
 {
+    if (isset($_SESSION['admin'])) {
+        $configs['redirect']('/admin/dashboard', 302);
+
+        return;
+    }
+
+    if (isset($_SESSION['user'])) {
+        $configs['redirect']('/usuario/perfil', 302);
+
+        return;
+    }
+
     ['success' => $success, 'error' => $error] = adminLoginAuthenticate($configs['connection'], $configs['eventDispatcher']);
 
     if ($success) {
@@ -47,10 +66,11 @@ function validateAdminLogin(array $configs, array $route, string $uri): void
         return;
     }
 
-    $content = $configs['view']('Admin/Login/login', [
+    $content = $configs['view']('Login/login', [
         'title' => 'Login administrativo',
         'routes' => getMenuItens($configs['routes'], $uri, $route),
-        'error' => $error
+        'error' => $error,
+        'action' => '/admin/login'
     ]);
 
     $configs['response'](401, $content);
@@ -58,10 +78,18 @@ function validateAdminLogin(array $configs, array $route, string $uri): void
 
 /**
  * @param Configs $configs
+ * @param Route $route
+ * @param string $uri
  * @return void
  */
-function logoutAdminLogin(array $configs): void
+function logoutAdminLogin(array $configs, array $route, string $uri): void
 {
+    if (isset($_SESSION['user'])) {
+        $configs['redirect']('/logout', 303);
+
+        return;
+    }
+
     unset($_SESSION['admin']);
 
     $configs['redirect']('/', 303);

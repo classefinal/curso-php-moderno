@@ -12,19 +12,19 @@ require_once SERVICES . getRequirePath('Login/LoginService.php');
 /**
  * @param Configs $configs
  * @param Route $route
- * @param ?string $uri
+ * @param string $uri
  * @return void
  */
-function makeLogin(array $configs, array $route, ?string $uri): void
+function makeLogin(array $configs, array $route, string $uri): void
 {
     if (isset($_SESSION['admin'])) {
-        $configs['redirect']('/admin/dashboard', 303);
+        $configs['redirect']('/admin/dashboard', 302);
 
         return;
     }
 
     if (isset($_SESSION['user'])) {
-        $configs['redirect']('/usuario/perfil', 303);
+        $configs['redirect']('/usuario/perfil', 302);
 
         return;
     }
@@ -32,6 +32,7 @@ function makeLogin(array $configs, array $route, ?string $uri): void
     $content = $configs['view']('Login/login', [
         'title' => 'Login',
         'routes' => getMenuItens($configs['routes'], $uri, $route),
+        'action' => '/login'
     ]);
 
     $configs['response'](content: $content);
@@ -40,35 +41,49 @@ function makeLogin(array $configs, array $route, ?string $uri): void
 /**
  * @param Configs $configs
  * @param Route $route
- * @param ?string $uri
+ * @param string $uri
  * @return void
  */
-function validateLogin(array $configs, array $route, ?string $uri): void
+function validateLogin(array $configs, array $route, string $uri): void
 {
-    ['success' => $success, 'error' => $error] = loginAuthenticate($configs['connection']);
+    if (isset($_SESSION['admin'])) {
+        $configs['redirect']('/admin/dashboard', 302);
+
+        return;
+    }
+
+    if (isset($_SESSION['user'])) {
+        $configs['redirect']('/usuario/perfil', 302);
+
+        return;
+    }
+    
+    ['success' => $success, 'error' => $error] = loginAuthenticate($configs['connection'], $configs['eventDispatcher']);
 
     if ($success) {
         $configs['redirect']('/usuario/perfil', 302);
-        
+
         return;
     }
 
     $content = $configs['view']('Login/login', [
         'title' => 'Login',
-        'error' => $error,
         'routes' => getMenuItens($configs['routes'], $uri, $route),
+        'error' => $error,
+        'action' => '/login'
     ]);
 
-    $configs['response'](content: $content);
+    $configs['response'](401, $content);
 }
+
 
 /**
  * @param Configs $configs
  * @param Route $route
- * @param ?string $uri
+ * @param string $uri
  * @return void
  */
-function logoutLogin(array $configs, array $route, ?string $uri): void
+function logoutLogin(array $configs, array $route, string $uri): void
 {
     if (isset($_SESSION['admin'])) {
         $configs['redirect']('/admin/logout', 303);

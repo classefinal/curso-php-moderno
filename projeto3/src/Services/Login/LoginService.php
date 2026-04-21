@@ -97,16 +97,25 @@ function adminLoginAuthenticate(mysqli $connection, closure $eventDispatcher): a
 }
 
 /**
+ * @param mysqli $connection
+ * @param EventDispatcher $eventDispatcher
  * @return LoginInfo
  */
-function loginAuthenticate(mysqli $connection): array
+function loginAuthenticate(mysqli $connection, closure $eventDispatcher): array
 {
-    $email = trim($_POST['email'] ?? '');
-    $password = trim($_POST['password'] ?? '');
+    $email = strtolower(trim($_POST['email'] ?? ''));
+    $password = $_POST['password'] ?? '';
 
     $loginInfoIsValid = validateLoginInfo($email, $password);
 
+    $dispatchLoginErrorEvent = fn() => $eventDispatcher('LoginRecused', [
+        'email' => $email,
+        'date' => date('Y-m-d H:i:s'),
+    ]);
+
     if (!$loginInfoIsValid['success']) {
+        $dispatchLoginErrorEvent();
+
         return $loginInfoIsValid;
     }
 
@@ -114,11 +123,16 @@ function loginAuthenticate(mysqli $connection): array
         $connection,
         'SELECT * FROM users WHERE email = ? AND active = true AND admin = false LIMIT 1',
         [
-            ['type' => 's', 'value' => $email]
+            [
+                'type' => 's',
+                'value' => $email
+            ]
         ]
     );
 
     if (mysqli_num_rows($result) === 0) {
+        $dispatchLoginErrorEvent();
+
         password_verify($password, DUMMY_PASSWORD_HASH);
 
         return DEFAULT_LOGIN_ERROR;
@@ -129,6 +143,8 @@ function loginAuthenticate(mysqli $connection): array
     $isPasswordCorrect = password_verify($password, $user['password']);
 
     if (!$isPasswordCorrect) {
+        $dispatchLoginErrorEvent();
+
         return DEFAULT_LOGIN_ERROR;
     }
 
@@ -136,6 +152,6 @@ function loginAuthenticate(mysqli $connection): array
 
     return [
         'success' => true,
-        'error' => null
+        'error' => 'Um erro foi detectado'
     ];
 }

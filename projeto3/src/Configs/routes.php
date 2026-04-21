@@ -93,7 +93,7 @@ return [
         'isRegex' => false,
         'inMenu' => true,
         'label' => 'Login',
-        'order' => 100,
+        'order' => 999,
         'methods' => ['GET'],
     ],
     [
@@ -104,7 +104,7 @@ return [
         'isRegex' => false,
         'inMenu' => false,
         'label' => 'Login',
-        'order' => 100,
+        'order' => 999,
         'methods' => ['POST'],
     ],
     [
@@ -115,7 +115,7 @@ return [
         'isRegex' => false,
         'inMenu' => false,
         'label' => 'Logout',
-        'order' => 100,
+        'order' => 999,
         'methods' => ['GET'],
     ],
     [
@@ -126,7 +126,7 @@ return [
         'isRegex' => false,
         'inMenu' => false,
         'label' => 'Perfil',
-        'order' => 101,
+        'order' => 999,
         'methods' => ['GET'],
     ],
     [
@@ -137,7 +137,7 @@ return [
         'isRegex' => false,
         'inMenu' => false,
         'label' => 'Atualizar Perfil',
-        'order' => 101,
+        'order' => 999,
         'methods' => ['POST'],
     ],
 ];

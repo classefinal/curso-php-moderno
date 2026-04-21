@@ -9,7 +9,7 @@
  * @param array $args
  * @return void
  */
-function handleAdminLoginErrorEvent(array $configs, array $args): void
+function handleLoginErrorEvent(array $configs, array $args): void
 {
     if (empty($args['email']) || empty($args['date'])) {
         return;
@@ -26,7 +26,7 @@ function handleAdminLoginErrorEvent(array $configs, array $args): void
         }
 
         file_put_contents(
-            $folder . DIRECTORY_SEPARATOR . date('Y-m-d') . '-adminLoginErrors.txt',
+            $folder . DIRECTORY_SEPARATOR . date('Y-m-d') . '-loginErrors.txt',
             "$date: $email" . PHP_EOL,
             FILE_APPEND
         );

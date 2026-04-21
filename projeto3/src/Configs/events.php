@@ -12,7 +12,10 @@ declare(strict_types=1);
 $events = [
     'AdminLoginRecused' => [
         'AdminLogin/AdminLoginErrorListener' => 'handleAdminLoginErrorEvent',
-    ]
+    ],
+    'LoginRecused' => [
+        'Login/LoginErrorListener' => 'handleLoginErrorEvent',
+    ],
 ];
 
 return $events;
