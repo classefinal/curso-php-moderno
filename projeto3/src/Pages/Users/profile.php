@@ -24,7 +24,7 @@ require_once COMPONENTS . 'header.php';
     <?php endif; ?>
 
     <?php if (!empty($_SESSION['profile_updated'])): ?>
-        <div class="alert alert-sucess">Perfil atualizado com sucesso</div>
+        <div class="alert alert-success">Perfil atualizado com sucesso</div>
     <?php endif; ?>
 
     <form method="post" action="/usuario/perfil">

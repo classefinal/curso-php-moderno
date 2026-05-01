@@ -12,13 +12,13 @@ require_once SERVICES . getRequirePath('Users/UsersService.php');
 /**
  * @param Configs $configs
  * @param Route $route
- * @param string|null $uri
+ * @param string $uri
  * @return void
  */
-function viewProfile(array $configs, array $route, ?string $uri): void
+function viewProfile(array $configs, array $route, string $uri): void
 {
-    if (!isset($_SESSION['user']['id'])) {
-        $configs['redirect']('/login', 307);
+    if (!isset($_SESSION['user']['id']) || empty($_SESSION['user']['active'])) {
+        $configs['redirect']('/logout', 303);
 
         return;
     }
@@ -26,19 +26,19 @@ function viewProfile(array $configs, array $route, ?string $uri): void
     $user = getUserById($configs['connection'], $_SESSION['user']['id']);
 
     if (!$user) {
-        $configs['redirect']('/logout', 307);
+        $configs['redirect']('/logout', 303);
 
         return;
     }
 
     $content = $configs['view']('Users/profile', [
-        'title' => $user['name'] . ' - Perfil do Usuário',
+        'title' => "{$user['name']} - Perfil do usuário",
         'user' => $user,
         'routes' => getMenuItens($configs['routes'], $uri, $route),
     ]);
 
-    $configs['defer'](function(): void {
-        if (isset($_SESSION['profile_updated'])) {
+    $configs['defer'](function () {
+        if (!empty($_SESSION['profile_updated'])) {
             unset($_SESSION['profile_updated']);
         }
     });
@@ -49,13 +49,13 @@ function viewProfile(array $configs, array $route, ?string $uri): void
 /**
  * @param Configs $configs
  * @param Route $route
- * @param string|null $uri
+ * @param string $uri
  * @return void
  */
-function updateProfile(array $configs, array $route, ?string $uri): void
+function updateProfile(array $configs, array $route, string $uri): void
 {
-    if (!isset($_SESSION['user']['id'])) {
-        $configs['redirect']('/login', 307);
+    if (!isset($_SESSION['user']['id']) || empty($_SESSION['user']['active'])) {
+        $configs['redirect']('/logout', 303);
 
         return;
     }
@@ -63,7 +63,7 @@ function updateProfile(array $configs, array $route, ?string $uri): void
     ['success' => $success, 'error' => $error, 'user' => $user] = updateUserProfile($configs['connection'], $_SESSION['user']['id']);
 
     if (!$user) {
-        $configs['redirect']('/logout', 307);
+        $configs['redirect']('/logout', 303);
 
         return;
     }
@@ -75,11 +75,11 @@ function updateProfile(array $configs, array $route, ?string $uri): void
     }
 
     $content = $configs['view']('Users/profile', [
-        'title' => $user['name'] . ' - Perfil do Usuário',
+        'title' => "{$user['name']} - Perfil do usuário",
         'user' => $user,
         'error' => $error,
         'routes' => getMenuItens($configs['routes'], $uri, $route),
     ]);
 
-    $configs['response'](content: $content);
+    $configs['response'](422, $content);
 }

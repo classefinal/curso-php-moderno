@@ -4,7 +4,7 @@
  * @psalm-type Defer = Closure(Closure $action):void
  * @psalm-type Dispatcher = Closure(): void
  * @psalm-type Response = Closure(int $httpStatusCode = 200, ?string $content = null): void
- * @psalm-type Redirect = Closure(string $to, int $httpStatusCode = 307): void
+ * @psalm-type Redirect = Closure(string $to, int $httpStatusCode = 303): void
  * @psalm-type EventHandler = Closure(Configs $configs, array $args): void
  * @psalm-type Events = array<string, array<string, EventHandler|string>>
  * @psalm-type EventDispatcher = Closure(string $eventName, array $args): void
@@ -92,6 +92,7 @@
  *  name: string,
  *  active: bool,
  *  admin: bool,
+ *  password: ?string,
  *  created_at: string,
  *  updated_at: string
  * }
@@ -104,6 +105,6 @@
  * @psalm-type UserUpdateInfo = array{
  *  success: bool,
  *  user: ?User,
- *  error: ?string
+ *  error: ?string,
  * }
  */

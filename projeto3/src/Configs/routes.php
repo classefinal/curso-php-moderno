@@ -108,7 +108,7 @@ return [
         'methods' => ['POST'],
     ],
     [
-        'id' => 'logout_user',
+        'id' => 'logout',
         'value' => '/logout',
         'controller' => 'Login/Login',
         'call' => 'logoutLogin',
@@ -136,7 +136,7 @@ return [
         'call' => 'updateProfile',
         'isRegex' => false,
         'inMenu' => false,
-        'label' => 'Atualizar Perfil',
+        'label' => 'Perfil',
         'order' => 999,
         'methods' => ['POST'],
     ],

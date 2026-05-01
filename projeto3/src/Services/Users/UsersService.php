@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 /**
  * @psalm-import-type User from types
  * @psalm-import-type UserUpdateInfo from types
@@ -17,7 +15,12 @@ function getUserById(mysqli $connection, int $userId): ?array
     $stmt = dbPrepareAndExecute(
         $connection,
         'SELECT * FROM users WHERE id = ? AND active = true LIMIT 1',
-        [['type' => 'i', 'value' => $userId]]
+        [
+            [
+                'type' => 'i',
+                'value' => $userId
+            ]
+        ]
     );
 
     if (mysqli_num_rows($stmt) === 0) {
@@ -29,28 +32,28 @@ function getUserById(mysqli $connection, int $userId): ?array
 
 /**
  * @param User $user
- * @return array{success: bool, error: ?string}
+ * @return array
  */
 function validateUpdateUserPassword(array $user): array
 {
-    $oldPassword = $_POST['old_password'] ?? '';
+    $oldPassoword = $_POST['old_password'] ?? '';
     $newPassword = $_POST['new_password'] ?? '';
     $passwordConfirmation = $_POST['password_confirmation'] ?? '';
 
-    if (!password_verify($oldPassword, $user['password'])) {
-        return ['success' => false, 'error' => 'Senha atual incorreta.'];
+    if (!password_verify($oldPassoword, $user['password'])) {
+        return ['success' => false, 'error' => 'Senha atual incorreta'];
     }
 
-    if ($newPassword === '' || $passwordConfirmation === '') {
-        return ['success' => false, 'error' => 'Preencha a nova senha duas vezes.'];
+    if (empty($newPassword)) {
+        return ['success' => false, 'error' => 'Preencha a senha'];
     }
 
     if ($newPassword !== $passwordConfirmation) {
-        return ['success' => false, 'error' => 'As novas senhas não coincidem.'];
+        return ['success' => false, 'error' => 'A confirmaçao de senha deve ser igual a nova senha'];
     }
 
     if (strlen($newPassword) < 8) {
-        return ['success' => false, 'error' => 'A nova senha deve ter pelo menos 8 caracteres.'];
+        return ['success' => false, 'error' => 'A senha deve ter pelo menos 8 caracteres'];
     }
 
     return ['success' => true, 'error' => null];
@@ -60,16 +63,18 @@ function validateUpdateUserPassword(array $user): array
  * @param User $user
  * @return void
  */
-function setUpdatedUserIntoSession(array $user): void{
+function setUpdatedUserIntoSession(array $user): void
+{
     unset($user['password']);
 
     $_SESSION['user'] = $user;
     $_SESSION['profile_updated'] = true;
 }
+
 /**
  * @param mysqli $connection
  * @param integer $userId
- * @return UserUpdateInfo
+ * @return array{success: bool, error: ?string}
  */
 function updateUserProfile(mysqli $connection, int $userId): array
 {
@@ -78,17 +83,17 @@ function updateUserProfile(mysqli $connection, int $userId): array
     if (!$user) {
         return [
             'success' => false,
-            'error' => 'Usuário não encontrado.',
+            'error' => 'Usuário não encontrado ou inativo',
             'user' => null
         ];
     }
 
-    $name = trim($_POST['name'] ?? '');
+    $name = strip_tags(trim($_POST['name'] ?? ''));
 
-    if (strlen($name) < 3) {
+    if (strlen($name) < 3 || strlen($name) > 255) {
         return [
             'success' => false,
-            'error' => 'O nome deve ter pelo menos 3 caracteres.',
+            'error' => 'O nome deve ter entre 3 e 255 caracteres',
             'user' => $user
         ];
     }
@@ -103,11 +108,14 @@ function updateUserProfile(mysqli $connection, int $userId): array
             ]
         );
 
-        $user = getUserById($connection, $userId);
-
+        $user['name'] = $name;
         setUpdatedUserIntoSession($user);
 
-        return ['success' => true, 'error' => null, 'user' => $user];
+        return [
+            'success' => true,
+            'error' => null,
+            'user' => $user
+        ];
     }
 
     $passwordIsValid = validateUpdateUserPassword($user);
@@ -132,9 +140,12 @@ function updateUserProfile(mysqli $connection, int $userId): array
         ]
     );
 
-    $user = getUserById($connection, $userId);
-
+    $user['name'] = $name;
     setUpdatedUserIntoSession($user);
 
-    return ['success' => true, 'error' => null, 'user' => $user];
+    return [
+        'success' => true,
+        'error' => null,
+        'user' => $user
+    ];
 }
