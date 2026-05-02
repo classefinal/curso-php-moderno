@@ -16,10 +16,50 @@ function requireController(string $controller): void
 }
 
 /**
+ * @param string $middleware
+ * @return void
+ */
+function requireMiddleware(string $middleware): void
+{
+    require_once MIDDLEWARES . getRequirePath("$middleware.php");
+}
+
+/**
+ * @param array $middlewareStack
+ * @param array $configs
+ * @param array $route
+ * @param string $uri
+ * @param Closure $finalCallback
+ * @return void
+ */
+function executeMiddlewares(
+    array $middlewareStack,
+    array &$configs,
+    array $route,
+    string $uri,
+    Closure $finalCallback
+): void {
+    $next = function () use (&$middlewareStack, &$configs, $route, $uri, $finalCallback, &$next) {
+        if (empty($middlewareStack)) {
+            return $finalCallback();
+        }
+
+        $middlewareName = array_shift($middlewareStack);
+        $middlewareFunction = $middlewareName . 'Middleware';
+
+        requireMiddleware($middlewareName);
+
+        return $middlewareFunction($configs, $route, $uri, $next);
+    };
+
+    $next();
+}
+
+/**
  * @param Configs $configs
  * @return void
  */
-function processRoutes(array $configs): void
+function processRoutes(array &$configs): void
 {
     $uri = $_SERVER['REQUEST_URI'] ?? null;
 
@@ -29,6 +69,7 @@ function processRoutes(array $configs): void
         'controller' => 'Home',
         'call' => 'makeHome',
         'isRegex' => false,
+        'middlewares' => [],
     ];
 
     $notFoundRoute = [
@@ -36,12 +77,21 @@ function processRoutes(array $configs): void
         'value' => '/NotFound',
         'controller' => 'NotFound',
         'call' => 'makeNotFound',
+        'middlewares' => [],
     ];
 
     if (empty($uri)) {
         requireController($defaultRoute['controller']);
 
-        $defaultRoute['call']($configs, $defaultRoute, $uri);
+        executeMiddlewares(
+            $defaultRoute['middlewares'],
+            $configs,
+            $defaultRoute,
+            $uri,
+            function () use ($defaultRoute, &$configs, $uri) {
+                $defaultRoute['call']($configs, $defaultRoute, $uri);
+            }
+        );
 
         return;
     }
@@ -53,12 +103,30 @@ function processRoutes(array $configs): void
     if (!$route || empty($route['call'])) {
         requireController($notFoundRoute['controller']);
 
-        $notFoundRoute['call']($configs, $notFoundRoute, $uri);
+        executeMiddlewares(
+            $notFoundRoute['middlewares'],
+            $configs,
+            $notFoundRoute,
+            $uri,
+            function () use ($notFoundRoute, &$configs, $uri) {
+                $notFoundRoute['call']($configs, $notFoundRoute, $uri);
+            }
+        );
 
         return;
     }
 
     requireController($route['controller']);
 
-    $route['call']($configs, $route, $uri);
+    $middlewares = $route['middlewares'] ?? [];
+
+    executeMiddlewares(
+        $middlewares,
+        $configs,
+        $route,
+        $uri,
+        function () use ($route, &$configs, $uri) {
+            $route['call']($configs, $route, $uri);
+        }
+    );
 }

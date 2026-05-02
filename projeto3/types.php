@@ -21,7 +21,8 @@
  *  order: ?int,
  *  active: ?bool,
  *  allowedRoutes: string[]|null,
- *  methods: string[]
+ *  methods: string[],
+ *  middlewares: string[]|null
  * }
  * 
  * @psalm-type Configs = array{
@@ -31,7 +32,7 @@
  *  response: Response,
  *  redirect: Redirect,
  *  eventDispatcher: EventDispatcher,
- *  view: View
+ *  view: View,
  * }
  * 
  * @psalm-type StmArg = array{

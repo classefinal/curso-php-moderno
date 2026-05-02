@@ -127,6 +127,7 @@ return [
         'inMenu' => false,
         'label' => 'Perfil',
         'order' => 999,
+        'middlewares' => ['auth'],
         'methods' => ['GET'],
     ],
     [
@@ -138,6 +139,7 @@ return [
         'inMenu' => false,
         'label' => 'Perfil',
         'order' => 999,
+        'middlewares' => ['auth'],
         'methods' => ['POST'],
     ],
 ];
