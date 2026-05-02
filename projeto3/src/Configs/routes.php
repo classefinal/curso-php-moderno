@@ -62,6 +62,7 @@ return [
         'label' => 'Login admin',
         'order' => 999,
         'methods' => ['GET'],
+        'middlewares' => ['preventLogged']
     ],
     [
         'id' => 'admin_login',
@@ -73,6 +74,7 @@ return [
         'label' => 'Login admin',
         'order' => 999,
         'methods' => ['POST'],
+        'middlewares' => ['preventLogged']
     ],
     [
         'id' => 'admin_logout',
@@ -95,6 +97,7 @@ return [
         'label' => 'Login',
         'order' => 999,
         'methods' => ['GET'],
+        'middlewares' => ['preventLogged']
     ],
     [
         'id' => 'login',
@@ -106,6 +109,7 @@ return [
         'label' => 'Login',
         'order' => 999,
         'methods' => ['POST'],
+        'middlewares' => ['preventLogged']
     ],
     [
         'id' => 'logout',
