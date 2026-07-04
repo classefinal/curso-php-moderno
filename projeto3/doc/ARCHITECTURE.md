@@ -1,6 +1,6 @@
 # Architecture Overview
 
-This is a custom **procedural PHP framework** built from scratch (no OOP). It simulates an online store with user and admin areas.
+Custom **procedural PHP framework** (no OOP). Simulates an online store with user and admin areas.
 
 ## Request Flow
 
@@ -29,7 +29,7 @@ public/index.php
        └─ dbClose()
 ```
 
-## Directory Structure
+## Directory Convention
 
 | Directory | Purpose |
 |-----------|---------|
@@ -45,10 +45,13 @@ public/index.php
 | `public/` | Web root (index.php, assets, .htaccess) |
 | `logs/` | Failed login attempt logs |
 
-## Core Concepts
+## Core Patterns
 
-- **No OOP**: everything uses plain PHP functions and closures
-- **Dependency Injection via $configs**: an associative array is passed everywhere containing `connection`, `view`, `response`, `redirect`, `defer`, `eventDispatcher`, and `routes`
-- **Closure-based services**: services like `createView()`, `createResponse()`, `createDefer()` return closures that close over their dependencies
-- **Output buffering**: all output is captured with `ob_start()`/`ob_get_contents()` to allow HTTP header manipulation before content is sent
-- **Deferred execution**: post-response actions can be queued via `$configs['defer']()` and executed after the response is flushed
+- **No OOP**: plain PHP functions and closures throughout
+- **$configs array as DI container**: `$configs['connection']`, `['view']`, `['response']`, `['redirect']`, `['defer']`, `['eventDispatcher']`, `['routes']` passed everywhere
+- **Closure-based services**: `createView()`, `createResponse()`, `createDefer()` return closures that close over dependencies
+- **Output buffering**: `ob_start()`/`ob_get_contents()` allows header manipulation after rendering
+- **Deferred execution**: post-response actions queued via `$configs['defer']()` and executed after flush
+- **All data shapes documented**: see `types.php` for Psalm type annotations used across the project
+- **Require path convention**: `getRequirePath(string)` converts `/` to `DIRECTORY_SEPARATOR` for cross-platform file inclusion
+- **Route file naming**: subdirectory-based grouping (e.g. `Login/Login.php`, `Admin/Login/AdminLogin.php`)

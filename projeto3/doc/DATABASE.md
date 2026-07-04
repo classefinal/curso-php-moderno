@@ -4,93 +4,43 @@
 
 ## Connection
 
-Uses `mysqli_*` functions. Connection parameters come from environment variables:
+Uses `mysqli_*` functions. Configured via environment variables (see `.env`):
 
-| Env Var | Default | Description |
-|---------|---------|-------------|
-| `DB_SERVER` | `localhost` | Database host |
-| `DB_PORT` | `3306` | Database port |
-| `DB_DATABASE` | `projeto` | Database name |
-| `DB_USER` | `root` | Database user |
-| `DB_PASSWORD` | (empty) | Database password |
+- `DB_SERVER` (default: `localhost`), `DB_PORT` (default: `3306`), `DB_DATABASE` (default: `projeto`), `DB_USER` (default: `root`), `DB_PASSWORD` (default: empty)
 
 ## Functions
 
-### `dbConnect(): mysqli`
-Creates a new MySQLi connection, sets charset to `utf8mb4`, calls `die()` on failure.
-
-### `dbClose(mysqli $connection): void`
-Closes the connection.
-
-### `dbExecuteStm(mysqli $connection, string $stm): mysqli_result|bool`
-Executes a raw SQL query.
-
-### `dbPrepareAndExecute(mysqli $connection, string $stm, array $args = []): mysqli_result|bool`
-Prepares a statement, binds parameters, executes, returns result.
+- `dbConnect()` — Creates MySQLi connection, sets `utf8mb4`, dies on failure
+- `dbClose(mysqli $connection)` — Closes connection
+- `dbExecuteStm(mysqli $connection, string $stm)` — Executes raw SQL
+- `dbPrepareAndExecute(mysqli $connection, string $stm, array $args)` — Prepared statement with typed params
 
 ## Parameter Format
 
-Parameters are passed as an array of arrays:
 ```php
-[
+$args = [
     ['type' => 's', 'value' => $stringValue],
     ['type' => 'i', 'value' => $intValue],
-]
+];
 ```
 
-Supported types: `s` (string), `i` (integer), `d` (double), `b` (blob).
+Types: `s` (string), `i` (integer), `d` (double), `b` (blob).
 
-## Usage in Services
+## Usage Pattern
 
-The connection is stored in `$configs['connection']` and passed to every service function:
 ```php
 $products = getActiveProducts($configs['connection']);
 ```
 
-## Database Schema
+Connection stored in `$configs['connection']`, passed to every service function.
 
-Tables created by migrations: `migrations`, `categories`, `products`, `users`.
+## Schema
 
-### `categories`
-| Column | Type | Notes |
-|--------|------|-------|
-| id | INT UNSIGNED | PK, AUTO_INCREMENT |
-| name | VARCHAR(255) | |
-| active | BOOLEAN | |
-| description | TEXT | Added in migration 6 |
-| created_at | DATETIME | |
-| updated_at | DATETIME | on update CURRENT_TIMESTAMP |
+Tables created by migrations (see [MIGRATIONS.md](MIGRATIONS.md)): `migrations`, `categories`, `products`, `users`. Detailed column definitions are in the migration files at `src/Migrations/`.
 
-### `products`
-| Column | Type | Notes |
-|--------|------|-------|
-| id | INT UNSIGNED | PK, AUTO_INCREMENT |
-| name | VARCHAR(255) | |
-| description | TEXT | |
-| description_line | VARCHAR(150) | |
-| short_description | VARCHAR(255) | |
-| active | BOOLEAN | |
-| stock | INT UNSIGNED | |
-| price | INT | Stored in cents |
-| image | TEXT | |
-| category_id | INT UNSIGNED | FK → categories.id |
-| created_at | DATETIME | |
-| updated_at | DATETIME | |
+### Quick Reference
 
-### `users`
-| Column | Type | Notes |
-|--------|------|-------|
-| id | INT UNSIGNED | PK, AUTO_INCREMENT |
-| name | VARCHAR(255) | |
-| active | BOOLEAN | |
-| admin | BOOLEAN | |
-| created_at | DATETIME | |
-| updated_at | DATETIME | |
-
-### `migrations`
-| Column | Type |
-|--------|------|
-| id | INT UNSIGNED |
-| name | VARCHAR(255) |
-| executed | BOOLEAN |
-| created_at | DATETIME |
+- **categories**: `id, name, active, description, created_at, updated_at`
+- **products**: `id, name, description, description_line, short_description, active, stock, price (cents), image, category_id (FK), created_at, updated_at`
+- **users**: `id, name, active, admin, created_at, updated_at`
+- **migrations**: `id, name, executed, created_at`

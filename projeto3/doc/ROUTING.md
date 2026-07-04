@@ -2,39 +2,35 @@
 
 **Files**: `src/Services/Router.php`, `src/Services/RouteResolver.php`, `src/Configs/routes.php`
 
-## Route Definition
-
-Routes are defined as arrays in `src/Configs/routes.php`:
+## Route Definition Format
 
 ```php
 [
     'id'             => 'home',
     'value'          => '/',                              // URL path or regex
-    'controller'     => 'Home',                           // Controller file name (without .php)
+    'controller'     => 'Home',                           // File name under src/Controllers/ (no .php)
     'call'           => 'makeHome',                       // Function name to call
     'isRegex'        => false,                            // Whether value is a regex pattern
     'methods'        => ['GET'],                          // Allowed HTTP methods
     'inMenu'         => true,                             // Show in navigation
     'label'          => 'Home',                           // Navigation label
     'order'          => 0,                                // Menu sort order
-    'allowedRoutes'  => ['product'],                      // Sub-routes that keep this menu active
+    'allowedRoutes'  => ['product'],                      // Sub-routes keeping this menu active
     'middlewares'    => ['redirectAbout'],                 // Middleware stack
 ]
 ```
 
-## Route Resolution
+## Resolution
 
-1. `processRoutes()` gets the `REQUEST_URI`, parses it, and normalizes it (removes trailing slash)
-2. `resolveRoute()` iterates all routes, matching by:
+1. `processRoutes()` gets `REQUEST_URI`, parses with `parse_url(..., PHP_URL_PATH)`, normalizes (remove trailing slash, preserve `/`)
+2. `resolveRoute()` iterates routes, matching by:
    - HTTP method (`in_array($_SERVER['REQUEST_METHOD'], $route['methods'])`)
-   - Exact string match (if `isRegex === false`)
-   - `preg_match` (if `isRegex === true`)
-3. On match, the controller file is required and the callable function is invoked
-4. On no match, the `NotFound` controller renders a 404
+   - Exact string match (`isRegex === false`)
+   - `preg_match` (`isRegex === true`)
+3. On match: require controller file, invoke callable
+4. On no match: `NotFound` controller renders 404
 
-## Middleware Execution
-
-Middlewares execute in a pipeline before the controller:
+## Middleware Pipeline
 
 ```php
 executeMiddlewares($route['middlewares'], $configs, $route, $uri, function() use ($route, $configs, $uri) {
@@ -42,11 +38,10 @@ executeMiddlewares($route['middlewares'], $configs, $route, $uri, function() use
 });
 ```
 
-Each middleware can stop the chain by not calling `$next()`.
+Each middleware can halt chain by not calling `$next()`.
 
-## URI Handling
+## Key Patterns
 
-- URI is parsed with `parse_url($uri, PHP_URL_PATH)`
-- Trailing slash is removed (`rtrim($parsedUri, "/")`)
-- The root path `/` is preserved as-is
-- Same URL can have different handlers for GET and POST (e.g., `/login` GET → `makeLogin`, POST → `validateLogin`)
+- Same URL, different HTTP methods → separate route entries with different `call` values
+- `getMenuItens()` filters routes by `inMenu` flag and marks active by URI/`allowedRoutes`
+- Route file uses subdirectory grouping matching controller structure

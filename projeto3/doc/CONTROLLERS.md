@@ -2,51 +2,36 @@
 
 **Directory**: `src/Controllers/`
 
-Controllers are plain PHP files containing functions. Each function receives `(array $configs, array $route, ?string $uri)`.
+Plain PHP files containing functions. Each receives `(array $configs, array $route, ?string $uri)`.
 
-## Convention
+## Naming Convention
 
-- File and function names match the `controller` and `call` fields in the route definition
-- Controllers require their service dependencies manually via `require_once`
-- Controllers interact with `$configs` for: `view()`, `response()`, `redirect()`, `connection`, `eventDispatcher`, `defer`
+- File and function names match `controller` and `call` fields in the route definition
+- Subdirectory grouping: `Login/Login.php`, `Admin/Login/AdminLogin.php`, `Products/Products.php`, `Users/Users.php`
 
-## Available Controllers
-
-| File | Functions | Route IDs |
-|------|-----------|-----------|
-| `Home.php` | `makeHome()` | `home` |
-| `About.php` | `makeAbout()` | `about` |
-| `NotFound.php` | `makeNotFound()` | `notFound` |
-| `Login/Login.php` | `makeLogin()`, `validateLogin()`, `logoutLogin()` | `login_page`, `login`, `logout` |
-| `Admin/Login/AdminLogin.php` | `makeAdminLogin()`, `validateAdminLogin()`, `logoutAdminLogin()` | `admin_login_page`, `admin_login`, `admin_logout` |
-| `Products/Products.php` | `makeProducts()`, `makeProduct()` | `products`, `product` |
-| `Users/Users.php` | `viewProfile()`, `updateProfile()` | `user_profile`, `user_profile_update` |
-
-## Typical Controller Pattern
+## Pattern
 
 ```php
 function example(array $configs, array $route, ?string $uri): void
 {
-    // 1. Auth guard (if needed)
     if (!isset($_SESSION['user'])) { $configs['redirect']('/login'); return; }
 
-    // 2. Call service functions
     $data = someService($configs['connection']);
 
-    // 3. Render view
     $content = $configs['view']('folder/template', [
         'title' => 'Page Title',
         'routes' => getMenuItens($configs['routes'], $uri, $route),
         'data' => $data,
     ]);
 
-    // 4. Send response
     $configs['response'](content: $content);
 }
 ```
 
-## Important Notes
+## Key Patterns
 
-- GET and POST for the same URL are **different route entries** with different `call` functions
-- Session checks are done inline, not via middleware
-- On validation failure, controllers re-render the form view with an `$error` variable and appropriate HTTP status code (401, 422)
+- Services are required manually via `require_once` inside the controller
+- `$configs` provides: `view()`, `response()`, `redirect()`, `connection`, `eventDispatcher`, `defer`
+- Auth guards done inline via `$_SESSION['user']` / `$_SESSION['admin']` (no middleware for auth)
+- On validation failure, re-render form with `$error` + appropriate HTTP status (401/422)
+- GET and POST handlers for the same URL are separate route entries (different `call` values)

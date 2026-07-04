@@ -4,9 +4,9 @@
 
 ## How It Works
 
-`createEventDispatcher()` receives the `$configs` array and the `$events` configuration array. It stores a closure in `$configs['eventDispatcher']`.
+`createEventDispatcher()` receives `$configs` and the `$events` config array. Stores a closure in `$configs['eventDispatcher']`.
 
-### Dispatching an Event
+### Dispatching
 
 ```php
 $configs['eventDispatcher']('LoginRecused', [
@@ -15,25 +15,18 @@ $configs['eventDispatcher']('LoginRecused', [
 ]);
 ```
 
-### Dispatching Logic
+### Resolution Order
 
 1. Looks up `$events[$eventName]`
-2. If no listeners registered for that event, returns early
+2. If no listeners, returns early
 3. Iterates each listener entry:
-   - If the value is a `Closure`, it's called directly
-   - If it's a string (function name), requires the listener file from `LISTENERS . $listenerPath` and calls the function
+   - `Closure` → called directly
+   - `string` → requires listener file from `src/Listeners/`, calls the function
 
-### Listener Resolution
+### File Path Resolution
 
-The listener config key (e.g. `AdminLogin/AdminLoginErrorListener`) is converted to a file path:
-```
-LISTENERS + getRequirePath('AdminLogin/AdminLoginErrorListener.php')
-```
-Which resolves to: `src/Listeners/AdminLogin/AdminLoginErrorListener.php`
+Config key `AdminLogin/AdminLoginErrorListener` → `LISTENERS + getRequirePath('AdminLogin/AdminLoginErrorListener.php')` → `src/Listeners/AdminLogin/AdminLoginErrorListener.php`
 
 ## Available Events
 
-| Event Name | Triggered In | Payload |
-|------------|-------------|---------|
-| `AdminLoginRecused` | `AdminLogin.php:validateAdminLogin()` | `email`, `date` |
-| `LoginRecused` | `Login.php:validateLogin()` | `email`, `date` |
+Both login-failure events: `AdminLoginRecused` (triggered in `AdminLogin.php:validateAdminLogin()`) and `LoginRecused` (triggered in `Login.php:validateLogin()`). Both pass `['email' => ..., 'date' => ...]` as payload.

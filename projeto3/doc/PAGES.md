@@ -2,23 +2,9 @@
 
 **Directory**: `src/Pages/`
 
-Views are plain PHP files that output HTML. The `createView()` service extracts variables into the symbol table and captures output with output buffering.
+Plain PHP files outputting HTML. Rendered by `createView()` service via `extract()` + output buffering.
 
-## Available Pages
-
-| File | Description |
-|------|-------------|
-| `home.php` | Home page |
-| `about.php` | About page |
-| `not_found.php` | 404 page |
-| `Login/login.php` | Login form page (shared by admin and user login) |
-| `Products/products.php` | Product listing with filters |
-| `Products/product.php` | Single product detail |
-| `Users/profile.php` | User profile with edit form |
-
-## Variable Injection
-
-Variables are passed as an array to `$configs['view']()` and extracted:
+## Pattern
 
 ```php
 $content = $configs['view']('products', [
@@ -28,11 +14,11 @@ $content = $configs['view']('products', [
 ]);
 ```
 
-In the template, variables are accessed directly: `<?= $title ?>`, `<?php foreach ($products as $product): ?>`
+Variables accessed directly in template: `<?= $title ?>`, `<?php foreach ($products as $product): ?>`.
 
-## Template Inheritance
+## Template Structure
 
-No formal inheritance — pages use `require_once` for header/footer:
+No formal inheritance. Pages use `require_once` for header/footer components:
 
 ```php
 <?php require_once COMPONENTS . 'header.php' ?>
@@ -40,4 +26,8 @@ No formal inheritance — pages use `require_once` for header/footer:
 <?php require_once COMPONENTS . 'footer.php' ?>
 ```
 
-The header loads: Bootstrap CSS/JS, Font Awesome, and renders the navbar.
+Header loads Bootstrap CSS/JS, Font Awesome, and renders navbar.
+
+## Available Pages
+
+See files in `src/Pages/`: `home.php`, `about.php`, `not_found.php`, `Login/login.php`, `Products/products.php`, `Products/product.php`, `Users/profile.php`.
