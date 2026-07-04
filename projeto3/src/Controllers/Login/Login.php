@@ -33,7 +33,7 @@ function makeLogin(array $configs, array $route, string $uri): void
  * @return void
  */
 function validateLogin(array $configs, array $route, string $uri): void
-{
+{    
     ['success' => $success, 'error' => $error] = loginAuthenticate($configs['connection'], $configs['eventDispatcher']);
 
     if ($success) {

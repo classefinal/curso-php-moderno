@@ -5,16 +5,16 @@ declare(strict_types=1);
 require_once SERVICES . getRequirePath('Users/UsersService.php');
 
 /**
- * @psalm-import-type Route from types
  * @psalm-import-type Configs from types
+ * @psalm-import-type Route from types
  */
 
 /**
- * @param Configs $configs
+ * @param Configs &$configs
  * @param Route $route
  * @param string $uri
  * @param Closure $next
- * @return mixed
+ * @return void
  */
 function authMiddleware(array &$configs, array $route, string $uri, Closure $next)
 {
@@ -33,6 +33,6 @@ function authMiddleware(array &$configs, array $route, string $uri, Closure $nex
     }
 
     $configs['user'] = $user;
-    
+
     $next();
 }

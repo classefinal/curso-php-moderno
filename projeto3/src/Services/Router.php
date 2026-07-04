@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 /**
  * @psalm-import-type Configs from types
+ * @psalm-import-type Route from types
  */
 
 /**
@@ -26,8 +27,8 @@ function requireMiddleware(string $middleware): void
 
 /**
  * @param array $middlewareStack
- * @param array $configs
- * @param array $route
+ * @param array &$configs
+ * @param Route $route
  * @param string $uri
  * @param Closure $finalCallback
  * @return void
@@ -41,15 +42,17 @@ function executeMiddlewares(
 ): void {
     $next = function () use (&$middlewareStack, &$configs, $route, $uri, $finalCallback, &$next) {
         if (empty($middlewareStack)) {
-            return $finalCallback();
+            $finalCallback();
+
+            return;
         }
 
-        $middlewareName = array_shift($middlewareStack);
+        $middlewareName = array_pop($middlewareStack);
         $middlewareFunction = $middlewareName . 'Middleware';
 
         requireMiddleware($middlewareName);
 
-        return $middlewareFunction($configs, $route, $uri, $next);
+        $middlewareFunction($configs, $route, $uri, $next);
     };
 
     $next();
@@ -69,7 +72,6 @@ function processRoutes(array &$configs): void
         'controller' => 'Home',
         'call' => 'makeHome',
         'isRegex' => false,
-        'middlewares' => [],
     ];
 
     $notFoundRoute = [
@@ -77,14 +79,13 @@ function processRoutes(array &$configs): void
         'value' => '/NotFound',
         'controller' => 'NotFound',
         'call' => 'makeNotFound',
-        'middlewares' => [],
     ];
 
     if (empty($uri)) {
         requireController($defaultRoute['controller']);
 
         executeMiddlewares(
-            $defaultRoute['middlewares'],
+            [],
             $configs,
             $defaultRoute,
             $uri,
@@ -104,7 +105,7 @@ function processRoutes(array &$configs): void
         requireController($notFoundRoute['controller']);
 
         executeMiddlewares(
-            $notFoundRoute['middlewares'],
+            [],
             $configs,
             $notFoundRoute,
             $uri,
@@ -118,10 +119,8 @@ function processRoutes(array &$configs): void
 
     requireController($route['controller']);
 
-    $middlewares = $route['middlewares'] ?? [];
-
     executeMiddlewares(
-        $middlewares,
+        $route['middlewares'] ?? [],
         $configs,
         $route,
         $uri,

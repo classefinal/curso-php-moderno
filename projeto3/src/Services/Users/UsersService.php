@@ -78,8 +78,8 @@ function setUpdatedUserIntoSession(array $user): void
  */
 function updateUserProfile(mysqli $connection, array $user): array
 {
-    $name = strip_tags(trim($_POST['name'] ?? ''));
     $userId = $user['id'];
+    $name = strip_tags(trim($_POST['name'] ?? ''));
 
     if (strlen($name) < 3 || strlen($name) > 255) {
         return [

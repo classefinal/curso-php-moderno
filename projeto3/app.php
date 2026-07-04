@@ -22,7 +22,7 @@ define('PAGES', getPagesPath());
 define('CONFIGS', getConfigsPath());
 define('SERVICES', getServicesPath());
 define('LISTENERS', getListenersPath());
-define('MIDDLEWARES', getPath('Middlewares'));
+define('MIDDLEWARES', getMiddlewaresPath());
 
 // Requires
 require_once FUNCTIONS . 'Functions.php';

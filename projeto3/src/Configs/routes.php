@@ -20,6 +20,7 @@ return [
         'label' => 'Home',
         'order' => 0,
         'methods' => ['GET'],
+        'middlewares' => []
     ],
     [
         'id' => 'about',
@@ -31,6 +32,7 @@ return [
         'label' => 'Sobre',
         'order' => 2,
         'methods' => ['GET'],
+        'middlewares' => []
     ],
     [
         'id' => 'products',
@@ -43,6 +45,7 @@ return [
         'order' => 1,
         'allowedRoutes' => ['product'],
         'methods' => ['GET'],
+        'middlewares' => []
     ],
     [
         'id' => 'product',
@@ -51,6 +54,7 @@ return [
         'call' => 'makeProduct',
         'isRegex' => true,
         'methods' => ['GET'],
+        'middlewares' => []
     ],
     [
         'id' => 'admin_login_page',
@@ -86,6 +90,7 @@ return [
         'label' => 'Logout admin',
         'order' => 999,
         'methods' => ['GET'],
+        'middlewares' => []
     ],
     [
         'id' => 'login_page',
@@ -121,6 +126,7 @@ return [
         'label' => 'Logout',
         'order' => 999,
         'methods' => ['GET'],
+        'middlewares' => []
     ],
     [
         'id' => 'user_profile',
@@ -131,8 +137,8 @@ return [
         'inMenu' => false,
         'label' => 'Perfil',
         'order' => 999,
-        'middlewares' => ['auth'],
         'methods' => ['GET'],
+        'middlewares' => ['auth']
     ],
     [
         'id' => 'user_profile_update',
@@ -143,7 +149,7 @@ return [
         'inMenu' => false,
         'label' => 'Perfil',
         'order' => 999,
-        'middlewares' => ['auth'],
         'methods' => ['POST'],
+        'middlewares' => ['auth']
     ],
 ];

@@ -22,7 +22,7 @@
  *  active: ?bool,
  *  allowedRoutes: string[]|null,
  *  methods: string[],
- *  middlewares: string[]|null
+ *  middlewares: null|string[]
  * }
  * 
  * @psalm-type User = array{
