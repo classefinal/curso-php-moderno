@@ -20,6 +20,7 @@ return [
         'label' => 'Home',
         'order' => 0,
         'methods' => ['GET'],
+        'middlewares' => []
     ],
     [
         'id' => 'about',
@@ -31,6 +32,7 @@ return [
         'label' => 'Sobre',
         'order' => 2,
         'methods' => ['GET'],
+        'middlewares' => []
     ],
     [
         'id' => 'products',
@@ -43,6 +45,7 @@ return [
         'order' => 1,
         'allowedRoutes' => ['product'],
         'methods' => ['GET'],
+        'middlewares' => []
     ],
     [
         'id' => 'product',
@@ -51,6 +54,7 @@ return [
         'call' => 'makeProduct',
         'isRegex' => true,
         'methods' => ['GET'],
+        'middlewares' => []
     ],
     [
         'id' => 'admin_login_page',
@@ -62,6 +66,7 @@ return [
         'label' => 'Login admin',
         'order' => 999,
         'methods' => ['GET'],
+        'middlewares' => ['preventLogged']
     ],
     [
         'id' => 'admin_login',
@@ -73,6 +78,7 @@ return [
         'label' => 'Login admin',
         'order' => 999,
         'methods' => ['POST'],
+        'middlewares' => ['preventLogged']
     ],
     [
         'id' => 'admin_logout',
@@ -84,6 +90,7 @@ return [
         'label' => 'Logout admin',
         'order' => 999,
         'methods' => ['GET'],
+        'middlewares' => []
     ],
     [
         'id' => 'login_page',
@@ -95,6 +102,7 @@ return [
         'label' => 'Login',
         'order' => 999,
         'methods' => ['GET'],
+        'middlewares' => ['preventLogged']
     ],
     [
         'id' => 'login',
@@ -106,6 +114,7 @@ return [
         'label' => 'Login',
         'order' => 999,
         'methods' => ['POST'],
+        'middlewares' => ['preventLogged']
     ],
     [
         'id' => 'logout',
@@ -117,6 +126,7 @@ return [
         'label' => 'Logout',
         'order' => 999,
         'methods' => ['GET'],
+        'middlewares' => []
     ],
     [
         'id' => 'user_profile',
@@ -128,6 +138,7 @@ return [
         'label' => 'Perfil',
         'order' => 999,
         'methods' => ['GET'],
+        'middlewares' => ['auth']
     ],
     [
         'id' => 'user_profile_update',
@@ -139,5 +150,6 @@ return [
         'label' => 'Perfil',
         'order' => 999,
         'methods' => ['POST'],
+        'middlewares' => ['auth']
     ],
 ];

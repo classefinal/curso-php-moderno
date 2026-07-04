@@ -21,7 +21,18 @@
  *  order: ?int,
  *  active: ?bool,
  *  allowedRoutes: string[]|null,
- *  methods: string[]
+ *  methods: string[],
+ *  middlewares: null|string[]
+ * }
+ * 
+ * @psalm-type User = array{
+ *  id: int,
+ *  name: string,
+ *  active: bool,
+ *  admin: bool,
+ *  password: ?string,
+ *  created_at: string,
+ *  updated_at: string
  * }
  * 
  * @psalm-type Configs = array{
@@ -31,7 +42,8 @@
  *  response: Response,
  *  redirect: Redirect,
  *  eventDispatcher: EventDispatcher,
- *  view: View
+ *  view: View,
+ *  user: ?User
  * }
  * 
  * @psalm-type StmArg = array{
@@ -85,16 +97,6 @@
  *  text: string,
  *  title: ?string,
  *  icon: ?string,
- * }
- * 
- * @psalm-type User = array{
- *  id: int,
- *  name: string,
- *  active: bool,
- *  admin: bool,
- *  password: ?string,
- *  created_at: string,
- *  updated_at: string
  * }
  * 
  * @psalm-type LoginInfo = array{

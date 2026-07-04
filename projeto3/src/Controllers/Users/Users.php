@@ -17,19 +17,7 @@ require_once SERVICES . getRequirePath('Users/UsersService.php');
  */
 function viewProfile(array $configs, array $route, string $uri): void
 {
-    if (!isset($_SESSION['user']['id']) || empty($_SESSION['user']['active'])) {
-        $configs['redirect']('/logout', 303);
-
-        return;
-    }
-
-    $user = getUserById($configs['connection'], $_SESSION['user']['id']);
-
-    if (!$user) {
-        $configs['redirect']('/logout', 303);
-
-        return;
-    }
+    $user = $configs['user'];
 
     $content = $configs['view']('Users/profile', [
         'title' => "{$user['name']} - Perfil do usuário",
@@ -54,19 +42,7 @@ function viewProfile(array $configs, array $route, string $uri): void
  */
 function updateProfile(array $configs, array $route, string $uri): void
 {
-    if (!isset($_SESSION['user']['id']) || empty($_SESSION['user']['active'])) {
-        $configs['redirect']('/logout', 303);
-
-        return;
-    }
-
-    ['success' => $success, 'error' => $error, 'user' => $user] = updateUserProfile($configs['connection'], $_SESSION['user']['id']);
-
-    if (!$user) {
-        $configs['redirect']('/logout', 303);
-
-        return;
-    }
+    ['success' => $success, 'error' => $error, 'user' => $user] = updateUserProfile($configs['connection'], $configs['user']);
 
     if ($success) {
         $configs['redirect']('/usuario/perfil', 302);

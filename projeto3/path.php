@@ -47,6 +47,11 @@ function getListenersPath(): string
     return getPath('Listeners');
 }
 
+function getMiddlewaresPath(): string
+{
+    return getPath('Middlewares');
+}
+
 function getRequirePath(string $requirePath): string
 {
     return str_replace('/', DIRECTORY_SEPARATOR, $requirePath);

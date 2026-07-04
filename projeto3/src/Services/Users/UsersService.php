@@ -73,21 +73,12 @@ function setUpdatedUserIntoSession(array $user): void
 
 /**
  * @param mysqli $connection
- * @param integer $userId
+ * @param User $user
  * @return array{success: bool, error: ?string}
  */
-function updateUserProfile(mysqli $connection, int $userId): array
+function updateUserProfile(mysqli $connection, array $user): array
 {
-    $user = getUserById($connection, $userId);
-
-    if (!$user) {
-        return [
-            'success' => false,
-            'error' => 'Usuário não encontrado ou inativo',
-            'user' => null
-        ];
-    }
-
+    $userId = $user['id'];
     $name = strip_tags(trim($_POST['name'] ?? ''));
 
     if (strlen($name) < 3 || strlen($name) > 255) {
