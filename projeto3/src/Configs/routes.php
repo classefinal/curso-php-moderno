@@ -35,6 +35,18 @@ return [
         'middlewares' => []
     ],
     [
+        'id' => 'about_send',
+        'value' => '/sobre',
+        'controller' => 'About',
+        'call' => 'sendContact',
+        'isRegex' => false,
+        'inMenu' => false,
+        'label' => 'Enviar contato',
+        'order' => 999,
+        'methods' => ['POST'],
+        'middlewares' => []
+    ],
+    [
         'id' => 'products',
         'value' => '/produtos',
         'controller' => 'Products/Products',
@@ -151,5 +163,53 @@ return [
         'order' => 999,
         'methods' => ['POST'],
         'middlewares' => ['auth']
+    ],
+    [
+        'id' => 'cart_page',
+        'value' => '/carrinho',
+        'controller' => 'Cart/Cart',
+        'call' => 'makeCart',
+        'isRegex' => false,
+        'inMenu' => false,
+        'label' => 'Carrinho',
+        'order' => 999,
+        'methods' => ['GET'],
+        'middlewares' => []
+    ],
+    [
+        'id' => 'cart_add',
+        'value' => '/carrinho/adicionar',
+        'controller' => 'Cart/Cart',
+        'call' => 'doAddToCart',
+        'isRegex' => false,
+        'inMenu' => false,
+        'label' => 'Adicionar ao carrinho',
+        'order' => 999,
+        'methods' => ['POST'],
+        'middlewares' => []
+    ],
+    [
+        'id' => 'cart_update',
+        'value' => '/carrinho/atualizar',
+        'controller' => 'Cart/Cart',
+        'call' => 'doUpdateCartQuantity',
+        'isRegex' => false,
+        'inMenu' => false,
+        'label' => 'Atualizar carrinho',
+        'order' => 999,
+        'methods' => ['POST'],
+        'middlewares' => []
+    ],
+    [
+        'id' => 'cart_remove',
+        'value' => '/carrinho/remover',
+        'controller' => 'Cart/Cart',
+        'call' => 'doRemoveCartItem',
+        'isRegex' => false,
+        'inMenu' => false,
+        'label' => 'Remover do carrinho',
+        'order' => 999,
+        'methods' => ['POST'],
+        'middlewares' => []
     ],
 ];

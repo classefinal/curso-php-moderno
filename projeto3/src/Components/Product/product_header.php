@@ -27,10 +27,13 @@ declare(strict_types=1);
                 <?php endif ?>
             </p>
             <p>
-                <a href="/produtos/<?= $product['id'] ?>" class="btn btn-primary w-100" title="Ir para produto <?= $product['name'] ?>">
-                    <i class="fa-solid fa-cart-shopping"></i>
-                    Comprar
-                </a>
+                <form method="post" action="/carrinho/adicionar">
+                    <input type="hidden" name="product_id" value="<?= $product['id'] ?>">
+                    <button type="submit" class="btn btn-primary w-100" title="Comprar <?= $product['name'] ?>">
+                        <i class="fa-solid fa-cart-shopping"></i>
+                        Comprar
+                    </button>
+                </form>
             </p>
         </div>
     </div>

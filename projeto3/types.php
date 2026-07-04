@@ -109,4 +109,18 @@
  *  user: ?User,
  *  error: ?string,
  * }
+ * 
+ * @psalm-type CartItem = array{
+ *  id: int,
+ *  cart_id: int,
+ *  product_id: int,
+ *  quantity: int,
+ *  name: string,
+ *  price: int,
+ *  image: string,
+ *  stock: int,
+ *  description_line: string,
+ *  created_at: string,
+ *  updated_at: string
+ * }
  */
