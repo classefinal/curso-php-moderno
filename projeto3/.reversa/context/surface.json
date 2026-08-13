@@ -1,0 +1,43 @@
+{
+  "generated_at": "2026-08-12T23:05:55Z",
+  "project_root": "C:\\Users\\Aulas\\Curso PHP\\projeto3",
+  "languages": [
+    { "name": "PHP", "extensions": [".php"], "file_count": 65 }
+  ],
+  "primary_language": "PHP",
+  "frameworks": [
+    { "name": "Bootstrap", "version": "5.3.8", "source": "public/assets/bootstrap/css/bootstrap.css", "type": "vendor_asset" },
+    { "name": "Font Awesome", "version": "7", "source": "public/assets/fontawesome", "type": "vendor_asset" }
+  ],
+  "package_manager": null,
+  "entry_points": [
+    { "path": "public/index.php", "type": "front_controller" },
+    { "path": "app.php", "type": "bootstrap" },
+    { "path": "migrate.php", "type": "cli" }
+  ],
+  "config_files": [
+    ".env.example",
+    "public/.htaccess"
+  ],
+  "ci_cd": [],
+  "docker": null,
+  "database_hints": [
+    { "path": "src/Migrations/", "type": "migrations_dir" },
+    { "path": "src/Services/DB.php", "type": "db_layer" },
+    { "path": ".env.example", "type": "env_db_config" }
+  ],
+  "test_framework": null,
+  "test_file_count": 0,
+  "modules": [
+    "home", "about", "products", "auth", "users", "cart", "admin"
+  ],
+  "total_files": 65,
+  "organization_suggestion": {
+    "granularity": "endpoint",
+    "rationale": "O roteamento é centralizado em src/Configs/routes.php, com cada rota mapeando URL + método HTTP (GET/POST) para um controller e uma função específica, favorecendo specs organizadas por endpoint.",
+    "signals": [
+      { "type": "centralized_routing", "evidence": ["src/Configs/routes.php"] }
+    ],
+    "features": []
+  }
+}

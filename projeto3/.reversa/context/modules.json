@@ -1,0 +1,664 @@
+{
+  "generated_at": "2026-08-12T23:20:00Z",
+  "modules": [
+    {
+      "name": "home",
+      "path": "src/Controllers/Home.php + src/Pages/home.php",
+      "purpose": "Renderiza a página inicial com o menu de navegação",
+      "primary_files": [
+        "src/Controllers/Home.php",
+        "src/Pages/home.php"
+      ],
+      "functions": [
+        {
+          "name": "makeHome",
+          "file": "src/Controllers/Home.php",
+          "params": ["Configs $configs", "Route $route", "?string $uri"],
+          "returns": "void (renderiza a view 'home' e envia resposta 200)",
+          "confidence": "confirmed"
+        }
+      ],
+      "entities": [],
+      "business_rules": [
+        {
+          "description": "Home é a rota default quando REQUEST_URI está vazia ou é '/'",
+          "location": "src/Services/Router.php:69-98",
+          "confidence": "confirmed"
+        }
+      ],
+      "dependencies": ["Functions", "View", "Response", "Router"],
+      "algorithms": [],
+      "complexity": "low"
+    },
+    {
+      "name": "about",
+      "path": "src/Controllers/About.php + src/Pages/about.php + src/Migrations/10",
+      "purpose": "Página 'Sobre' com formulário de contato que persiste em contacts",
+      "primary_files": [
+        "src/Controllers/About.php",
+        "src/Pages/about.php",
+        "src/Migrations/10_create_contacts_table.php"
+      ],
+      "functions": [
+        {
+          "name": "makeAbout",
+          "file": "src/Controllers/About.php",
+          "params": ["Configs $configs", "Route $route", "string $uri"],
+          "returns": "void (renderiza view 'about', lê e limpa flash session)",
+          "confidence": "confirmed"
+        },
+        {
+          "name": "sendContact",
+          "file": "src/Controllers/About.php",
+          "params": ["Configs $configs", "Route $route", "string $uri"],
+          "returns": "void (valida POST, insere em contacts, redireciona 302 com flash)",
+          "confidence": "confirmed"
+        }
+      ],
+      "entities": [
+        {
+          "name": "Contact",
+          "fields": [
+            { "name": "id", "type": "int unsigned", "required": true },
+            { "name": "name", "type": "string", "required": true },
+            { "name": "email", "type": "string", "required": true },
+            { "name": "phone", "type": "string", "required": true },
+            { "name": "created_at", "type": "datetime", "required": true }
+          ],
+          "confidence": "confirmed"
+        }
+      ],
+      "business_rules": [
+        {
+          "description": "Campos name, email e phone são obrigatórios",
+          "location": "src/Controllers/About.php:44-72",
+          "confidence": "confirmed"
+        },
+        {
+          "description": "Email validado com FILTER_VALIDATE_EMAIL",
+          "location": "src/Controllers/About.php:56-60",
+          "confidence": "confirmed"
+        },
+        {
+          "description": "Telefone deve casar com /^\\(\\d{2}\\)\\d{4,5}-\\d{4}$/ e é normalizado para +55<dígitos>",
+          "location": "src/Controllers/About.php:68-74",
+          "confidence": "confirmed"
+        },
+        {
+          "description": "Erros/sucesso via flash message em $_SESSION['flash']",
+          "location": "src/Controllers/About.php:18-20, 45-92",
+          "confidence": "confirmed"
+        }
+      ],
+      "dependencies": ["DB", "Response", "View", "Functions"],
+      "algorithms": ["normalizacao_de_telefone"],
+      "complexity": "low"
+    },
+    {
+      "name": "products",
+      "path": "src/Controllers/Products + src/Services/Products + src/Services/Categories + src/Pages/Products + src/Migrations/4,5,6,7",
+      "purpose": "Catálogo de produtos com listagem paginada, filtro por categoria e detalhe do produto",
+      "primary_files": [
+        "src/Controllers/Products/Products.php",
+        "src/Services/Products/ProductsService.php",
+        "src/Services/Products/RandomProductsService.php",
+        "src/Services/Categories/CategoriesService.php",
+        "src/Pages/Products/products.php",
+        "src/Pages/Products/product.php"
+      ],
+      "functions": [
+        {
+          "name": "makeProducts",
+          "file": "src/Controllers/Products/Products.php",
+          "params": ["Configs $configs", "Route $route", "string $uri"],
+          "returns": "void (lista produtos ativos + categorias + produtos aleatórios)",
+          "confidence": "confirmed"
+        },
+        {
+          "name": "makeProduct",
+          "file": "src/Controllers/Products/Products.php",
+          "params": ["Configs $configs", "Route $route", "string $uri"],
+          "returns": "void (detalhe do produto; 404 se não encontrado)",
+          "confidence": "confirmed"
+        },
+        {
+          "name": "getActiveProducts",
+          "file": "src/Services/Products/ProductsService.php",
+          "params": ["mysqli $connection"],
+          "returns": "ActiveProductsList (page, limit, categoryId, products)",
+          "confidence": "confirmed"
+        },
+        {
+          "name": "getProductById",
+          "file": "src/Services/Products/ProductsService.php",
+          "params": ["mysqli $connection", "string $uri"],
+          "returns": "?Product",
+          "confidence": "confirmed"
+        },
+        {
+          "name": "getRandomActiveProducts",
+          "file": "src/Services/Products/RandomProductsService.php",
+          "params": ["mysqli $connection"],
+          "returns": "Product[] (até 6, ORDER BY RAND())",
+          "confidence": "confirmed"
+        },
+        {
+          "name": "getActiveCategories",
+          "file": "src/Services/Categories/CategoriesService.php",
+          "params": ["mysqli $connection"],
+          "returns": "Category[] (ativas, ORDER BY name)",
+          "confidence": "confirmed"
+        },
+        {
+          "name": "getActiveCategoryById",
+          "file": "src/Services/Categories/CategoriesService.php",
+          "params": ["mysqli $connection", "int $categoryId"],
+          "returns": "?Category (retorna [] quando não existe)",
+          "confidence": "confirmed"
+        }
+      ],
+      "entities": [
+        {
+          "name": "Product",
+          "fields": [
+            { "name": "id", "type": "int unsigned", "required": true },
+            { "name": "name", "type": "string", "required": true },
+            { "name": "description", "type": "text", "required": true },
+            { "name": "short_description", "type": "string", "required": false },
+            { "name": "description_line", "type": "string", "required": false },
+            { "name": "active", "type": "bool", "required": true },
+            { "name": "stock", "type": "int unsigned", "required": true },
+            { "name": "price", "type": "int", "required": true, "note": "em centavos" },
+            { "name": "image", "type": "text", "required": true },
+            { "name": "category_id", "type": "int unsigned", "required": true },
+            { "name": "category_name", "type": "string", "required": false, "note": "JOIN com categories" },
+            { "name": "created_at", "type": "datetime", "required": true },
+            { "name": "updated_at", "type": "datetime", "required": true }
+          ],
+          "confidence": "confirmed"
+        },
+        {
+          "name": "Category",
+          "fields": [
+            { "name": "id", "type": "int unsigned", "required": true },
+            { "name": "name", "type": "string", "required": true },
+            { "name": "active", "type": "bool", "required": true },
+            { "name": "description", "type": "text", "required": false },
+            { "name": "created_at", "type": "datetime", "required": true },
+            { "name": "updated_at", "type": "datetime", "required": true }
+          ],
+          "confidence": "confirmed"
+        }
+      ],
+      "business_rules": [
+        {
+          "description": "Somente produtos ativos (p.active=true) de categorias ativas (c.active=true) são exibidos",
+          "location": "src/Services/Products/ProductsService.php:9-22, 147-159",
+          "confidence": "confirmed"
+        },
+        {
+          "description": "Pagination: limit 5-30 (padrão 10), page >= 1, OFFSET = (page-1)*limit",
+          "location": "src/Services/Products/ProductsService.php:36-62",
+          "confidence": "confirmed"
+        },
+        {
+          "description": "Filtro opcional por categoria via ?categoryId= (int >= 1)",
+          "location": "src/Services/Products/ProductsService.php:29-34",
+          "confidence": "confirmed"
+        },
+        {
+          "description": "Preço armazenado em centavos; exibição divide por 100 (R$ x,xx)",
+          "location": "src/Components/Product/product_header.php:20",
+          "confidence": "confirmed"
+        },
+        {
+          "description": "Produto sem estoque é exibido como 'Fora de estoque'",
+          "location": "src/Components/Product/product_header.php:23-27",
+          "confidence": "confirmed"
+        },
+        {
+          "description": "ID do produto extraído do último segmento da URI (rota regex /produtos/{id})",
+          "location": "src/Services/Products/ProductsService.php:123-139",
+          "confidence": "confirmed"
+        }
+      ],
+      "dependencies": ["DB", "View", "Response", "Functions"],
+      "algorithms": ["paginacao_com_offset", "selecao_aleatoria_rand"],
+      "complexity": "medium"
+    },
+    {
+      "name": "auth",
+      "path": "src/Controllers/Login + src/Services/Login/LoginService.php + src/Listeners/Login + src/Configs/events.php",
+      "purpose": "Autenticação de usuários (login/logout) com sessão e eventos de erro",
+      "primary_files": [
+        "src/Controllers/Login/Login.php",
+        "src/Services/Login/LoginService.php",
+        "src/Listeners/Login/LoginErrorListener.php",
+        "src/Middlewares/auth.php",
+        "src/Middlewares/preventLogged.php"
+      ],
+      "functions": [
+        {
+          "name": "makeLogin",
+          "file": "src/Controllers/Login/Login.php",
+          "params": ["Configs $configs", "Route $route", "string $uri"],
+          "returns": "void (view de login, action=/login)",
+          "confidence": "confirmed"
+        },
+        {
+          "name": "validateLogin",
+          "file": "src/Controllers/Login/Login.php",
+          "params": ["Configs $configs", "Route $route", "string $uri"],
+          "returns": "void (redirect 302 /usuario/perfil ou 401 com view)",
+          "confidence": "confirmed"
+        },
+        {
+          "name": "logoutLogin",
+          "file": "src/Controllers/Login/Login.php",
+          "params": ["Configs $configs", "Route $route", "string $uri"],
+          "returns": "void (redireciona para /admin/logout se admin logado, senão unset $_SESSION['user'] e vai para /)",
+          "confidence": "confirmed"
+        },
+        {
+          "name": "validateLoginInfo",
+          "file": "src/Services/Login/LoginService.php",
+          "params": ["string $email", "string $password"],
+          "returns": "LoginInfo (success bool, error ?string)",
+          "confidence": "confirmed"
+        },
+        {
+          "name": "loginAuthenticate",
+          "file": "src/Services/Login/LoginService.php",
+          "params": ["mysqli $connection", "Closure $eventDispatcher"],
+          "returns": "LoginInfo; grava $_SESSION['user'] em sucesso",
+          "confidence": "confirmed"
+        },
+        {
+          "name": "handleLoginErrorEvent",
+          "file": "src/Listeners/Login/LoginErrorListener.php",
+          "params": ["Configs $configs", "array $args"],
+          "returns": "void (agenda escrita de log via defer)",
+          "confidence": "confirmed"
+        }
+      ],
+      "entities": [
+        {
+          "name": "User (login)",
+          "fields": [
+            { "name": "id", "type": "int unsigned", "required": true },
+            { "name": "name", "type": "string", "required": true },
+            { "name": "email", "type": "string", "required": true, "note": "não presente na migration 8" },
+            { "name": "password", "type": "string (bcrypt)", "required": true, "note": "não presente na migration 8" },
+            { "name": "active", "type": "bool", "required": true },
+            { "name": "admin", "type": "bool", "required": true },
+            { "name": "created_at", "type": "datetime", "required": true },
+            { "name": "updated_at", "type": "datetime", "required": true }
+          ],
+          "confidence": "confirmed"
+        }
+      ],
+      "business_rules": [
+        {
+          "description": "Email e senha obrigatórios; email deve ser válido (FILTER_VALIDATE_EMAIL); senha com mínimo 8 caracteres",
+          "location": "src/Services/Login/LoginService.php:20-37",
+          "confidence": "confirmed"
+        },
+        {
+          "description": "Email normalizado para minúsculas; só usuários active=true e admin=false entram no login de usuário",
+          "location": "src/Services/Login/LoginService.php:46, 122-125",
+          "confidence": "confirmed"
+        },
+        {
+          "description": "Senha verificada com password_verify (bcrypt); hash dummy usado quando usuário não existe (mitiga timing attack)",
+          "location": "src/Services/Login/LoginService.php:73-78, 133-138",
+          "confidence": "confirmed"
+        },
+        {
+          "description": "Falha de login dispara evento 'LoginRecused' com email e data",
+          "location": "src/Services/Login/LoginService.php:51-54, 111-114",
+          "confidence": "confirmed"
+        },
+        {
+          "description": "Login bem-sucedido grava o usuário inteiro em $_SESSION['user']",
+          "location": "src/Services/Login/LoginService.php:151",
+          "confidence": "confirmed"
+        }
+      ],
+      "dependencies": ["DB", "Events", "Listeners", "Response", "Functions", "Defer"],
+      "algorithms": ["hash_dummy_timing_attack"],
+      "complexity": "medium"
+    },
+    {
+      "name": "users",
+      "path": "src/Controllers/Users + src/Services/Users + src/Pages/Users",
+      "purpose": "Perfil do usuário logado: visualização e atualização de nome e senha",
+      "primary_files": [
+        "src/Controllers/Users/Users.php",
+        "src/Services/Users/UsersService.php",
+        "src/Pages/Users/profile.php",
+        "src/Middlewares/auth.php"
+      ],
+      "functions": [
+        {
+          "name": "viewProfile",
+          "file": "src/Controllers/Users/Users.php",
+          "params": ["Configs $configs", "Route $route", "string $uri"],
+          "returns": "void (renderiza perfil com $configs['user'])",
+          "confidence": "confirmed"
+        },
+        {
+          "name": "updateProfile",
+          "file": "src/Controllers/Users/Users.php",
+          "params": ["Configs $configs", "Route $route", "string $uri"],
+          "returns": "void (redirect 302 em sucesso ou 422 com view)",
+          "confidence": "confirmed"
+        },
+        {
+          "name": "getUserById",
+          "file": "src/Services/Users/UsersService.php",
+          "params": ["mysqli $connection", "int $userId"],
+          "returns": "?User",
+          "confidence": "confirmed"
+        },
+        {
+          "name": "updateUserProfile",
+          "file": "src/Services/Users/UsersService.php",
+          "params": ["mysqli $connection", "User $user"],
+          "returns": "array{success: bool, error: ?string, user: User}",
+          "confidence": "confirmed"
+        },
+        {
+          "name": "validateUpdateUserPassword",
+          "file": "src/Services/Users/UsersService.php",
+          "params": ["User $user"],
+          "returns": "array{success: bool, error: ?string}",
+          "confidence": "confirmed"
+        },
+        {
+          "name": "setUpdatedUserIntoSession",
+          "file": "src/Services/Users/UsersService.php",
+          "params": ["User $user"],
+          "returns": "void (unset password, grava $_SESSION['user'] e profile_updated)",
+          "confidence": "confirmed"
+        }
+      ],
+      "entities": [
+        {
+          "name": "User",
+          "fields": [
+            { "name": "id", "type": "int unsigned", "required": true },
+            { "name": "name", "type": "string", "required": true },
+            { "name": "email", "type": "string", "required": true, "note": "só leitura na view (disabled)" },
+            { "name": "password", "type": "string (bcrypt)", "required": true },
+            { "name": "active", "type": "bool", "required": true },
+            { "name": "admin", "type": "bool", "required": true },
+            { "name": "created_at", "type": "datetime", "required": true },
+            { "name": "updated_at", "type": "datetime", "required": true }
+          ],
+          "confidence": "confirmed"
+        }
+      ],
+      "business_rules": [
+        {
+          "description": "Nome com 3-255 caracteres após strip_tags",
+          "location": "src/Services/Users/UsersService.php:82-90",
+          "confidence": "confirmed"
+        },
+        {
+          "description": "Alteração de senha exige senha atual correta (password_verify), nova senha >= 8 chars e confirmação idêntica",
+          "location": "src/Services/Users/UsersService.php:37-60",
+          "confidence": "confirmed"
+        },
+        {
+          "description": "Senha nova é hashada com PASSWORD_BCRYPT antes do UPDATE",
+          "location": "src/Services/Users/UsersService.php:122",
+          "confidence": "confirmed"
+        },
+        {
+          "description": "Usuário recarregado do banco pelo middleware auth ($configs['user']), não confia na sessão para active",
+          "location": "src/Middlewares/auth.php:21-35",
+          "confidence": "confirmed"
+        },
+        {
+          "description": "Flag $_SESSION['profile_updated'] limpa post-resposta via defer",
+          "location": "src/Controllers/Users/Users.php:28-32",
+          "confidence": "confirmed"
+        }
+      ],
+      "dependencies": ["auth", "DB", "View", "Response", "Defer", "Functions"],
+      "algorithms": [],
+      "complexity": "medium"
+    },
+    {
+      "name": "cart",
+      "path": "src/Controllers/Cart + src/Services/Cart/CartService.php + src/Pages/Cart + src/Migrations/9",
+      "purpose": "Carrinho de compras: persistido em banco para logados e em cookie para visitantes",
+      "primary_files": [
+        "src/Controllers/Cart/Cart.php",
+        "src/Services/Cart/CartService.php",
+        "src/Pages/Cart/cart.php",
+        "src/Migrations/9_create_carts_and_cart_items_tables.php"
+      ],
+      "functions": [
+        {
+          "name": "makeCart",
+          "file": "src/Controllers/Cart/Cart.php",
+          "params": ["Configs $configs", "Route $route", "?string $uri"],
+          "returns": "void (renderiza carrinho com items e total)",
+          "confidence": "confirmed"
+        },
+        {
+          "name": "doAddToCart",
+          "file": "src/Controllers/Cart/Cart.php",
+          "params": ["Configs $configs", "Route $route", "?string $uri"],
+          "returns": "void (adiciona no banco ou cookie, redirect 302)",
+          "confidence": "confirmed"
+        },
+        {
+          "name": "doUpdateCartQuantity",
+          "file": "src/Controllers/Cart/Cart.php",
+          "params": ["Configs $configs", "Route $route", "?string $uri"],
+          "returns": "void (increase/decrease, redirect 302)",
+          "confidence": "confirmed"
+        },
+        {
+          "name": "doRemoveCartItem",
+          "file": "src/Controllers/Cart/Cart.php",
+          "params": ["Configs $configs", "Route $route", "?string $uri"],
+          "returns": "void (remove item, redirect 302)",
+          "confidence": "confirmed"
+        },
+        {
+          "name": "getOrCreateCart",
+          "file": "src/Services/Cart/CartService.php",
+          "params": ["mysqli $connection", "int $userId"],
+          "returns": "array (cart; cria se não existe)",
+          "confidence": "confirmed"
+        },
+        {
+          "name": "addToCart",
+          "file": "src/Services/Cart/CartService.php",
+          "params": ["mysqli $connection", "int $userId", "int $productId"],
+          "returns": "array{success, action: 'added'|'incremented'}",
+          "confidence": "confirmed"
+        },
+        {
+          "name": "updateCartItemQuantity",
+          "file": "src/Services/Cart/CartService.php",
+          "params": ["mysqli $connection", "int $userId", "int $productId", "string $action"],
+          "returns": "array{success, action?: string, error?: string}",
+          "confidence": "confirmed"
+        },
+        {
+          "name": "calculateCartTotal",
+          "file": "src/Services/Cart/CartService.php",
+          "params": ["array $items"],
+          "returns": "int (soma price*quantity em centavos)",
+          "confidence": "confirmed"
+        },
+        {
+          "name": "getCartItemsFromCookie",
+          "file": "src/Services/Cart/CartService.php",
+          "params": [],
+          "returns": "CartItem[] (parse do cookie 'cart_items')",
+          "confidence": "confirmed"
+        },
+        {
+          "name": "enrichCartItemsWithProductData",
+          "file": "src/Services/Cart/CartService.php",
+          "params": ["mysqli $connection", "array $cookieItems"],
+          "returns": "CartItem[] (join com products, só ativos)",
+          "confidence": "confirmed"
+        }
+      ],
+      "entities": [
+        {
+          "name": "Cart",
+          "fields": [
+            { "name": "id", "type": "int unsigned", "required": true },
+            { "name": "user_id", "type": "int", "required": true, "note": "UNIQUE KEY" },
+            { "name": "created_at", "type": "datetime", "required": true },
+            { "name": "updated_at", "type": "datetime", "required": true }
+          ],
+          "confidence": "confirmed"
+        },
+        {
+          "name": "CartItem",
+          "fields": [
+            { "name": "id", "type": "int unsigned", "required": true },
+            { "name": "cart_id", "type": "int unsigned", "required": true },
+            { "name": "product_id", "type": "int unsigned", "required": true },
+            { "name": "quantity", "type": "int unsigned", "required": true, "default": 1 },
+            { "name": "created_at", "type": "datetime", "required": true },
+            { "name": "updated_at", "type": "datetime", "required": true }
+          ],
+          "confidence": "confirmed"
+        }
+      ],
+      "business_rules": [
+        {
+          "description": "Usuário logado usa tabelas carts/cart_items; visitante usa cookie 'cart_items' no formato 'id:qtd,id:qtd'",
+          "location": "src/Controllers/Cart/Cart.php:16-33, 56-60",
+          "confidence": "confirmed"
+        },
+        {
+          "description": "Adicionar produto existente incrementa quantity; senão insere quantity=1",
+          "location": "src/Services/Cart/CartService.php:57-89",
+          "confidence": "confirmed"
+        },
+        {
+          "description": "Decrease remove o item quando quantity <= 1",
+          "location": "src/Services/Cart/CartService.php:126-137",
+          "confidence": "confirmed"
+        },
+        {
+          "description": "Cookie tem validade de 30 dias (time() + 86400*30)",
+          "location": "src/Services/Cart/CartService.php:249",
+          "confidence": "confirmed"
+        },
+        {
+          "description": "product_id validado como int >= 1 em todos os POSTs do carrinho",
+          "location": "src/Controllers/Cart/Cart.php:47-53, 67-75, 88-94",
+          "confidence": "confirmed"
+        },
+        {
+          "description": "Itens de cookie enriquecidos só com produtos ativos",
+          "location": "src/Services/Cart/CartService.php:327-338",
+          "confidence": "confirmed"
+        }
+      ],
+      "dependencies": ["DB", "View", "Response", "Functions"],
+      "algorithms": ["total_centavos", "cookie_serialization"],
+      "complexity": "medium"
+    },
+    {
+      "name": "admin",
+      "path": "src/Controllers/Admin/Login + src/Listeners/AdminLogin + src/Configs/events.php",
+      "purpose": "Login e logout administrativo com sessão própria ($_SESSION['admin'])",
+      "primary_files": [
+        "src/Controllers/Admin/Login/AdminLogin.php",
+        "src/Listeners/AdminLogin/AdminLoginErrorListener.php",
+        "src/Services/Login/LoginService.php",
+        "src/Migrations/8_create_users_table.php"
+      ],
+      "functions": [
+        {
+          "name": "makeAdminLogin",
+          "file": "src/Controllers/Admin/Login/AdminLogin.php",
+          "params": ["Configs $configs", "Route $route", "string $uri"],
+          "returns": "void (view de login, action=/admin/login)",
+          "confidence": "confirmed"
+        },
+        {
+          "name": "validateAdminLogin",
+          "file": "src/Controllers/Admin/Login/AdminLogin.php",
+          "params": ["Configs $configs", "Route $route", "string $uri"],
+          "returns": "void (redirect 302 /admin/dashboard ou 401 com view)",
+          "confidence": "confirmed"
+        },
+        {
+          "name": "logoutAdminLogin",
+          "file": "src/Controllers/Admin/Login/AdminLogin.php",
+          "params": ["Configs $configs", "Route $route", "string $uri"],
+          "returns": "void (unset $_SESSION['admin'], redirect /)",
+          "confidence": "confirmed"
+        },
+        {
+          "name": "adminLoginAuthenticate",
+          "file": "src/Services/Login/LoginService.php",
+          "params": ["mysqli $connection", "Closure $eventDispatcher"],
+          "returns": "LoginInfo; grava $_SESSION['admin'] em sucesso",
+          "confidence": "confirmed"
+        },
+        {
+          "name": "handleAdminLoginErrorEvent",
+          "file": "src/Listeners/AdminLogin/AdminLoginErrorListener.php",
+          "params": ["Configs $configs", "array $args"],
+          "returns": "void (agenda escrita de log via defer)",
+          "confidence": "confirmed"
+        }
+      ],
+      "entities": [
+        {
+          "name": "User (admin)",
+          "fields": [
+            { "name": "id", "type": "int unsigned", "required": true },
+            { "name": "name", "type": "string", "required": true },
+            { "name": "email", "type": "string", "required": true },
+            { "name": "password", "type": "string (bcrypt)", "required": true },
+            { "name": "active", "type": "bool", "required": true },
+            { "name": "admin", "type": "bool", "required": true },
+            { "name": "created_at", "type": "datetime", "required": true },
+            { "name": "updated_at", "type": "datetime", "required": true }
+          ],
+          "confidence": "confirmed"
+        }
+      ],
+      "business_rules": [
+        {
+          "description": "Admin login requer usuário com active=true e admin=true",
+          "location": "src/Services/Login/LoginService.php:62-64",
+          "confidence": "confirmed"
+        },
+        {
+          "description": "Seed de admin: name='Administrador', email='admin@admin.com', senha 'admin123' (bcrypt cost 16) na migration 8",
+          "location": "src/Migrations/8_create_users_table.php:23-41",
+          "confidence": "confirmed"
+        },
+        {
+          "description": "Falha de login dispara evento 'AdminLoginRecused' com email e data",
+          "location": "src/Services/Login/LoginService.php:51-54",
+          "confidence": "confirmed"
+        },
+        {
+          "description": "Logout de admin redireciona para /logout se um usuário comum ainda estiver na sessão",
+          "location": "src/Controllers/Admin/Login/AdminLogin.php:61-67",
+          "confidence": "confirmed"
+        }
+      ],
+      "dependencies": ["auth", "DB", "Events", "Listeners", "Response", "Functions", "Defer"],
+      "algorithms": [],
+      "complexity": "low"
+    }
+  ]
+}

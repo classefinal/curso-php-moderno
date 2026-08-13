@@ -119,7 +119,7 @@ function updateUserProfile(mysqli $connection, array $user): array
         ];
     }
 
-    $hash = password_hash($_POST['new_password'], PASSWORD_BCRYPT);
+    $hash = password_hash($_POST['new_password'], PASSWORD_BCRYPT, ['cost' => 16]);
 
     dbPrepareAndExecute(
         $connection,

@@ -14,6 +14,9 @@ declare(strict_types=1);
 
 require_once COMPONENTS . 'header.php';
 
+$flashError = $_SESSION['flash']['error'] ?? null;
+unset($_SESSION['flash']);
+
 ?>
 
 <main class="container mt-5" style="max-width: 800px;">
@@ -21,6 +24,12 @@ require_once COMPONENTS . 'header.php';
         <i class="fa-solid fa-cart-shopping"></i>
         Carrinho de compras
     </h2>
+
+    <?php if (!empty($flashError)): ?>
+        <div class="alert alert-danger">
+            <p class="mb-0"><?= htmlspecialchars($flashError, ENT_QUOTES, 'UTF-8') ?></p>
+        </div>
+    <?php endif; ?>
 
     <?php if (empty($items)): ?>
         <div class="alert alert-info">
@@ -47,12 +56,12 @@ require_once COMPONENTS . 'header.php';
                         <tr>
                             <td>
                                 <div class="d-flex align-items-center gap-3">
-                                    <img src="<?= $item['image'] ?>" alt="<?= $item['name'] ?>" style="width: 64px; height: 64px; object-fit: cover;" class="rounded">
+                                    <img src="<?= htmlspecialchars($item['image'], ENT_QUOTES, 'UTF-8') ?>" alt="<?= htmlspecialchars($item['name'], ENT_QUOTES, 'UTF-8') ?>" style="width: 64px; height: 64px; object-fit: cover;" class="rounded">
                                     <div>
-                                        <a href="/produtos/<?= $item['product_id'] ?>" class="text-decoration-none fw-semibold">
-                                            <?= $item['name'] ?>
+                                        <a href="/produtos/<?= (int)$item['product_id'] ?>" class="text-decoration-none fw-semibold">
+                                            <?= htmlspecialchars($item['name'], ENT_QUOTES, 'UTF-8') ?>
                                         </a>
-                                        <small class="d-block text-muted"><?= $item['description_line'] ?></small>
+                                        <small class="d-block text-muted"><?= htmlspecialchars($item['description_line'], ENT_QUOTES, 'UTF-8') ?></small>
                                     </div>
                                 </div>
                             </td>
@@ -62,7 +71,7 @@ require_once COMPONENTS . 'header.php';
                             <td>
                                 <div class="d-flex align-items-center">
                                     <form method="post" action="/carrinho/atualizar" class="d-inline">
-                                        <input type="hidden" name="product_id" value="<?= $item['product_id'] ?>">
+                                        <input type="hidden" name="product_id" value="<?= (int)$item['product_id'] ?>">
                                         <input type="hidden" name="action" value="decrease">
                                         <button type="submit" class="btn btn-outline-secondary btn-sm" title="Diminuir quantidade">
                                             <i class="fa-solid fa-minus"></i>
@@ -70,7 +79,7 @@ require_once COMPONENTS . 'header.php';
                                     </form>
                                     <span class="mx-3 fw-bold fs-5"><?= (int)$item['quantity'] ?></span>
                                     <form method="post" action="/carrinho/atualizar" class="d-inline">
-                                        <input type="hidden" name="product_id" value="<?= $item['product_id'] ?>">
+                                        <input type="hidden" name="product_id" value="<?= (int)$item['product_id'] ?>">
                                         <input type="hidden" name="action" value="increase">
                                         <button type="submit" class="btn btn-outline-secondary btn-sm" title="Aumentar quantidade">
                                             <i class="fa-solid fa-plus"></i>
@@ -83,7 +92,7 @@ require_once COMPONENTS . 'header.php';
                             </td>
                             <td>
                                 <form method="post" action="/carrinho/remover" class="d-inline">
-                                    <input type="hidden" name="product_id" value="<?= $item['product_id'] ?>">
+                                    <input type="hidden" name="product_id" value="<?= (int)$item['product_id'] ?>">
                                     <button type="submit" class="btn btn-outline-danger btn-sm" title="Remover item">
                                         <i class="fa-solid fa-trash"></i>
                                     </button>

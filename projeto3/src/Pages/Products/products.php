@@ -22,9 +22,9 @@ require_once COMPONENTS . 'header.php';
     <section>
         <div class="row mt-3">
             <div class="col">
-                <h1><?= $title ?></h1>
+                <h1><?= htmlspecialchars($title, ENT_QUOTES, 'UTF-8') ?></h1>
                 <?php if (!empty($activeCategory['description'])): ?>
-                    <?= $activeCategory['description'] ?>
+                    <?= htmlspecialchars($activeCategory['description'], ENT_QUOTES, 'UTF-8') ?>
                 <?php else: ?>
                     <p>Compre hoje mesmo com descontos incríveis.</p>
                 <?php endif ?>

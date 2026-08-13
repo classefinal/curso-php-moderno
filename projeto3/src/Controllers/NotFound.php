@@ -20,5 +20,5 @@ function makeNotFound(array $configs, array $route, string $uri): void
         'routes' => getMenuItens($configs['routes'], $uri, $route),
     ]);
 
-    $configs['response'](content: $content);
+    $configs['response'](404, $content);
 }

@@ -54,9 +54,13 @@ function doAddToCart(array $configs, array $route, ?string $uri): void
     }
 
     if (isset($_SESSION['user'])) {
-        addToCart($configs['connection'], (int)$_SESSION['user']['id'], $productId);
+        $result = addToCart($configs['connection'], (int)$_SESSION['user']['id'], $productId);
+
+        if (!$result['success']) {
+            $_SESSION['flash']['error'] = $result['error'] ?? 'Erro ao adicionar item ao carrinho';
+        }
     } else {
-        addToCartCookie($productId);
+        addToCartCookie($configs['connection'], $productId);
     }
 
     $configs['redirect']('/carrinho', 302);
@@ -75,9 +79,13 @@ function doUpdateCartQuantity(array $configs, array $route, ?string $uri): void
     }
 
     if (isset($_SESSION['user'])) {
-        updateCartItemQuantity($configs['connection'], (int)$_SESSION['user']['id'], $productId, $action);
+        $result = updateCartItemQuantity($configs['connection'], (int)$_SESSION['user']['id'], $productId, $action);
+
+        if (!$result['success']) {
+            $_SESSION['flash']['error'] = $result['error'] ?? 'Erro ao atualizar o carrinho';
+        }
     } else {
-        updateCartItemQuantityCookie($productId, $action);
+        updateCartItemQuantityCookie($configs['connection'], $productId, $action);
     }
 
     $configs['redirect']('/carrinho', 302);
@@ -95,7 +103,11 @@ function doRemoveCartItem(array $configs, array $route, ?string $uri): void
     }
 
     if (isset($_SESSION['user'])) {
-        removeCartItem($configs['connection'], (int)$_SESSION['user']['id'], $productId);
+        $result = removeCartItem($configs['connection'], (int)$_SESSION['user']['id'], $productId);
+
+        if (!$result['success']) {
+            $_SESSION['flash']['error'] = $result['error'] ?? 'Erro ao remover item do carrinho';
+        }
     } else {
         removeCartItemCookie($productId);
     }

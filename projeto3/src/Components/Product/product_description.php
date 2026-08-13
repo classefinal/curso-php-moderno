@@ -9,5 +9,5 @@ declare(strict_types=1);
  */
 ?>
 <div class="col-12">
-    <?= $product['description'] ?>
+    <?= htmlspecialchars($product['description'], ENT_QUOTES, 'UTF-8') ?>
 </div>

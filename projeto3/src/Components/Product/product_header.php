@@ -11,11 +11,11 @@ declare(strict_types=1);
 <div class="col-12">
     <div class="row">
         <div class="col-12 col-sm-12 col-md-4 col-lg-6">
-            <img src="<?= $product['image'] ?>" alt="<?= $product['name'] ?>" class="d-block w-100" />
+            <img src="<?= htmlspecialchars($product['image'], ENT_QUOTES, 'UTF-8') ?>" alt="<?= htmlspecialchars($product['name'], ENT_QUOTES, 'UTF-8') ?>" class="d-block w-100" />
         </div>
         <div class="col-12 col-sm-12 col-md-8 col-lg-6">
-            <h1><?= $product['name'] ?></h1>
-            <p><?= $product['short_description'] ?></p>
+            <h1><?= htmlspecialchars($product['name'], ENT_QUOTES, 'UTF-8') ?></h1>
+            <p><?= htmlspecialchars($product['short_description'], ENT_QUOTES, 'UTF-8') ?></p>
             <p class="h2 text-primary">
                 <strong>R$ <?= number_format($product['price'] / 100, 2, ',', '.') ?></strong>
             </p>
@@ -29,7 +29,7 @@ declare(strict_types=1);
             <p>
                 <form method="post" action="/carrinho/adicionar">
                     <input type="hidden" name="product_id" value="<?= $product['id'] ?>">
-                    <button type="submit" class="btn btn-primary w-100" title="Comprar <?= $product['name'] ?>">
+                    <button type="submit" class="btn btn-primary w-100" title="Comprar <?= htmlspecialchars($product['name'], ENT_QUOTES, 'UTF-8') ?>">
                         <i class="fa-solid fa-cart-shopping"></i>
                         Comprar
                     </button>

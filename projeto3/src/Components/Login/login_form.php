@@ -4,7 +4,7 @@
  * @var string $action
  */
 ?>
-<form action="<?= $action ?>" method="POST" autocomplete="off">
+<form action="<?= htmlspecialchars($action, ENT_QUOTES, 'UTF-8') ?>" method="POST" autocomplete="off">
     <div class="mb-3">
         <label for="email" class="form-label">E-mail</label>
         <input type="email" class="form-control" required id="email" name="email" autofocus autocomplete="off" placeholder="E-mail" >

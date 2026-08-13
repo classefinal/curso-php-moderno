@@ -1,0 +1,288 @@
+openapi: 3.0.3
+info:
+  title: Loja didática — projeto3 (API operacional)
+  description: >
+    Contrato operacional do legado PHP procedural (sem OOP, sem dependências).
+    Sistema renderizado no servidor (HTML) com formulários URL-encoded; não há API JSON.
+    Sucesso em POST segue PRG (Post/Redirect/Get) via 302/303 com header Location.
+    Middlewares: `preventLogged` (bloqueia acesso a login estando logado) e `auth`
+    (exige sessão de usuário válida e usuário ativo).
+  version: 1.0.0
+servers:
+  - url: http://localhost/projeto3/public
+    description: Servidor de desenvolvimento local
+tags:
+  - name: Catalogo
+    description: Páginas públicas de home, sobre e produtos
+  - name: Autenticacao
+    description: Login, logout e login administrativo
+  - name: Usuario
+    description: Perfil do usuário autenticado
+  - name: Carrinho
+    description: Carrinho de compras (banco para logados, cookie para visitantes)
+paths:
+  /:
+    get:
+      tags: [Catalogo]
+      summary: Home (destaques)
+      operationId: home
+      responses:
+        "200":
+          description: Página home renderizada em HTML (produtos em destaque)
+  /sobre:
+    get:
+      tags: [Catalogo]
+      summary: Página Sobre com formulário de contato
+      operationId: sobre
+      responses:
+        "200":
+          description: Página Sobre em HTML; exibe flash de `$_SESSION['flash']` quando presente
+    post:
+      tags: [Catalogo]
+      summary: Enviar mensagem de contato
+      operationId: enviarContato
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required: [name, email, phone]
+              properties:
+                name: { type: string }
+                email: { type: string, format: email }
+                phone: { type: string, pattern: '^\(\d{2}\)\d{4,5}-\d{4}$', description: 'Telefone brasileiro, ex. (11)99999-9999; normalizado para +55<dígitos>' }
+      responses:
+        "302":
+          description: Sempre redireciona para /sobre com flash success/error em `$_SESSION['flash']`
+          headers:
+            Location:
+              schema: { type: string, const: /sobre }
+  /produtos:
+    get:
+      tags: [Catalogo]
+      summary: Catálogo de produtos
+      operationId: listarProdutos
+      parameters:
+        - name: categoria
+          in: query
+          required: false
+          schema: { type: string }
+          description: Filtro opcional por categoria
+      responses:
+        "200":
+          description: Lista de produtos ativos em HTML (com categoria opcional)
+  /produtos/{slug}:
+    get:
+      tags: [Catalogo]
+      summary: Detalhe de um produto
+      operationId: detalheProduto
+      parameters:
+        - name: slug
+          in: path
+          required: true
+          schema: { type: string, pattern: '^[a-zA-Z0-9]+$' }
+          description: Slug do produto (rota regex no legado)
+      responses:
+        "200":
+          description: Detalhe do produto em HTML
+        "404":
+          description: Produto não encontrado/inativo
+  /login:
+    get:
+      tags: [Autenticacao]
+      summary: Página de login (usuário comum)
+      operationId: loginPagina
+      x-reversa-middleware: preventLogged
+      responses:
+        "200":
+          description: Formulário de login em HTML
+        "302":
+          description: Já autenticado (preventLogged) → redirect
+  /login:
+    post:
+      tags: [Autenticacao]
+      summary: Autenticar usuário comum
+      operationId: autenticar
+      x-reversa-middleware: preventLogged
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required: [email, password]
+              properties:
+                email: { type: string, format: email, description: 'Normalizado com strtolower(trim())' }
+                password: { type: string, minLength: 8 }
+      responses:
+        "302":
+          description: Sucesso → `$_SESSION['user']` definida (linha completa com hash); Location: /
+          headers:
+            Location: { schema: { type: string, const: / } }
+        "401":
+          description: Falha (validação ou credenciais) → página de login re-renderizada com erro; evento LoginRecused registra log
+  /logout:
+    get:
+      tags: [Autenticacao]
+      summary: Encerrar sessão de usuário comum
+      operationId: logout
+      responses:
+        "303":
+          description: Remove `$_SESSION['user']`; Location: /
+          headers:
+            Location: { schema: { type: string, const: / } }
+  /admin/login:
+    get:
+      tags: [Autenticacao]
+      summary: Página de login administrativo
+      operationId: loginAdminPagina
+      x-reversa-middleware: preventLogged
+      responses:
+        "200":
+          description: Reutiliza a view Login/login com título e action de admin
+  /admin/login:
+    post:
+      tags: [Autenticacao]
+      summary: Autenticar administrador
+      operationId: autenticarAdmin
+      x-reversa-middleware: preventLogged
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required: [email, password]
+              properties:
+                email: { type: string, format: email }
+                password: { type: string, minLength: 8 }
+      responses:
+        "302":
+          description: Sucesso → `$_SESSION['admin']` definida; Location: /admin/dashboard (rota inexistente — ADR-010)
+          headers:
+            Location: { schema: { type: string, const: /admin/dashboard } }
+        "401":
+          description: Falha → página de login admin com erro; evento AdminLoginRecused grava logs/YYYY-MM-DD-adminLoginErrors.txt
+  /admin/logout:
+    get:
+      tags: [Autenticacao]
+      summary: Encerrar sessão de administrador
+      operationId: logoutAdmin
+      responses:
+        "303":
+          description: >
+            Remove `$_SESSION['admin']` (Location: /). Se `$_SESSION['user']` estiver ativa,
+            delega para /logout (Location: /logout).
+          headers:
+            Location: { schema: { type: string, enum: [/] } }
+  /usuario/perfil:
+    get:
+      tags: [Usuario]
+      summary: Página do perfil do usuário
+      operationId: perfil
+      x-reversa-middleware: auth
+      responses:
+        "200":
+          description: Perfil em HTML (nome editável, e-mail disabled, troca de senha); flash profile_updated limpo via defer
+        "303":
+          description: Sem sessão válida ou usuário inativo → Location: /logout
+  /usuario/perfil:
+    post:
+      tags: [Usuario]
+      summary: Atualizar perfil (nome e, opcionalmente, senha)
+      operationId: atualizarPerfil
+      x-reversa-middleware: auth
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required: [name]
+              properties:
+                name: { type: string, minLength: 3, maxLength: 255, description: 'Sanitizado com strip_tags(trim())' }
+                old_password: { type: string, description: 'Obrigatório apenas se new_password for preenchido' }
+                new_password: { type: string, minLength: 8, description: 'Se preenchido, re-hash bcrypt' }
+                password_confirmation: { type: string, description: 'Deve ser igual a new_password' }
+      responses:
+        "302":
+          description: Sucesso → sessão atualizada (sem hash) + flash; Location: /usuario/perfil
+        "422":
+          description: Falha de validação → perfil re-renderizado com mensagem de erro
+        "303":
+          description: Sem sessão válida (auth) → Location: /logout
+  /carrinho:
+    get:
+      tags: [Carrinho]
+      summary: Exibir carrinho de compras
+      operationId: carrinho
+      responses:
+        "200":
+          description: >
+            Página do carrinho em HTML. Logado → itens de cart_items (JOIN products).
+            Visitante → itens do cookie cart_items (id:qtd,id:qtd) enriquecidos (produtos ativos apenas).
+  /carrinho/adicionar:
+    post:
+      tags: [Carrinho]
+      summary: Adicionar produto ao carrinho
+      operationId: carrinhoAdicionar
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required: [product_id]
+              properties:
+                product_id: { type: integer, minimum: 1 }
+      responses:
+        "302":
+          description: Product_id válido → Location: /carrinho. Inválido → Location: /produtos (sem escrita)
+  /carrinho/atualizar:
+    post:
+      tags: [Carrinho]
+      summary: Aumentar/diminuir quantidade de item
+      operationId: carrinhoAtualizar
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required: [product_id, action]
+              properties:
+                product_id: { type: integer, minimum: 1 }
+                action: { type: string, enum: [increase, decrease] }
+      responses:
+        "302":
+          description: >
+            Sempre Location: /carrinho. increase → qtd+1; decrease qtd>1 → qtd-1;
+            decrease qtd<=1 → item removido. Entrada inválida → sem alteração.
+  /carrinho/remover:
+    post:
+      tags: [Carrinho]
+      summary: Remover item do carrinho
+      operationId: carrinhoRemover
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required: [product_id]
+              properties:
+                product_id: { type: integer, minimum: 1 }
+      responses:
+        "302":
+          description: Location: /carrinho. Item removido por completo; id inválido → sem alteração.
+components:
+  securitySchemes:
+    sessionCookie:
+      type: apiKey
+      in: cookie
+      name: PHPSESSID
+      description: Sessão PHP. `$_SESSION['user']` (comum) / `$_SESSION['admin']` (admin)
+security:
+  - {}
+  - sessionCookie: []

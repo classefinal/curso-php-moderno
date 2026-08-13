@@ -20,7 +20,7 @@ require_once COMPONENTS . 'header.php';
     <h2 class="mb-4">Perfil do usuário</h2>
 
     <?php if (!empty($error)): ?>
-        <div class="alert alert-danger"><?= $error ?></div>
+        <div class="alert alert-danger"><?= htmlspecialchars($error, ENT_QUOTES, 'UTF-8') ?></div>
     <?php endif; ?>
 
     <?php if (!empty($_SESSION['profile_updated'])): ?>

@@ -12,8 +12,8 @@ declare(strict_types=1);
     Você está em:
     <a
         href="/produtos?categoryId=<?= $product['category_id'] ?>"
-        title="Ir para categoria <?= $product['category_name'] ?>"
+        title="Ir para categoria <?= htmlspecialchars($product['category_name'], ENT_QUOTES, 'UTF-8') ?>"
     >
-        <strong><?= $product['category_name'] ?></strong>
+        <strong><?= htmlspecialchars($product['category_name'], ENT_QUOTES, 'UTF-8') ?></strong>
     </a>
 </div>

@@ -11,6 +11,8 @@ $migration = [
         CREATE TABLE users (
           id INT UNSIGNED NOT NULL AUTO_INCREMENT, 
           name VARCHAR(255) NOT NULL, 
+          email VARCHAR(255) NOT NULL UNIQUE, 
+          password VARCHAR(255) NOT NULL, 
           active BOOLEAN NOT NULL, 
           admin BOOLEAN NOT NULL, 
           created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP, 

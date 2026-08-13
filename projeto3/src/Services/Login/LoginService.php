@@ -88,11 +88,13 @@ function adminLoginAuthenticate(mysqli $connection, closure $eventDispatcher): a
         return DEFAULT_LOGIN_ERROR;
     }
 
+    unset($user['password']);
+
     $_SESSION['admin'] = $user;
 
     return [
         'success' => true,
-        'error' => 'Um erro foi detectado'
+        'error' => null
     ];
 }
 
@@ -148,10 +150,12 @@ function loginAuthenticate(mysqli $connection, closure $eventDispatcher): array
         return DEFAULT_LOGIN_ERROR;
     }
 
+    unset($user['password']);
+
     $_SESSION['user'] = $user;
 
     return [
         'success' => true,
-        'error' => 'Um erro foi detectado'
+        'error' => null
     ];
 }
