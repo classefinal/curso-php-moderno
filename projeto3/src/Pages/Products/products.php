@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @psalm-import-type Product from types
- * @psalm-import-type Route from types
- * @psalm-import-type Category from types
+ * @psalm-import-type Product from Types
+ * @psalm-import-type Route from Types
+ * @psalm-import-type Category from Types
  * 
  * @var Product[] $products
  * @var Product[] $randomProducts

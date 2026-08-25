@@ -5,8 +5,8 @@ declare(strict_types=1);
 require_once SERVICES . getRequirePath('Users/UsersService.php');
 
 /**
- * @psalm-import-type Route from types
- * @psalm-import-type Configs from types
+ * @psalm-import-type Route from Types
+ * @psalm-import-type Configs from Types
  */
 
 /**

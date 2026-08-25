@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @psalm-import-type Configs from types
+ * @psalm-import-type Configs from Types
  */
 
 /**

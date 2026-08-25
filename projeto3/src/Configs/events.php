@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * @psalm-import-type Events from types
+ * @psalm-import-type Events from Types
  */
 
 /**

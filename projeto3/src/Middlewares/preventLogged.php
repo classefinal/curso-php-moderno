@@ -1,8 +1,8 @@
 <?php
 
 /**
- * @psalm-import-type Configs from types
- * @psalm-import-type Route from types
+ * @psalm-import-type Configs from Types
+ * @psalm-import-type Route from Types
  */
 
 /**

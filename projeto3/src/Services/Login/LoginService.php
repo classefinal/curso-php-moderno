@@ -1,8 +1,9 @@
 <?php
 
 /**
- * @psalm-import-type LoginInfo from types
- * @psalm-import-type EventDispatcher from types
+ * @psalm-import-type OperationResult from Types
+ * @psalm-import-type EventDispatcher from Types
+ * @psalm-import-type User from Types
  */
 const DUMMY_PASSWORD_HASH = '$2y$16$QJ/fCuE4x29bPKzW0Rgm5ukGB8xwnMajGBPefvamFYFsYbpz7kSOe';
 const DEFAULT_LOGIN_ERROR = [
@@ -11,11 +12,9 @@ const DEFAULT_LOGIN_ERROR = [
 ];
 
 /**
- * Undocumented function
- *
  * @param string $email
  * @param string $password
- * @return LoginInfo
+ * @return OperationResult
  */
 function validateLoginInfo(string $email, string $password): array
 {
@@ -39,7 +38,7 @@ function validateLoginInfo(string $email, string $password): array
 /**
  * @param mysqli $connection
  * @param EventDispatcher $eventDispatcher
- * @return LoginInfo
+ * @return OperationResult
  */
 function adminLoginAuthenticate(mysqli $connection, closure $eventDispatcher): array
 {
@@ -101,7 +100,7 @@ function adminLoginAuthenticate(mysqli $connection, closure $eventDispatcher): a
 /**
  * @param mysqli $connection
  * @param EventDispatcher $eventDispatcher
- * @return LoginInfo
+ * @return OperationResult
  */
 function loginAuthenticate(mysqli $connection, closure $eventDispatcher): array
 {

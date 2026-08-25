@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @psalm-import-type CartItem from types
+ * @psalm-import-type CartItem from Types
  */
 
 // ─── DB functions (logged-in users) ───────────────────────────────────

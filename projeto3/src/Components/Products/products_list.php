@@ -1,8 +1,8 @@
 <?php
 
 /**
- * @psalm-import-type Product from types
- * @psalm-import-type EmptyLinkConfig from types
+ * @psalm-import-type Product from Types
+ * @psalm-import-type EmptyLinkConfig from Types
  * 
  * @var Product[] $products
  */

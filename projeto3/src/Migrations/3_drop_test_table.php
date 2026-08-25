@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @psalm-import-type Migration from types
+ * @psalm-import-type Migration from Types
  */
 
 /** @var Migration $migration */

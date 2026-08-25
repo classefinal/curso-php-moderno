@@ -1,8 +1,8 @@
 <?php
 
 /**
- * @psalm-import-type User from types
- * @psalm-import-type UserUpdateInfo from types
+ * @psalm-import-type User from Types
+ * @psalm-import-type UserUpdateInfo from Types
  */
 
 /**
@@ -74,7 +74,7 @@ function setUpdatedUserIntoSession(array $user): void
 /**
  * @param mysqli $connection
  * @param User $user
- * @return array{success: bool, error: ?string}
+ * @return UserUpdateInfo
  */
 function updateUserProfile(mysqli $connection, array $user): array
 {

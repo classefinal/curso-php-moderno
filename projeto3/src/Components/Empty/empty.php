@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @psalm-import-type EmptyLinkConfig from types
+ * @psalm-import-type EmptyLinkConfig from Types
  * 
  * @var ?string $emptyTitle
  * @var ?string $emptySubtitle

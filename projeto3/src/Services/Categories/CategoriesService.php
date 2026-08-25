@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @psalm-import-type Category from types
+ * @psalm-import-type Category from Types
  */
 
 /**

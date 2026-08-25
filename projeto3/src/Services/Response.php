@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @psalm-import-type Response from types
- * @psalm-import-type Redirect from types
- * @psalm-import-type Dispatcher from types
+ * @psalm-import-type Response from Types
+ * @psalm-import-type Redirect from Types
+ * @psalm-import-type Dispatcher from Types
  */
 
 /**

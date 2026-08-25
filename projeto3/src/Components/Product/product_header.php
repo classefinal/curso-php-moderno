@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * @psalm-import-type Product from types
+ * @psalm-import-type Product from Types
  * 
  * @var Product $product
  */

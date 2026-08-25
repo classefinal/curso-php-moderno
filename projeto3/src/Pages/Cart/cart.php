@@ -3,8 +3,8 @@
 declare(strict_types=1);
 
 /**
- * @psalm-import-type CartItem from types
- * @psalm-import-type Route from types
+ * @psalm-import-type CartItem from Types
+ * @psalm-import-type Route from Types
  *
  * @var string $title
  * @var Route[] $routes

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @psalm-import-type Route from types
+ * @psalm-import-type Route from Types
  */
 
 declare(strict_types=1);

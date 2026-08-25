@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @psalm-import-type DeferConfig from types
+ * @psalm-import-type DeferConfig from Types
  */
 
 /**

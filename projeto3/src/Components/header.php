@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * @psalm-import-type Route from types
+ * @psalm-import-type Route from Types
  * 
  * @var string $title
  * @var Route[] $routes

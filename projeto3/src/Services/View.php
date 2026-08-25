@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @psalm-import-type View from types
+ * @psalm-import-type View from Types
  */
 
 /**

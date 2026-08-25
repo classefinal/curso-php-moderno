@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @psalm-import-type Product from types
+ * @psalm-import-type Product from Types
  * 
  * @var Product[] $randomProducts
  */

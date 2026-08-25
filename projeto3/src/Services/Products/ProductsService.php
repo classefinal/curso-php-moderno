@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @psalm-import-type ActiveProductsList from types
- * @psalm-import-type StmArg from types
- * @psalm-import-type Product from types
+ * @psalm-import-type ActiveProductsList from Types
+ * @psalm-import-type StmArg from Types
+ * @psalm-import-type Product from Types
  */
 
 function getActiveProductsQuery(?int $categoryId): string
