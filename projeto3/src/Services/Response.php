@@ -14,15 +14,10 @@
 function createResponse(Closure $dispatcher): array
 {
     $response = function (int $httpStatusCode = 200, ?string $content = null) use ($dispatcher): void {
-        $response = ob_get_contents();
+        $response = $content ?? '';
 
-        if (ob_get_level() > 0) {
-            ob_end_clean();
-        }
-
-        if ($content) {
-            $response .= $content;
-        }
+        set_time_limit(0);
+        ignore_user_abort(true);
 
         header('Connection: close');
         header('Content-length: ' . strlen($response));
@@ -31,20 +26,24 @@ function createResponse(Closure $dispatcher): array
 
         echo $response;
 
-        flush();
+        if (function_exists('fastcgi_finish_request')) {
+            fastcgi_finish_request();
+        } else {
+            flush();
+        }
 
         $dispatcher();
     };
 
     $redirect = function (string $to, int $httpStatusCode = 302) use ($dispatcher): void {
-        if (ob_get_level() > 0) {
-            ob_clean();
-        }
-
         header('Connection: close');
         header('Location: ' . $to, true, $httpStatusCode);
 
-        flush();
+        if (function_exists('fastcgi_finish_request')) {
+            fastcgi_finish_request();
+        } else {
+            flush();
+        }
 
         $dispatcher();
     };
