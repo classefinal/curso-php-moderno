@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @psalm-import-type Response from Types
- * @psalm-import-type Redirect from Types
- * @psalm-import-type Dispatcher from Types
+ * @psalm-import-type Response from types
+ * @psalm-import-type Redirect from types
+ * @psalm-import-type Dispatcher from types
  */
 
 /**
@@ -16,7 +16,9 @@ function createResponse(Closure $dispatcher): array
     $response = function (int $httpStatusCode = 200, ?string $content = null) use ($dispatcher): void {
         $response = ob_get_contents();
 
-        ob_end_clean();
+        if (ob_get_level() > 0) {
+            ob_end_clean();
+        }
 
         if ($content) {
             $response .= $content;
@@ -35,7 +37,9 @@ function createResponse(Closure $dispatcher): array
     };
 
     $redirect = function (string $to, int $httpStatusCode = 302) use ($dispatcher): void {
-        ob_clean();
+        if (ob_get_level() > 0) {
+            ob_clean();
+        }
 
         header('Connection: close');
         header('Location: ' . $to, true, $httpStatusCode);

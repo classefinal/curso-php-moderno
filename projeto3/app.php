@@ -6,8 +6,6 @@ session_start([
     'cookie_httponly' => 1
 ]);
 
-ob_start();
-
 define('SOURCES', 'src');
 define('BASE_PATH', realpath(__DIR__));
 
@@ -55,7 +53,5 @@ $configs = [
 createEventDispatcher($configs, $events);
 
 processRoutes($configs);
-
-ob_end_clean();
 
 dbClose($connection);
