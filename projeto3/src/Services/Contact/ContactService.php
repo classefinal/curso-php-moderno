@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @psalm-import-type OperationResult from Types
+ * @psalm-import-type OperationResult from types
  */
 
 /**

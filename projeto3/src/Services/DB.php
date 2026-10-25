@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @psalm-import-type StmArg from Types
+ * @psalm-import-type StmArg from types
  */
 
 declare(strict_types=1);

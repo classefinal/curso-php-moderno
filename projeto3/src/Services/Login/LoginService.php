@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @psalm-import-type OperationResult from Types
- * @psalm-import-type EventDispatcher from Types
- * @psalm-import-type User from Types
+ * @psalm-import-type OperationResult from types
+ * @psalm-import-type EventDispatcher from types
+ * @psalm-import-type User from types
  */
 const DUMMY_PASSWORD_HASH = '$2y$16$QJ/fCuE4x29bPKzW0Rgm5ukGB8xwnMajGBPefvamFYFsYbpz7kSOe';
 const DEFAULT_LOGIN_ERROR = [

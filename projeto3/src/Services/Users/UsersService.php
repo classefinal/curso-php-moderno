@@ -1,8 +1,8 @@
 <?php
 
 /**
- * @psalm-import-type User from Types
- * @psalm-import-type UserUpdateInfo from Types
+ * @psalm-import-type User from types
+ * @psalm-import-type UserUpdateInfo from types
  */
 
 /**

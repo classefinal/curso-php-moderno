@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @psalm-import-type Route from Types
+ * @psalm-import-type Route from types
  * 
  * @var string $title
  * @var Route[] $routes
